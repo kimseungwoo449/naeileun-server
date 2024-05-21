@@ -14,7 +14,7 @@ public class ActionFactory {
 	
 	public Action getAction(String command) {
 		Action action = null;
-		if(command.equals("read")) {
+		if(command.equals("/view")) {
 			action = new ReadAllPostAction();
 		}
 		
