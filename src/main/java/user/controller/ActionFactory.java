@@ -1,6 +1,10 @@
 package user.controller;
 
-import user.controller.action.LoginAction;
+import user.controller.action.user.DeleteAction;
+import user.controller.action.user.JoinAction;
+import user.controller.action.user.LoginAction;
+import user.controller.action.user.UpdateAction;
+
 public class ActionFactory {
 	private ActionFactory() {
 		
@@ -11,8 +15,14 @@ public class ActionFactory {
 	}
 	public Action getAction(String command) {
 		Action action = null;
-		if(command.equals("login")) {
+		if(command.equals("join")) {
+			action = new JoinAction();
+		}else if(command.equals("login")) {
 			action = new LoginAction();
+		}else if(command.equals("delete")) {
+			action = new DeleteAction();
+		}else if(command.equals("update")) {
+			action = new UpdateAction();
 		}
 		
 		return action;
