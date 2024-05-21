@@ -20,7 +20,9 @@ public class ServiceServlet extends HttpServlet {
 		// ㄴ 생성 패턴인 Factory Method Pattern
 		// ㄴ 행위 패턴인 Command Pattern
 		
-		String command = request.getParameter("command"); // input type hidden
+		String command = request.getPathInfo();
+		System.out.println("command : " + command);
+		
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);

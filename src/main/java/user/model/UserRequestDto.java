@@ -42,7 +42,18 @@ public class UserRequestDto {
 		this.admin = Boolean.parseBoolean(admin);
 		this.email = email;
 	}
-	
+	public UserRequestDto(String id, String password, String name, String resident_number, String phone, Boolean admin,
+			String email) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.resident_number = resident_number;
+		this.age = User.caculateAge(resident_number);
+		this.phone = phone;
+		this.admin = admin;
+		this.email = email;
+	}
 
 	public UserRequestDto(String id, String password, String name, String resident_number, String phone, boolean admin,
 			String email, Timestamp reg_Date, Timestamp update_Date) {

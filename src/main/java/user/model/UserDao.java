@@ -120,7 +120,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "INSERT INTO users(id, password, email, name, resident_number,age ,phone, admin) VALUES(?, ?, ?, ?, ?, ?, ?,?)";
+			String sql = "INSERT INTO users(id, password, email, name, resident_number,phone, admin) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -131,9 +131,8 @@ public class UserDao {
 			pstmt.setString(3, email);
 			pstmt.setString(4, userDto.getName());
 			pstmt.setString(5, userDto.getResident_number());
-			pstmt.setString(6, userDto.getAge());
-			pstmt.setString(7, userDto.getPhone());
-			pstmt.setBoolean(8, userDto.isAdmin());
+			pstmt.setString(6, userDto.getPhone());
+			pstmt.setBoolean(7, userDto.isAdmin());
 
 			pstmt.execute();
 

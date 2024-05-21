@@ -39,7 +39,16 @@ public class UserResponseDto {
 		this.admin = admin;
 		this.email = email;
 	}
+	public UserResponseDto(String id, String name, String resident_number, String phone, String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.resident_number = resident_number;
+		this.age = User.caculateAge(resident_number);
+		this.phone = phone;
 	
+		this.email = email;
+	}
 	
 	public UserResponseDto(String id, String name, String resident_number, String phone, boolean admin, String email,
 			Timestamp reg_Date, Timestamp update_Date) {

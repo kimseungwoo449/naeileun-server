@@ -20,7 +20,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServiceServlet</servlet-name>
-		<url-pattern>/user/service</url-pattern>
+		<url-pattern>/user/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Error Page -->
