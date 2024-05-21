@@ -11,7 +11,8 @@ public class ServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String command = request.getParameter("command"); // input type hidden
+		String command = request.getPathInfo();
+		System.out.println("command : " + command);
 		
 		if(command != null) {
 			ActionFactory af = ActionFactory.getInstance();
