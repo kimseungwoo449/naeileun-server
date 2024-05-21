@@ -2,12 +2,13 @@ package user.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
+@MultipartConfig
 public class ServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -19,7 +20,9 @@ public class ServiceServlet extends HttpServlet {
 		// ㄴ 생성 패턴인 Factory Method Pattern
 		// ㄴ 행위 패턴인 Command Pattern
 		
-		String command = request.getParameter("command"); // input type hidden
+		String command = request.getPathInfo();
+		System.out.println("command : " + command);
+		
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);
