@@ -20,7 +20,16 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServiceServlet</servlet-name>
-		<url-pattern>/user/service</url-pattern>
+		<url-pattern>/user/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BoardServiceServlet</servlet-name>
+		<servlet-class>board.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BoardServiceServlet</servlet-name>
+		<url-pattern>/board/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Error Page -->
