@@ -36,19 +36,23 @@ public class StudyGroupDao {
 			pstmt = conn.prepareStatement(sql);
 				
 			pstmt.setString(1,groupCode);
-				
+			
 			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String name = rs.getString(2);
+				String decription =  rs.getString(3);
+				String adminCode =  rs.getString(4);
+				String isPublic =  rs.getString(5).equals("0") ? "false" : "true";
 				
-			String name = rs.getString(2);
-			String decription =  rs.getString(3);
-			String adminCode =  rs.getString(4);
-			String isPublic =  rs.getString(5).equals("0") ? "false" : "true";
-				
-			study = new StudyGroupResponseDto(groupCode, name, decription,adminCode,isPublic);
+				study = new StudyGroupResponseDto(groupCode, name, decription,adminCode,isPublic);
+			}
 			
 			System.out.println("DB 연동 성공");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
 		}
 		
 		
