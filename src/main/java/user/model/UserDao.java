@@ -280,4 +280,22 @@ public class UserDao {
 		}
 		return user;
 	}
+	public String findUserCodeById(String id) {
+		String userCode = "";
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT code FROM users WHERE id = ?";
+			pstmt= conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			if(rs.next()) {
+				 userCode = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return userCode;
+	}
 }
