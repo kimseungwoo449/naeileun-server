@@ -46,7 +46,7 @@ public class UserDao {
 			conn = DBManager.getConnection();
 
 			// 쿼리할 준비
-			String sql = "SELECT id , name, resident_number, phone, admin , email FROM users";
+			String sql = "SELECT user_code, id , name, resident_number, phone, admin , email FROM users";
 			pstmt = conn.prepareStatement(sql);
 
 			// 쿼리 실행
@@ -55,14 +55,15 @@ public class UserDao {
 			// 튜플 읽기
 			while (rs.next()) {
 				// database의 column index는 1부터 시작!
-				String id = rs.getString(1);
-				String name = rs.getString(2);
-				String resident_number = rs.getString(3);
-				String phone = rs.getString(4);
-				boolean admin = rs.getBoolean(5);
-				String email = rs.getString(6);
+				String userCode = rs.getString(1);
+				String id = rs.getString(2);
+				String name = rs.getString(3);
+				String resident_number = rs.getString(4);
+				String phone = rs.getString(5);
+				boolean admin = rs.getBoolean(6);
+				String email = rs.getString(7);
 
-				UserResponseDto user = new UserResponseDto(id, name, resident_number, phone, admin, email);
+				UserResponseDto user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -77,7 +78,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT id , name, resident_number, phone, admin , email, password FROM users WHERE id=?";
+			String sql = "SELECT user_code, id , name, resident_number, phone, admin , email, password FROM users WHERE id=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -85,16 +86,16 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-
-				String name = rs.getString(2);
-				String resident_number = rs.getString(3);
-				String phone = rs.getString(4);
-				boolean admin = rs.getBoolean(5);
-				String email = rs.getString(6);
-				String encyptedPassword = rs.getString(7);
+				String userCode = rs.getString(1);
+				String name = rs.getString(3);
+				String resident_number = rs.getString(4);
+				String phone = rs.getString(5);
+				boolean admin = rs.getBoolean(6);
+				String email = rs.getString(7);
+				String encyptedPassword = rs.getString(8);
 
 				if (PasswordCrypto.decrypt(password, encyptedPassword))
-					user = new UserResponseDto(id, name, resident_number, phone, admin, email);
+					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -280,10 +281,15 @@ public class UserDao {
 		}
 		return user;
 	}
+
 	public int findUserCodeById(String id) {
 		int userCode = -1;
+
+
+	
 		try {
 			conn = DBManager.getConnection();
+
 			String sql = "SELECT user_code FROM users WHERE id = ?";
 			pstmt= conn.prepareStatement(sql);
 			pstmt.setString(1, id);

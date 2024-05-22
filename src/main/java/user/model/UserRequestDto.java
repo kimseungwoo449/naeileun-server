@@ -4,6 +4,7 @@ import java.lang.Boolean;
 import java.sql.Timestamp;
 
 public class UserRequestDto {
+	private String userCode;
 	private String id;
 	private String password;
 	private String name;
@@ -18,9 +19,10 @@ public class UserRequestDto {
 		
 	}
 	
-	public UserRequestDto(String id, String password, String name, String resident_number, String phone, boolean admin,
+	public UserRequestDto(String userCode,String id, String password, String name, String resident_number, String phone, boolean admin,
 			String email) {
 		super();
+		this.userCode = userCode;
 		this.id = id;
 		this.password = password;
 		this.name = name;

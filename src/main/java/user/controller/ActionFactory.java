@@ -17,11 +17,13 @@ public class ActionFactory {
 		Action action = null;
 		if(command.equals("/join")) {
 			action = new JoinAction();
-		}else if(command.equals("login")) {
+		}else if(command.equals("/login")) {
 			action = new LoginAction();
-		}else if(command.equals("delete")) {
+		}else if(command.equals("/delete")) {
 			action = new DeleteAction();
-		}else if(command.equals("update")) {
+		}else if(command.equals("/update")) {
+			action = new UpdateAction();
+		}else if(command.equals("/resume")) {
 			action = new UpdateAction();
 		}
 		

@@ -1,12 +1,18 @@
 package user.controller.action.user;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import user.controller.Action;
 import user.model.UserDao;
@@ -17,39 +23,42 @@ public class LoginAction implements Action{
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("1234");
+		InputStream in = request.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+		String data = "";
+		while (br.ready()) {
+			data += br.readLine() + "\n";
+		}
+		JSONObject object = new JSONObject(data);
+
+		String id = object.getString("id");
+		String password = object.getString("password");
 		request.setCharacterEncoding("UTF-8");
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
 		
-		boolean isValid = true;
+		UserDao userDao = UserDao.getInstance();
+		UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(userDto);
+		JSONObject resObj = new JSONObject();
 		
-		if(id == null || id.equals(""))
-			isValid = false;
-		else if(password == null || password.equals(""))
-			isValid = false;
+		int status = 200;
+		String message = "User registration is success.";
 		
-		if(isValid) {
-			// 연동된 데이터 베이스로부터		(UserDao)
-			// 유저의 정보를 조회 하고,		(findUserByIdAndPassword())
-			// 정보가 일치하면				(return된 UserResponseDto가 null이 아니면)
-			// 로그인 처리 후, 페이지 이동		(jsp 내장객체 중 session에 유저정보 저장)
-			
-			UserDao userDao = UserDao.getInstance();
-			UserResponseDto user = userDao.findUserByIdAndPassword(id, password);
-			
-			HttpSession session = request.getSession();
-			
-			if(user != null) {
-				session.setAttribute("user", user);
-
-				
-				response.sendRedirect("http://192.168.30.84:3000/naeileun/users/login");				
-
-			} else {
-				response.sendRedirect("http://192.168.30.84:3000/naeileun");				
-			}
+		if(userDto == null) {
+			status = 400;
+			message = "User registration is failed.";
 		} 
-		System.out.println("로그인 처리 로직");
+		resObj.put("user", json);
+		resObj.put("status", status);
+		resObj.put("message", message);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
+		
+		response.getWriter().append(resObj.toString());
+		
 	}
 
 }

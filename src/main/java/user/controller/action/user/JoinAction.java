@@ -63,8 +63,12 @@ public class JoinAction implements Action {
 		response.setContentType("application/json;charset=UTF-8");
 		
 		response.getWriter().append(resObj.toString());
-		
-		
+		if(userDto == null) {
+			response.sendRedirect("http://192.168.30.84:3000/naeileun/users/join");
+			
+		}else {
+		response.sendRedirect("http://192.168.30.84:3000/naeileun");
+		}
 //		// Backend 에서 전달받은 데이터에 대한 유효성 검증
 //		boolean isValid = true;
 //

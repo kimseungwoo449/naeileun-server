@@ -35,7 +35,7 @@
 			<include-prelude>/taglib.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
-	
+
 	<!-- CORS Policy -->
 	<filter>
 		<filter-name>CorsFilter</filter-name>
@@ -111,6 +111,4 @@
 		<url-pattern>/study/*</url-pattern>
 	</servlet-mapping>
 	
-
-
 </web-app>
