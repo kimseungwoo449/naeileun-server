@@ -14,6 +14,27 @@ public class Board {
 	private Timestamp updateDate;
 	private int recommandation;
 	private int postCode;
+	
+	// 보드 카테고리 생성자
+	public Board(String boardName, String description) {
+		super();
+		this.boardName = boardName;
+		this.description = description;
+	}
+
+	// 보드 카테고리 생성자(설명X)
+	public Board(String boardName) {
+		super();
+		this.boardName = boardName;
+	}
+
+	// 게시글 생성자
+	public Board(String title, String content, int userCode) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.userCode = userCode;
+	}
 
 	
 }
