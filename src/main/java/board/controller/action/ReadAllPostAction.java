@@ -19,26 +19,37 @@ public class ReadAllPostAction implements Action {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("읽어오기");
-		
-		BoardDao boardDao = BoardDao.getInstance();
-		
-		List<BoardResponseDto> postList = boardDao.readAllPost();
-		
 		JSONObject resObj = new JSONObject();
 		
-		JSONObject meta = new JSONObject();
-		meta.put("total_count", postList.size());
-		meta.put("pageable_count", 10);
-		
-		JSONArray result = new JSONArray(postList);
-		
-		resObj.put("meta", meta);
-		resObj.put("result", result);
-		System.out.println(resObj);
-		
+		if (!request.getHeader("Authorization").equals("ADMIN JU7Spt9DHvLaiHcxTD4h")) {
+			boolean status = false;
+			String message = "Board is blocked.";
+			
+			resObj.put("status", status);
+			resObj.put("message", message);
+		} else {
+			System.out.println("읽어오기");
+			
+			BoardDao boardDao = BoardDao.getInstance();
+			
+			List<BoardResponseDto> postList = boardDao.readAllPost();
+			
+			
+			
+			JSONObject meta = new JSONObject();
+			meta.put("total_count", postList.size());
+			meta.put("pageable_count", 10);
+			
+			JSONArray result = new JSONArray(postList);
+			
+			resObj.put("meta", meta);
+			resObj.put("result", result);
+			System.out.println(resObj);
+			
+		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().append(resObj.toString());
+		
 	}
 }
