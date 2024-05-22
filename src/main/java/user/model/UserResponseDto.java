@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 
 public class UserResponseDto {
-
+	private String userCode;
 	private String id;
 	private String name;
 	private String resident_number;
@@ -29,8 +29,9 @@ public class UserResponseDto {
 		this.phone = user.getPhone();
 		this.admin = user.isAdmin();
 	}
-	public UserResponseDto(String id, String name, String resident_number, String phone, boolean admin, String email) {
+	public UserResponseDto(String userCode, String id, String name, String resident_number, String phone, boolean admin, String email) {
 		super();
+		this.userCode = userCode;
 		this.id = id;
 		this.name = name;
 		this.resident_number = resident_number;
@@ -64,6 +65,14 @@ public class UserResponseDto {
 		this.update_Date = update_Date;
 	}
 	
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
 	public String getId() {
 		return id;
 	}

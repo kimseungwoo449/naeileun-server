@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class User {
+	private String userCode;
 	private String id;
 	private String password;
 	private String name;
@@ -21,6 +22,21 @@ public class User {
 	}
 	
 	
+	public User(String userCode, String id, String password, String name, String age, String resident_number,
+			String phone, boolean admin, String email) {
+		super();
+		this.userCode = userCode;
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.age = age;
+		this.resident_number = resident_number;
+		this.phone = phone;
+		this.admin = admin;
+		this.email = email;
+	}
+
+
 	public User(String id, String password, String name, String resident_number, String phone, boolean admin,
 			String email, Timestamp reg_Date, Timestamp update_Date) {
 		super();
@@ -62,6 +78,11 @@ public class User {
 		this.reg_Date = reg_Date;
 		
 	}
+	
+	public String getUserCode() {
+		return userCode;
+	}
+
 	public String getId() {
 		return id;
 	}
