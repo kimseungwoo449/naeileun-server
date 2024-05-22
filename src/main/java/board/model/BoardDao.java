@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import user.model.UserDao;
 import utill.DBManager;
 
 public class BoardDao {
@@ -30,6 +31,7 @@ public class BoardDao {
 		
 		try {
 			conn = DBManager.getConnection();
+			UserDao userDao = UserDao.getInstance();
 			
 			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_code, write_date, update_date, MAX(recommandation), post_code FROM board GROUP BY board_code";
 			
@@ -44,13 +46,14 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-				int userCode = rs.getInt(7);
+//				String userId = userDao(rs.getInt(7));
+				String userId = "1234";
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
 				int postCode = rs.getInt(11);
 				
-				BoardResponseDto board = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userCode, writeDate, updateDate, recommandation, postCode);
+				BoardResponseDto board = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
 				postList.add(board);
 			}
 		} catch (Exception e) {
