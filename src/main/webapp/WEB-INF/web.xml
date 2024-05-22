@@ -101,4 +101,16 @@
 		<url-pattern>/resume/*</url-pattern>
 	</servlet-mapping>
 
+	
+	<servlet>
+		<servlet-name>StudyServiceServlet</servlet-name>
+		<servlet-class>study.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StudyServiceServlet</servlet-name>
+		<url-pattern>/study/*</url-pattern>
+	</servlet-mapping>
+	
+
+
 </web-app>
