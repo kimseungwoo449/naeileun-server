@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -29,31 +30,45 @@ public class FindUserGroupAction implements Action{
 
 		request.setCharacterEncoding("UTF-8");
 		
-		HttpSession session = request.getSession();
-		UserResponseDto user = (UserResponseDto) session.getAttribute("user");
-		
-		//로그인 백엔드 생성 후 토글 지우기
-		//String userId = user.getId();
-		UserDao userDao = UserDao.getInstance();
-		//String userCode = userDao.findUserCodeById(userId);
-		
-		String userCode = "2"; // 수정 후 삭제
-		
-		GroupMemberDao gmDao = GroupMemberDao.getInstance();
-		List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
-		
-		StudyGroupDao sg = StudyGroupDao.getInstance();
-		
-		List<StudyGroupResponseDto> list = sg.getStudyListByGroupCodeList(groupCodes);
-		JSONArray result = new JSONArray(list);
-		
-		JSONObject meta = new JSONObject();
-		meta.put("total_count", list.size());
-		
 		JSONObject obj = new JSONObject();
+		JSONArray result = new JSONArray();
+		JSONObject meta = new JSONObject();
 		
-		obj.put("result", result);
-		obj.put("meta", meta);
+		if (!request.getHeader("Authorization").equals("JU7Spt9DHvLaiHcxTD4h")) { //IPAdressManager.ADMIN_KEY
+			obj.put("result",result);
+			obj.put("meta", meta);
+		} else {
+
+			HttpSession session = request.getSession();
+			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+			
+			//로그인 백엔드 생성 후 토글 지우기
+			//String userId = user.getId();
+			//UserDao userDao = UserDao.getInstance();
+			//String userCode = userDao.findUserCodeById(userId);
+			
+			String userCode = "2"; // 수정 후 삭제
+			
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
+			
+			StudyGroupDao sg = StudyGroupDao.getInstance();
+			
+			List<StudyGroupResponseDto> list = new ArrayList<>();
+			
+			for(String code : groupCodes) {
+				StudyGroupResponseDto study = sg.getStudyListByGroupCodeList(code);
+				list.add(study);
+			}
+			
+			result = new JSONArray(list);
+			
+			meta = new JSONObject();
+			meta.put("total_count", list.size());
+			
+			obj.put("result", result);
+			obj.put("meta", meta);
+		}
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
