@@ -10,6 +10,7 @@ public class BoardResponseDto {
 	private String title;
 	private String content;
 	private int userCode;
+	private String userId;
 	private Timestamp writeDate;
 	private Timestamp updateDate;
 	private int recommandation;
@@ -40,6 +41,23 @@ public class BoardResponseDto {
 		this.title = title;
 		this.content = content;
 		this.userCode = userCode;
+		this.writeDate = writeDate;
+		this.updateDate = updateDate;
+		this.recommandation = recommandation;
+		this.postCode = postCode;
+	}
+
+	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
+			String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommandation,
+			int postCode) {
+		super();
+		this.boardCode = boardCode;
+		this.boardName = boardName;
+		this.description = description;
+		this.createDate = createDate;
+		this.title = title;
+		this.content = content;
+		this.userId = userId;
 		this.writeDate = writeDate;
 		this.updateDate = updateDate;
 		this.recommandation = recommandation;
@@ -100,6 +118,14 @@ public class BoardResponseDto {
 
 	public void setUserCode(int userCode) {
 		this.userCode = userCode;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public Timestamp getWriteDate() {
