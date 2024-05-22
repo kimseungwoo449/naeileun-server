@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import user.controller.Action;
-import user.controller.ActionFactory;
-
 public class ServiceServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
@@ -21,13 +18,14 @@ public class ServiceServlet extends HttpServlet{
 		// ㄴ 생성패턴인 Singleton Pattern
 		// ㄴ 생성 패턴인 Factory Method Pattern
 		// ㄴ 행위 패턴인 Command Pattern
+		
+		
 		request.setCharacterEncoding("UTF-8");
-		System.out.println("before command");
 		String command = request.getPathInfo();
-		System.out.println("command : " + command);
 		
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
+			System.out.println("server command : " + command);
 			Action action = af.getAction(command);
 			if(action != null) {
 				action.excute(request, response);
@@ -46,11 +44,11 @@ public class ServiceServlet extends HttpServlet{
 		request.setCharacterEncoding("UTF-8");
 
 		String command = request.getPathInfo();
-		System.out.println("command : " + command);
 		
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);
+			System.out.println("here");
 			if(action != null) {
 				action.excute(request, response);
 			}else {
