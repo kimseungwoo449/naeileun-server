@@ -28,6 +28,7 @@ public class WriteAction implements Action {
 			status = false;
 			message = "Resume is blocked.";
 		} else {
+			
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 

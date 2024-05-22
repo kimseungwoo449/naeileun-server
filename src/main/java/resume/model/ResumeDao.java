@@ -34,7 +34,7 @@ public class ResumeDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "INSERT INTO resume(user_code,name,title,user_age,acdemic_career,career,skill,certificate,language,award) VALUES(?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO resume(user_code,name,title,user_age,academic_career,career,skill,certificate,language,award) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -85,7 +85,7 @@ public class ResumeDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT * FROM reservation WHERE `resumeCode` =?";
+			String sql = "SELECT * FROM resume WHERE `resume_code` =?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, resumeCode);
 			rs = pstmt.executeQuery();

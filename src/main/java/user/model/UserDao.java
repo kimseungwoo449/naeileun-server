@@ -284,9 +284,11 @@ public class UserDao {
 		int userCode = -1;
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT code FROM users WHERE id = ?";
+			String sql = "SELECT user_code FROM users WHERE id = ?";
 			pstmt= conn.prepareStatement(sql);
 			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				 userCode = rs.getInt(1);
 			}
@@ -296,6 +298,7 @@ public class UserDao {
 		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
+		
 		return userCode;
 	}
 }
