@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import study.controller.Action;
 import utill.IPAdressManager;
-import study.model.groupMember.GroupMemberDa;
+import study.model.groupMember.GroupMemberDao;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
 
@@ -44,7 +44,7 @@ public class FindUserGroupAction implements Action{
 			
 			String userCode = "2"; // 수정 후 삭제
 			
-			GroupMemberDa gmDao = GroupMemberDa.getInstance();
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
 			
 			StudyGroupDao sg = StudyGroupDao.getInstance();
@@ -52,11 +52,10 @@ public class FindUserGroupAction implements Action{
 			List<StudyGroupResponseDto> list = new ArrayList<>();
 			
 			for(String code : groupCodes) {
-				StudyGroupResponseDto study = sg.getStudyListByGroupCodeList(code);
+				StudyGroupResponseDto study = sg.getStudyByGroupCode(code);
 				list.add(study);
 			}
 			
-			System.out.println("list : "+list.toString());
 			result = new JSONArray(list);
 			
 			meta = new JSONObject();
