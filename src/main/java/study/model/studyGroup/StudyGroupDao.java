@@ -22,7 +22,7 @@ public class StudyGroupDao {
 		return instance;
 	}
 	
-	public StudyGroupResponseDto getStudyListByGroupCodeList(String groupCode){
+	public StudyGroupResponseDto getStudyByGroupCode(String groupCode){
 		StudyGroupResponseDto study = null;
 		
 		if(groupCode == null)
@@ -45,7 +45,7 @@ public class StudyGroupDao {
 				String adminCode =  rs.getString(4);
 				String isPublic =  rs.getString(5).equals("0") ? "false" : "true";
 				
-				study = new StudyGroupResponseDto(groupCode, name, decription,adminCode,isPublic);
+				study = new StudyGroupResponseDto(groupCode, name, decription == null ? "" : decription,adminCode,isPublic);
 			}
 			
 			System.out.println("DB 연동 성공");
@@ -57,6 +57,31 @@ public class StudyGroupDao {
 		
 		
 		return study;
+	}
+	
+	
+	public List<String> getStudyBoardByGroupCode(String groupCode){
+		List<String> list = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT group_code, name, admin_code,is_public, decription,(SELECT )";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				list = new ArrayList<>();
+				
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return list;
 	}
 
 }
