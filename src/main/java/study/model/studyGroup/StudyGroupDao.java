@@ -59,5 +59,29 @@ public class StudyGroupDao {
 		return study;
 	}
 	
+	
+	public List<String> getStudyBoardByGroupCode(String groupCode){
+		List<String> list = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT group_code, name, admin_code,is_public, decription,(SELECT )";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				list = new ArrayList<>();
+				
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return list;
+	}
 
 }
