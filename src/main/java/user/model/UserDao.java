@@ -177,6 +177,50 @@ public class UserDao {
 		return user;
 	}
 
+	public UserResponseDto updateUserPassword(String userId, String newPassword) {
+		UserResponseDto user = null;
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "UPDATE users SET password=?   WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, PasswordCrypto.encrypt(newPassword));
+			pstmt.setString(2, userId);
+			pstmt.execute();
+			User userVo = findUserById(userId);
+			user = new UserResponseDto(userVo);
+			return user;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		return user;
+	}
+
+	public UserResponseDto updateUserField(String userId, String field, String value) {
+
+		UserResponseDto user = null;
+		String sql = "";
+		if (field.equals("email")) {
+			sql = "UPDATE users SET email=?  WHERE id=?";
+		} else if (field.equals("phone")) {
+			sql = "UPDATE users SET phone=? WHERE id=?";
+		}
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, field);
+			pstmt.setString(2, value);
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+
 	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
 		UserResponseDto user = null;
 
@@ -282,21 +326,53 @@ public class UserDao {
 		return user;
 	}
 
+	public UserResponseDto getUserById(String id) {
+		UserResponseDto user = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT user_code, id ,password, name, resident_number, phone, admin , email, password FROM users WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				String userCode = rs.getString(1);
+				String password = rs.getString(3);
+				String name = rs.getString(4);
+				String resident_number = rs.getString(5);
+				String phone = rs.getString(6);
+				boolean admin = rs.getBoolean(7);
+				String email = rs.getString(8);
+				String encyptedPassword = rs.getString(9);
+
+				if (PasswordCrypto.decrypt(password, encyptedPassword))
+					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return user;
+	}
+
 	public int findUserCodeById(String id) {
 		int userCode = -1;
 
-
-	
 		try {
 			conn = DBManager.getConnection();
 
 			String sql = "SELECT user_code FROM users WHERE id = ?";
-			pstmt= conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			
+
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				 userCode = rs.getInt(1);
+			if (rs.next()) {
+				userCode = rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -304,9 +380,10 @@ public class UserDao {
 		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
-		
+
 		return userCode;
 	}
+
 	public String findUserIdByCode(String code) {
 		String userId = "";
 		try {

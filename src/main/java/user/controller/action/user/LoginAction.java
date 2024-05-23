@@ -41,16 +41,22 @@ public class LoginAction implements Action{
 		UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
 		ObjectMapper objectMapper = new ObjectMapper();
 		String json = objectMapper.writeValueAsString(userDto);
+		
 		JSONObject resObj = new JSONObject();
 		
 		int status = 200;
-		String message = "User registration is success.";
+		String message = "User login is success.";
 		
 		if(userDto == null) {
 			status = 400;
-			message = "User registration is failed.";
+			message = "User login is failed.";
 		} 
-		resObj.put("user", json);
+		if(userDto != null) {
+			HttpSession session = request.getSession();
+            session.setAttribute("user", userDto);
+		    resObj.put("user", new JSONObject(json));
+		}
+		System.out.println(json);
 		resObj.put("status", status);
 		resObj.put("message", message);
 		
@@ -58,6 +64,7 @@ public class LoginAction implements Action{
 		response.setContentType("application/json;charset=UTF-8");
 		
 		response.getWriter().append(resObj.toString());
+	
 		
 	}
 
