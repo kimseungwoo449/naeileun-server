@@ -15,7 +15,7 @@ public class DBManager {
 		Connection conn = null;
 		try {
 			Context init = new InitialContext();
-			DataSource source = (DataSource)init.lookup("java:comp/env/jdbc/ProjectDB");
+			DataSource source = (DataSource)init.lookup("java:comp/env/jdbc/NaeileunDB");
 			conn = source.getConnection();
 			System.out.println("DB연동 성공");
 		} catch (Exception e) {

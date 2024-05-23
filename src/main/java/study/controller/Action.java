@@ -1,4 +1,4 @@
-package user.controller;
+package study.controller;
 
 import java.io.IOException;
 
@@ -8,4 +8,5 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Action {
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+	
 }

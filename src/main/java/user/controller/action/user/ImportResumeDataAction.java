@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import user.controller.Action;
 import user.model.UserResponseDto;
 
-er.model.cars.CarsResponseDto;
 
 public class ImportResumeDataAction implements Action{
 	 
