@@ -134,4 +134,37 @@ public class BoardDao {
 		
 		return postList;
 	}
+	
+	public BoardResponseDto readPostByBoardCodeAndPostCode(int boardCodeTemp, int postCodeTemp) {
+		BoardResponseDto post = null;
+		
+		try {
+			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardCodeTemp);
+			pstmt.setInt(2, postCodeTemp);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String title = rs.getString(1);
+				String content = rs.getString(2);
+				int userCode = rs.getInt(3);
+				Timestamp writeDate = rs.getTimestamp(4);
+				Timestamp updateDate = rs.getTimestamp(5);
+				int recommandation = rs.getInt(6);
+				int postCode = rs.getInt(7);
+				int boardCode = rs.getInt(8);
+				
+				post = new BoardResponseDto(title, content, userCode, writeDate, updateDate, recommandation, postCode, boardCode);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return post;
+	}
 }
