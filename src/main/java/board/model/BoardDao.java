@@ -139,6 +139,8 @@ public class BoardDao {
 		BoardResponseDto post = null;
 		
 		try {
+			conn = DBManager.getConnection();
+			
 			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
 			
 			pstmt = conn.prepareStatement(sql);
