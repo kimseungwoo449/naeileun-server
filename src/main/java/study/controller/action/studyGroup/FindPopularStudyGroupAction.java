@@ -1,6 +1,8 @@
 package study.controller.action.studyGroup;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
+import study.model.groupMember.GroupMemberDao;
 import study.model.studyGroup.StudyGroupDao;
+import study.model.studyGroup.StudyGroupResponseDto;
 import utill.IPAdressManager;
 
 public class FindPopularStudyGroupAction implements Action{
@@ -21,18 +25,28 @@ public class FindPopularStudyGroupAction implements Action{
 		request.setCharacterEncoding("UTF-8");
 		
 		JSONObject obj = new JSONObject();
-		JSONArray result = new JSONArray();
-		JSONObject meta = new JSONObject();
+		JSONArray result = null;
+		JSONObject meta = null;
 		
 		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
 			
 		} else {
 			
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			List<String> list = gmDao.getPopularStudyGroupCode();
 			
+			StudyGroupDao sgDao = StudyGroupDao.getInstance();
 			
+			List<StudyGroupResponseDto> popularStudy = new ArrayList<>();
+			for(String groupCode : list) {
+				StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
+				popularStudy.add(study);
+			}
 			
+			meta = new JSONObject();
+			meta.put("total_count", list.size());
 			
-			
+			result =  new JSONArray(popularStudy);
 			
 		}
 		
