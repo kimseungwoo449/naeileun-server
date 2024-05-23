@@ -26,14 +26,14 @@ public class BoardDao {
 		return instance;
 	}
 	
-	public List<BoardResponseDto> readAllPost(){
+	public List<BoardResponseDto> readBestPost(){
 		List<BoardResponseDto> postList = new ArrayList<BoardResponseDto>();
 		
 		try {
 			conn = DBManager.getConnection();
 			UserDao userDao = UserDao.getInstance();
 			
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_code, write_date, update_date, MAX(recommandation), post_code FROM board GROUP BY board_code";
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_code, write_date, update_date, recommandation, rank() over (order by recommandation desc) AS ranking, post_code FROM board LIMIT 3";
 			
 			pstmt =  conn.prepareStatement(sql);
 			
@@ -51,7 +51,7 @@ public class BoardDao {
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
-				int postCode = rs.getInt(11);
+				int postCode = rs.getInt(12);
 				
 				BoardResponseDto board = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
 				postList.add(board);
