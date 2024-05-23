@@ -1,7 +1,7 @@
 package board.controller;
 
 import board.controller.ActionFactory;
-import board.controller.action.ReadAllPostAction;
+import board.controller.action.ReadBestPostAction;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -15,7 +15,7 @@ public class ActionFactory {
 	public Action getAction(String command) {
 		Action action = null;
 		if(command.equals("/view")) {
-			action = new ReadAllPostAction();
+			action = new ReadBestPostAction();
 		}
 		
 		return action;

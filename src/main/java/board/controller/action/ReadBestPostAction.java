@@ -15,7 +15,7 @@ import board.model.BoardDao;
 import board.model.BoardResponseDto;
 import utill.IPAdressManager;
 
-public class ReadAllPostAction implements Action {
+public class ReadBestPostAction implements Action {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +32,7 @@ public class ReadAllPostAction implements Action {
 			
 			BoardDao boardDao = BoardDao.getInstance();
 			
-			List<BoardResponseDto> postList = boardDao.readAllPost();
+			List<BoardResponseDto> postList = boardDao.readBestPost();
 			
 			
 			
