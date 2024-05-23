@@ -59,5 +59,34 @@ public class GroupMemberDao {
 	}
 	
 	
+	public List<String> getPopularStudyGroupCode(){
+		List<String> list = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			int n = 0;
+			list = new ArrayList<>();
+			while(rs.next()) {
+				String groupCode = rs.getString(1);
+				
+				list.add(groupCode);
+				
+				n++;
+				
+				if(n == 4)
+					break;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+ 	}
+	
 	
 }
