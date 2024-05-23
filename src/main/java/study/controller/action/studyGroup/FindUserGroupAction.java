@@ -1,10 +1,6 @@
 package study.controller.action.studyGroup;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
-import user.model.UserDao;
-import user.model.UserResponseDto;
-import study.model.groupMember.GroupMemberDao;
+import utill.IPAdressManager;
+import study.model.groupMember.GroupMemberDa;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
 
@@ -34,22 +29,22 @@ public class FindUserGroupAction implements Action{
 		JSONArray result = new JSONArray();
 		JSONObject meta = new JSONObject();
 		
-		if (!request.getHeader("Authorization").equals("JU7Spt9DHvLaiHcxTD4h")) { //IPAdressManager.ADMIN_KEY
+		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) { //IPAdressManager.ADMIN_KEY
 			obj.put("result",result);
 			obj.put("meta", meta);
 		} else {
 
-			HttpSession session = request.getSession();
+			//로그인 백엔드 생성 후 토글 지우기
+			//HttpSession session = request.getSession();
 			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 			
-			//로그인 백엔드 생성 후 토글 지우기
 			//String userId = user.getId();
 			//UserDao userDao = UserDao.getInstance();
 			//String userCode = userDao.findUserCodeById(userId);
 			
 			String userCode = "2"; // 수정 후 삭제
 			
-			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			GroupMemberDa gmDao = GroupMemberDa.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
 			
 			StudyGroupDao sg = StudyGroupDao.getInstance();
@@ -61,6 +56,7 @@ public class FindUserGroupAction implements Action{
 				list.add(study);
 			}
 			
+			System.out.println("list : "+list.toString());
 			result = new JSONArray(list);
 			
 			meta = new JSONObject();
