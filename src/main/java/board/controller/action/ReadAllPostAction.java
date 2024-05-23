@@ -1,7 +1,6 @@
 package board.controller.action;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import org.json.JSONObject;
 import board.controller.Action;
 import board.model.BoardDao;
 import board.model.BoardResponseDto;
+import utill.IPAdressManager;
 
 public class ReadAllPostAction implements Action {
 
@@ -21,7 +21,7 @@ public class ReadAllPostAction implements Action {
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
 		
-		if (!request.getHeader("Authorization").equals("ADMIN JU7Spt9DHvLaiHcxTD4h")) {
+		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
 			boolean status = false;
 			String message = "Board is blocked.";
 			
