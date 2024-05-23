@@ -1,6 +1,7 @@
 package study.controller;
 
 import study.controller.Action;
+import study.controller.action.studyGroup.FindPopularStudyGroupAction;
 import study.controller.action.studyGroup.FindUserGroupAction;
 
 public class ActionFactory{
@@ -19,6 +20,8 @@ public class ActionFactory{
 		Action action = null;
 		if(command.equals("/myGroup")) {
 			action = new FindUserGroupAction();
+		}else if(command.equals("/popularGroup")){
+			action = new FindPopularStudyGroupAction();
 		}
 		
 		return action;
