@@ -93,7 +93,7 @@ public class UserDao {
 				boolean admin = rs.getBoolean(6);
 				String email = rs.getString(7);
 				String encyptedPassword = rs.getString(8);
-
+				
 				if (PasswordCrypto.decrypt(password, encyptedPassword))
 					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
 			}
@@ -391,6 +391,9 @@ public class UserDao {
 			String sql = "SELECT id FROM users WHERE user_code = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, code);
+			
+			rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				userId = rs.getString(1);
 			}

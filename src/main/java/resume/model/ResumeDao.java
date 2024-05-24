@@ -46,7 +46,7 @@ public class ResumeDao {
 			pstmt.setString(5, dto.getAcademicCareer());
 			pstmt.setString(6, dto.getCareer());
 			pstmt.setString(7, dto.getSkill());
-			pstmt.setString(8, dto.getCetificate());
+			pstmt.setString(8, dto.getCertificate());
 			pstmt.setString(9, dto.getLanguage());
 			pstmt.setString(10, dto.getAward());
 
@@ -81,7 +81,7 @@ public class ResumeDao {
 			pstmt.setString(2, dto.getAcademicCareer());
 			pstmt.setString(3, dto.getCareer());
 			pstmt.setString(4, dto.getSkill());
-			pstmt.setString(5, dto.getCetificate());
+			pstmt.setString(5, dto.getCertificate());
 			pstmt.setString(6, dto.getLanguage());
 			pstmt.setString(7, dto.getAward());
 			pstmt.setInt(8, dto.getResumeCode());
@@ -97,10 +97,50 @@ public class ResumeDao {
 
 		return response;
 	}
-
+	
+	public ResumeResponseDto getResume(ResumeRequestDto dto) {
+		ResumeResponseDto response = null;
+		System.out.println(dto.getResumeCode());
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "SELECT * FROM resume WHERE resume_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getResumeCode());
+			
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				response = new ResumeResponseDto();
+				response.setResumeCode(rs.getInt(1));
+				response.setUserCode(rs.getInt(2));
+				response.setName(rs.getString(3));
+				response.setTitle(rs.getString(4));
+				response.setUserAge(rs.getInt(5));
+				response.setAcademicCareer(rs.getString(6));
+				response.setCareer(rs.getString(7));
+				response.setSkill(rs.getString(8));
+				response.setCertificate(rs.getString(9));
+				response.setLanguage(rs.getString(10));
+				response.setAward(rs.getString(11));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		
+		if(response.getName()==null) {
+			response=null;
+		}
+		
+		return response;
+	}
+	
 	private int lastResumeCode() {
 		int lastResumeCode = -1;
 		try {
+			conn = DBManager.getConnection();
 			String sql = "SELECT MAX(resume_code) FROM resume";
 			pstmt = conn.prepareStatement(sql);
 
@@ -111,6 +151,8 @@ public class ResumeDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
 		}
 		return lastResumeCode;
 	}
