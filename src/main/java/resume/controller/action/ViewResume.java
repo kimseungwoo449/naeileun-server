@@ -26,26 +26,17 @@ public class ViewResume implements Action {
 		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
 			resObj = null;
 		} else {
-
-			InputStream in = request.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-			String data = "";
-
-			while (br.ready()) {
-				data += br.readLine() + "\n";
-			}
-
-			JSONObject reqObj = new JSONObject(data);
+			String strResumeCode = request.getPathInfo();
+			int resumeCode = Integer.parseInt(strResumeCode.substring(1,strResumeCode.length()));
+			
 			ResumeRequestDto dto = new ResumeRequestDto();
-
-			dto.setResumeCode(reqObj.getInt("resume_code"));
+			
+			dto.setResumeCode(resumeCode);
 			ResumeDao resumeDao = ResumeDao.getInstance();
 			ResumeResponseDto result = resumeDao.getResume(dto);
 
 			UserDao userDao = UserDao.getInstance();
 			resObj.put("user_id", userDao.findUserIdByCode("" + result.getUserCode()));
-			System.out.println(resObj.get("user_id"));
 			resObj.put("name", result.getName());
 			resObj.put("title", result.getTitle());
 			resObj.put("user_age", result.getUserAge());
