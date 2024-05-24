@@ -43,8 +43,11 @@ public class ResumeRequestDto {
 		
 	}
 	
-	public ResumeRequestDto(JSONObject obj) {
+	public ResumeRequestDto(JSONObject obj,String state) {
 		UserDao userDao = UserDao.getInstance();
+		if(state.equals("update")) {
+			this.resumeCode = obj.getInt("resume_code");			
+		}
 		this.userCode = userDao.findUserCodeById(obj.getString("user_id"));
 		this.name = obj.getString("name");
 		this.title = obj.getString("title");

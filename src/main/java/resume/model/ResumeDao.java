@@ -61,6 +61,42 @@ public class ResumeDao {
 
 		return response;
 	}
+	
+	public ResumeResponseDto updateResume(ResumeRequestDto dto) {
+		ResumeResponseDto response = null;
+		
+		if(dto.getResumeCode()==0||dto.getUserCode()==0||dto.getName()==null||dto.getTitle()==null||dto.getUserAge()==0||dto.getAcademicCareer()==null) {
+			return response;
+		}
+		
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE resume SET title=?, academic_career=?, career=?, skill=?, certificate=?, language=?, award=?, update_date=NOW() WHERE resume_code = ?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			// sql 구문에 맵핑할 값 설정
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getAcademicCareer());
+			pstmt.setString(3, dto.getCareer());
+			pstmt.setString(4, dto.getSkill());
+			pstmt.setString(5, dto.getCetificate());
+			pstmt.setString(6, dto.getLanguage());
+			pstmt.setString(7, dto.getAward());
+			pstmt.setInt(8, dto.getResumeCode());
+		
+			pstmt.execute();
+
+			response = findResumeByResumeCode(dto.getResumeCode());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return response;
+	}
 
 	private int lastResumeCode() {
 		int lastResumeCode = -1;

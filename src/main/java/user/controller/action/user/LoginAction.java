@@ -64,7 +64,6 @@ public class LoginAction implements Action{
 		response.setContentType("application/json;charset=UTF-8");
 		
 		response.getWriter().append(resObj.toString());
-	
 		
 	}
 
