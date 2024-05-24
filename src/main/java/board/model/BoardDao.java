@@ -26,6 +26,72 @@ public class BoardDao {
 		return instance;
 	}
 	
+	public BoardResponseDto createBoard(BoardRequestDto boardDto) {
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "";
+			
+			if(boardDto.getDescription() != null) {
+				sql = "INSERT INTO board_category(board_name, description) VALUES(?, ?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, boardDto.getBoardName());
+				pstmt.setString(2, boardDto.getDescription());
+			} else {
+				sql = "INSERT INTO board_category(board_name) VALUES(?)";
+
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, boardDto.getBoardName());
+			}
+			pstmt.execute();
+			
+			return findBoardByName(boardDto.getBoardName());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		return null;
+	}
+	
+	public BoardResponseDto findBoardByName(String name) {
+		BoardResponseDto board = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "SELECT board_code, board_name, description, created_date FROM board_category WHERE board_name=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int boardCode = rs.getInt(1);
+				String boardName = rs.getString(2);
+				String description = rs.getString(3) == null ? "" : rs.getString(3);
+				Timestamp createdDate = rs.getTimestamp(4);
+				
+				if(name.equals(boardName)) {
+					board = new BoardResponseDto(boardCode, boardName, description, createdDate);
+					return board;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return null;
+	}
+	
 	public List<BoardResponseDto> readBestPost(){
 		List<BoardResponseDto> postList = new ArrayList<BoardResponseDto>();
 		
