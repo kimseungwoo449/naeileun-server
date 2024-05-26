@@ -14,8 +14,22 @@ public class BoardRequestDto {
 	public BoardRequestDto() {
 		super();
 	}
+	
+	// 게시판 카테고리 생성 생성자
+	public BoardRequestDto(String boardName, String description) {
+		super();
+		this.boardName = boardName;
+		this.description = description;
+	}
+	
+	// 게시판 카테고리 게시판 설명 제외 생성자
+	public BoardRequestDto(String boardName) {
+		super();
+		this.boardName = boardName;
+	}
+	
 
-	// 게시판 설명 제되 생성자
+	// 게시판 설명 제외 생성자
 	public BoardRequestDto(int boardCode, String boardName, String title, String content, int userCode,
 			int recommandation, int postCode) {
 		super();
