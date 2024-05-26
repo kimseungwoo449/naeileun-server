@@ -16,37 +16,35 @@ import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
 import utill.IPAdressManager;
 
-public class WriteAction implements Action {
+public class UpdateAction implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
 
 		boolean status = true;
-		String message = "Resume is created..";
+		String message = "Resume is updated..";
 		
 		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
 			status = false;
-			message = "Resume is blocked.";
+			message = "Resume is not updated.";
 		} else {
 			
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 			String data = "";
-			int count = 0;
 			
 			while (br.ready()) {
 				data += br.readLine() + "\n";
-				count++;
 			}
 			
 			JSONObject reqObj = new JSONObject(data);
-			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"write");
+			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"update");
 			
 			ResumeDao resumeDao = ResumeDao.getInstance();
-			if(resumeDao.createResume(dto)==null) {
+			if(resumeDao.updateResume(dto)==null) {
 				status = false;
-				message = "Resume is blocked.";
+				message = "Resume is not updated.";
 			}
 		}
 

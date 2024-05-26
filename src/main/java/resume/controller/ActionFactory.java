@@ -1,5 +1,7 @@
 package resume.controller;
 
+import resume.controller.action.UpdateAction;
+import resume.controller.action.ViewResume;
 import resume.controller.action.WriteAction;
 
 public class ActionFactory {
@@ -20,13 +22,13 @@ private ActionFactory() {
 			}else if(method.equals("GET")) {
 				
 			}else if(method.equals("PUT")) {
-				
+				action = new UpdateAction();
 			}else if(method.equals("DELETE")) {
 				
 			}
 		}else {
 			if(method.equals("GET")) {
-				
+				action = new ViewResume();
 			}else if(method.equals("DELETE")) {
 				
 			}
