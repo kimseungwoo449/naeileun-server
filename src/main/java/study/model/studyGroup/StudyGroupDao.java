@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import study.model.groupMember.GroupMemberDao;
 import utill.DBManager;
 
 public class StudyGroupDao {
@@ -21,7 +23,18 @@ public class StudyGroupDao {
 	public static StudyGroupDao getInstance() {
 		return instance;
 	}
-	
+	public List<StudyGroupResponseDto> findMyStudyAllByUserCode(String userCode){
+
+		List<StudyGroupResponseDto> list = new ArrayList<>();
+		GroupMemberDao gmDao = GroupMemberDao.getInstance();
+		List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
+			
+		for(String code : groupCodes) {
+			StudyGroupResponseDto study = getStudyListByGroupCodeList(code);
+			list.add(study);
+		}
+		return list;
+	}
 	public StudyGroupResponseDto getStudyListByGroupCodeList(String groupCode){
 		StudyGroupResponseDto study = null;
 		

@@ -23,22 +23,22 @@ public class UpdateAction implements Action {
         InputStream in = request.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-        StringBuilder data = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            data.append(line).append("\n");
-        }
+        String data = "";
+		while (br.ready()) {
+			data += br.readLine() + "\n";
+		}	
 
         System.out.println("data : " + data.toString());
         JSONObject object = new JSONObject(data.toString());
 
         String field = object.getString("field");
         String value = object.getString("value");
-
+        System.out.println(field);
+        System.out.println(value);
         UserDao userDao = UserDao.getInstance();
         UserResponseDto userDto = null;
 
-        String userId = object.getString("userId");
+        String userId = object.getString("id");
         System.out.println(userId);
        
 
@@ -55,7 +55,7 @@ public class UpdateAction implements Action {
                 response.getWriter().write("{\"message\": \"현재 비밀번호가 일치하지 않습니다.\"}");
                 return;
             }
-        } else if("email".equals(field)){
+        } else {
             userDto = userDao.updateUserField(userId, field, value);
         }
 
@@ -65,7 +65,7 @@ public class UpdateAction implements Action {
 
         resObj.put("status", status);
         resObj.put("message", message);
-
+        
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().append(resObj.toString());

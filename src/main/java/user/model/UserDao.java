@@ -94,8 +94,9 @@ public class UserDao {
 				String email = rs.getString(7);
 				String encyptedPassword = rs.getString(8);
 
-				if (PasswordCrypto.decrypt(password, encyptedPassword))
-					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
+				if (PasswordCrypto.decrypt(password, encyptedPassword)) {
+					user = new UserResponseDto(userCode, id, password ,name, resident_number, phone, admin, email);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -209,11 +210,13 @@ public class UserDao {
 			sql = "UPDATE users SET phone=? WHERE id=?";
 		}
 		try {
+			System.out.println(sql);
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, field);
 			pstmt.setString(2, value);
 			pstmt.execute();
+			System.out.println("업데이트 성공");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -274,9 +277,7 @@ public class UserDao {
 	}
 
 	public boolean deleteUser(UserRequestDto userDto) {
-		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
-			return false;
-
+	
 		try {
 			conn = DBManager.getConnection();
 			String sql = "DELETE FROM users WHERE id=?";
