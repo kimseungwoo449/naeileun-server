@@ -1,5 +1,6 @@
 package resume.controller;
 
+import resume.controller.action.DeleteAllResume;
 import resume.controller.action.DeleteSelectedResume;
 import resume.controller.action.UpdateAction;
 import resume.controller.action.ViewAllResume;
@@ -26,7 +27,7 @@ private ActionFactory() {
 			}else if(method.equals("PUT")) {
 				action = new UpdateAction();
 			}else if(method.equals("DELETE")) {
-				
+				action = new DeleteAllResume();
 			}
 		}else {
 			if(method.equals("GET")) {

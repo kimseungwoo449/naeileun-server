@@ -159,7 +159,32 @@ public class ResumeDao {
 		
 		return false;
 	}
+	
+	public boolean deleteAllResume(ResumeRequestDto dto) {
+		try {
+			conn = DBManager.getConnection();
 
+			String sql = "DELETE FROM resume WHERE user_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getUserCode());
+
+			pstmt.execute();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		if(getAllResume(dto)==null) {
+			System.out.println(getAllResume(dto));
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	private int lastResumeCode() {
 		int lastResumeCode = -1;
 		try {
