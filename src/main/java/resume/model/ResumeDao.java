@@ -61,14 +61,14 @@ public class ResumeDao {
 
 		return response;
 	}
-	
+
 	public ResumeResponseDto updateResume(ResumeRequestDto dto) {
 		ResumeResponseDto response = null;
-		
-		if(dto.getResumeCode()==0||dto.getUserCode()==0||dto.getName()==null||dto.getTitle()==null||dto.getUserAge()==0||dto.getAcademicCareer()==null) {
+
+		if (dto.getResumeCode() == 0 || dto.getUserCode() == 0 || dto.getName() == null || dto.getTitle() == null || dto.getUserAge() == 0 || dto.getAcademicCareer() == null) {
 			return response;
 		}
-		
+
 		try {
 			conn = DBManager.getConnection();
 
@@ -85,7 +85,7 @@ public class ResumeDao {
 			pstmt.setString(6, dto.getLanguage());
 			pstmt.setString(7, dto.getAward());
 			pstmt.setInt(8, dto.getResumeCode());
-		
+
 			pstmt.execute();
 
 			response = findResumeByResumeCode(dto.getResumeCode());
@@ -97,17 +97,16 @@ public class ResumeDao {
 
 		return response;
 	}
-	
+
 	public ResumeResponseDto getResume(ResumeRequestDto dto) {
 		ResumeResponseDto response = null;
-		System.out.println(dto.getResumeCode());
 		try {
 			conn = DBManager.getConnection();
-			
+
 			String sql = "SELECT * FROM resume WHERE resume_code=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getResumeCode());
-			
+
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				response = new ResumeResponseDto();
@@ -125,18 +124,40 @@ public class ResumeDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
-		
-		
-		if(response.getName()==null) {
-			response=null;
+
+		if (response.getName() == null) {
+			response = null;
 		}
-		
+
 		return response;
 	}
-	
+
+	public boolean deleteResume(ResumeRequestDto dto) {
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM resume WHERE resume_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getResumeCode());
+
+			pstmt.execute();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		if(findResumeByResumeCode(dto.getResumeCode())==null) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	private int lastResumeCode() {
 		int lastResumeCode = -1;
 		try {
@@ -151,7 +172,7 @@ public class ResumeDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
 		return lastResumeCode;
@@ -167,8 +188,8 @@ public class ResumeDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, resumeCode);
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				int userCode = rs.getInt(2);
 				String userName = rs.getString(3);
 				String title = rs.getString(4);
@@ -181,10 +202,10 @@ public class ResumeDao {
 				String award = rs.getString(11);
 				Timestamp writeDate = rs.getTimestamp(12);
 				Timestamp updateDate = rs.getTimestamp(13);
-				
+
 				resume = new ResumeResponseDto(resumeCode, userCode, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
