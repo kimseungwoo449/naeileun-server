@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import utill.DBManager;
 
@@ -177,7 +179,48 @@ public class ResumeDao {
 		}
 		return lastResumeCode;
 	}
+	
+	public List<ResumeResponseDto> getAllResume(ResumeRequestDto dto){
+		List<ResumeResponseDto> response = null;
+		
+		try {
+			conn = DBManager.getConnection();
 
+			String sql = "SELECT * FROM resume WHERE `user_code` =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getUserCode());
+			rs = pstmt.executeQuery();
+			
+			response = new ArrayList<ResumeResponseDto>();
+			
+			while (rs.next()) {
+				int resumeCode = rs.getInt(1);
+				String userName = rs.getString(3);
+				String title = rs.getString(4);
+				int userAge = rs.getInt(5);
+				String academicCareer = rs.getString(6);
+				String career = rs.getString(7);
+				String skill = rs.getString(8);
+				String certificate = rs.getString(9);
+				String language = rs.getString(10);
+				String award = rs.getString(11);
+				Timestamp writeDate = rs.getTimestamp(12);
+				Timestamp updateDate = rs.getTimestamp(13);
+
+				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, dto.getUserCode(), userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
+				response.add(resume);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(response.size() == 0) {
+			response = null;
+		}
+		
+		return response;
+	}
+	
 	public ResumeResponseDto findResumeByResumeCode(int resumeCode) {
 		ResumeResponseDto resume = null;
 

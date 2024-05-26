@@ -2,6 +2,7 @@ package resume.controller;
 
 import resume.controller.action.DeleteSelectedResume;
 import resume.controller.action.UpdateAction;
+import resume.controller.action.ViewAllResume;
 import resume.controller.action.ViewResume;
 import resume.controller.action.WriteAction;
 
@@ -21,7 +22,7 @@ private ActionFactory() {
 			if(method.equals("POST")) {
 				action = new WriteAction();
 			}else if(method.equals("GET")) {
-				
+				action = new ViewAllResume();
 			}else if(method.equals("PUT")) {
 				action = new UpdateAction();
 			}else if(method.equals("DELETE")) {
