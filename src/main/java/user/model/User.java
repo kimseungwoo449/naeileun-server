@@ -130,7 +130,7 @@ public class User {
 	        int birthYear = Integer.parseInt(residentNumber.substring(0, 2));
 
 	        // 주민등록번호 7번째 자리를 확인하여 2000년 이전과 이후 출생자를 구분
-	        if (residentNumber.charAt(7) == '1' || residentNumber.charAt(7) == '2') {
+	        if (residentNumber.charAt(8) == '1' || residentNumber.charAt(8) == '2') {
 	            birthYear += 1900;
 	        } else {
 	            birthYear += 2000;

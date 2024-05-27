@@ -17,7 +17,7 @@ public class DeleteSelectedResume implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
-		
+		System.out.println("selectDelete");
 		boolean status = true;
 		String message = "Resume is deleted.";
 		
@@ -27,7 +27,7 @@ public class DeleteSelectedResume implements Action {
 		} else {
 			String strResumeCode = request.getPathInfo();
 			int resumeCode = Integer.parseInt(strResumeCode.substring(1,strResumeCode.length()));
-			
+
 			ResumeRequestDto dto = new ResumeRequestDto();
 			
 			dto.setResumeCode(resumeCode);

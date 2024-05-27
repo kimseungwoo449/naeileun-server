@@ -28,17 +28,15 @@ public class WriteAction implements Action {
 			status = false;
 			message = "Resume is blocked.";
 		} else {
-			
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 			String data = "";
-			int count = 0;
 			
 			while (br.ready()) {
 				data += br.readLine() + "\n";
-				count++;
 			}
+			System.out.println("resumeData : "+data);
 			
 			JSONObject reqObj = new JSONObject(data);
 			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"write");

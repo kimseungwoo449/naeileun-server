@@ -32,6 +32,7 @@ public class UserResponseDto {
 		this.phone = phone;
 		this.admin = admin;
 		this.email = email;
+		this.age = User.caculateAge(resident_number);
 	}
 
 	public UserResponseDto(User user) {
