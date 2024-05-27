@@ -1,6 +1,8 @@
 package user.controller;
 
 import user.controller.action.user.DeleteAction;
+import user.controller.action.user.ImportMyStudyAction;
+import user.controller.action.user.ImportResumeDataAction;
 import user.controller.action.user.JoinAction;
 import user.controller.action.user.LoginAction;
 import user.controller.action.user.UpdateAction;
@@ -24,7 +26,9 @@ public class ActionFactory {
 		}else if(command.equals("/update")) {
 			action = new UpdateAction();
 		}else if(command.equals("/resume")) {
-			action = new UpdateAction();
+			action = new ImportResumeDataAction();
+		}else if(command.equals("/study")) {
+			action = new ImportMyStudyAction();
 		}
 		
 		return action;
