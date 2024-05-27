@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import study.controller.Action;
 import study.model.groupMember.GroupMemberDao;
+import study.model.groupPost.GroupPostDao;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
 import utill.IPAdressManager;
@@ -46,13 +47,17 @@ public class FindStudyBoardAction implements Action{
 			
 			String studyCode = new JSONObject(data).getString("group_code");
 			System.out.println(studyCode);
-			
+
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
 			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(studyCode);
+
+
 			JSONObject s = new JSONObject(study);
-			
+			System.out.println("study"+ s);
 			//groupPost 객체 만들기
-			JSONObject p = new JSONObject("post", "post");
+
+			GroupPostDao gpDao = GroupPostDao.getInstance();
+			JSONObject p = new JSONObject("post","post");
 			
 			JSONObject object = new JSONObject();
 			object.put("study", s);
