@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class UserResponseDto {
 	private String userCode;
 	private String id;
+	private String password;
 	private String name;
 	private String resident_number;
 	private String age;
@@ -20,6 +21,19 @@ public class UserResponseDto {
 		
 	}
 	
+	public UserResponseDto(String userCode, String id, String passWord, String name, String resident_number,
+			String phone, boolean admin, String email) {
+		super();
+		this.userCode = userCode;
+		this.id = id;
+		this.password = passWord;
+		this.name = name;
+		this.resident_number = resident_number;
+		this.phone = phone;
+		this.admin = admin;
+		this.email = email;
+	}
+
 	public UserResponseDto(User user) {
 		this.id = user.getId();
 		this.email = user.getEmail();
@@ -79,6 +93,16 @@ public class UserResponseDto {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getName() {
 		return name;
 	}

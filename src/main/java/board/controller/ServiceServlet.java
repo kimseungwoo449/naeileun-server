@@ -14,17 +14,17 @@ public class ServiceServlet extends HttpServlet {
 		String command = request.getPathInfo();
 		System.out.println("command : " + command);
 		
-		if(command != null) {
-			ActionFactory af = ActionFactory.getInstance();
-			Action action = af.getAction(command);
-			if(action != null) {
-				action.excute(request, response);
-			}else {
-				response.sendError(404);			
-			}
+		ActionFactory af = ActionFactory.getInstance();
+		Action action = af.getAction(command);
+		if(action != null) {
+			action.excute(request, response);
 		}else {
 			response.sendError(404);			
 		}
+//		if(command != null) {
+//		}else {
+//			response.sendError(404);			
+//		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

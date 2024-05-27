@@ -1,64 +1,73 @@
 package user.controller.action.user;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
+
 import user.controller.Action;
 import user.model.UserDao;
-import user.model.UserRequestDto;
 import user.model.UserResponseDto;
 
-public class UpdateAction implements Action{
+public class UpdateAction implements Action {
 
-	@Override
-	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
+    @Override
+    public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        InputStream in = request.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-	      UserDao userDao = UserDao.getInstance();
+        String data = "";
+		while (br.ready()) {
+			data += br.readLine() + "\n";
+		}	
 
-	      HttpSession session = request.getSession();
+        System.out.println("data : " + data.toString());
+        JSONObject object = new JSONObject(data.toString());
 
-	      UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        String field = object.getString("field");
+        String value = object.getString("value");
+        System.out.println(field);
+        System.out.println(value);
+        UserDao userDao = UserDao.getInstance();
+        UserResponseDto userDto = null;
 
-	      String password = request.getParameter("password");
+        String userId = object.getString("id");
+        System.out.println(userId);
+       
 
-	      // 입력된 패스워드 검증 후,
-	      if (userDao.findUserByIdAndPassword(user.getId(), password) != null) {
-	         UserRequestDto userDto = new UserRequestDto();
+        if ("password".equals(field)) {
+            String currentPassword = object.getString("currentPassword");
+            String newPassword = object.getString("newPassword");
 
-	         userDto.setId(user.getId());
-	         userDto.setPassword(password);
+            userDto = userDao.findUserByIdAndPassword(userId,currentPassword);
 
-	         String newPassword = request.getParameter("password-new");
-	         String email = request.getParameter("email");
-	         String phone = request.getParameter("phone");
+            if (userDto != null && userDto.getPassword().equals(currentPassword)) {
+                userDto = userDao.updateUserPassword(userId, newPassword);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"message\": \"현재 비밀번호가 일치하지 않습니다.\"}");
+                return;
+            }
+        } else {
+            userDto = userDao.updateUserField(userId, field, value);
+        }
 
-	         if (user.getEmail() != null && !user.getEmail().equals(email)) {
-	            userDto.setEmail(email);
-	            user = userDao.updateUserEmail(userDto);
-	         }
+        JSONObject resObj = new JSONObject();
+        int status = userDto != null ? 200 : 400;
+        String message = userDto != null ? "User update is success." : "User update is failed.";
 
-	         if( !user.getPhone().equals(phone)) {
-	             
-	             userDto.setPhone(phone);
-	             user = userDao.updateUserPhone(userDto);
-	          }
-	         
-	         if (!newPassword.equals("") && !newPassword.equals(password)) {
-	             user = userDao.updateUserPassword(userDto, newPassword);
-	          } else {
-	             System.err.println("새 비밀번호 오류");
-	             String.format("%s", newPassword);
-	          }
-
-	      }
-	      session.setAttribute("user", user);
-	      response.sendRedirect("");
-	}
-
+        resObj.put("status", status);
+        resObj.put("message", message);
+        
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().append(resObj.toString());
+    }
 }

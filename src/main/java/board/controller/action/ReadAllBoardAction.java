@@ -15,13 +15,7 @@ import board.model.BoardDao;
 import board.model.BoardResponseDto;
 import utill.IPAdressManager;
 
-public class ReadAllPostAction implements Action {
-	
-	private int code;
-	
-	public ReadAllPostAction(int code) {
-		this.code = code;
-	}
+public class ReadAllBoardAction implements Action {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,27 +28,28 @@ public class ReadAllPostAction implements Action {
 			resObj.put("status", status);
 			resObj.put("message", message);
 		} else {
-			System.out.println("전체 게시글 가져오기");
+			System.out.println("게시판 전체 가져오기");
 			
 			BoardDao boardDao = BoardDao.getInstance();
-			
-			List<BoardResponseDto> postList = boardDao.readAllPostByBoardCode(code);
+			List<BoardResponseDto> boardList = boardDao.readAllBoard();
+			List<BoardResponseDto> bestPostList = boardDao.readBestPost();
 			
 			JSONObject meta = new JSONObject();
-			meta.put("total_count", postList.size());
-			meta.put("pageable_count", 10);
+			meta.put("total_count", boardList.size());
+			meta.put("pageable_count", 8);
 			
-			JSONArray result = new JSONArray(postList);
+			JSONArray result = new JSONArray();
+			result.put(boardList);
+			result.put(bestPostList);
+			System.out.println(result);
 			
 			resObj.put("meta", meta);
 			resObj.put("result", result);
 			System.out.println(resObj);
-			
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().append(resObj.toString());
-		
 	}
 
 }

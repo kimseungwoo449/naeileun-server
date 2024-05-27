@@ -71,6 +71,14 @@ public class UserRequestDto {
 		this.reg_Date = reg_Date;
 		this.update_Date = update_Date;
 	}
+	
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
 
 	public String getId() {
 		return id;

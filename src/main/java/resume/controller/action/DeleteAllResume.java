@@ -16,43 +16,44 @@ import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
 import utill.IPAdressManager;
 
-public class WriteAction implements Action {
+public class DeleteAllResume implements Action{
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		JSONObject resObj = new JSONObject();
-
+JSONObject resObj = new JSONObject();
+		
 		boolean status = true;
-		String message = "Resume is created..";
+		String message = "User's resumes is all deleted.";
 		
 		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
 			status = false;
-			message = "Resume is blocked.";
+			message = "User's resumes is not deleted.";
 		} else {
-			
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 			String data = "";
-			int count = 0;
 			
 			while (br.ready()) {
 				data += br.readLine() + "\n";
-				count++;
 			}
 			
 			JSONObject reqObj = new JSONObject(data);
-			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"write");
+			ResumeRequestDto dto = new ResumeRequestDto();
+			
+			String userId = reqObj.getString("user_id");
+			dto.setUserCode(userId);
 			
 			ResumeDao resumeDao = ResumeDao.getInstance();
-			if(resumeDao.createResume(dto)==null) {
+			
+			if(!resumeDao.deleteAllResume(dto)) {
 				status = false;
-				message = "Resume is blocked.";
+				message = "User's resumes is not deleted.";
 			}
 		}
-
+		
 		resObj.put("status", status);
 		resObj.put("message", message);
-
+		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 
