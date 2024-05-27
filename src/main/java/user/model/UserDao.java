@@ -78,7 +78,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT user_code, id , name, resident_number, phone, admin , email, password FROM users WHERE id=?";
+			String sql = "SELECT user_code, id , name, resident_number ,phone, admin , email, password FROM users WHERE id=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
