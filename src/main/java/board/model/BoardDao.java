@@ -112,8 +112,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-//				String userId = userDao(rs.getInt(7));
-				String userId = "1234";
+				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
@@ -182,8 +181,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-//				String userId = userDao(rs.getInt(7));
-				String userId = "1234";
+				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
