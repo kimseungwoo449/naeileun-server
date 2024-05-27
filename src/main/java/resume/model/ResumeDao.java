@@ -40,7 +40,7 @@ public class ResumeDao {
 			// 쿼리할 준비
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT title FROM resume WHERE user_code";
+			String sql = "SELECT * FROM resume WHERE user_code";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();

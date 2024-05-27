@@ -28,8 +28,8 @@ public class ImportResumeDataAction implements Action {
 		System.out.println("123");
 		InputStream in = request.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
 		String data = "";
+		System.out.println(data);
 		while (br.ready()) {
 			data += br.readLine() + "\n";
 		}
