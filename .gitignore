@@ -6,5 +6,12 @@
 
 /build
 /bin
+
+
 context.xml
+
+
 /docs
+.idea
+*.iml
+/out
