@@ -2,8 +2,15 @@
 .project
 .settings
 .DS_Store
+.metadata
 
 /build
 /bin
+
 context.xml
+
+
 /docs
+.idea
+*.iml
+/out
