@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 import resume.model.ResumeDao;
+import resume.model.ResumeRequestDto;
 import resume.model.ResumeResponseDto;
 import user.controller.Action;
 import user.model.UserResponseDto;
@@ -35,8 +36,10 @@ public class ImportResumeDataAction implements Action {
 		}
 		JSONObject object = new JSONObject(data);
 
-		String userCode = object.getString("userCode");
-		List<ResumeResponseDto> resumeList = ResumeDao.getInstance().findMyResumeAllByUserCode(userCode);
+		String userId = object.getString("id");
+		ResumeRequestDto dto = new ResumeRequestDto();
+		dto.setUserCode(userId);
+		List<ResumeResponseDto> resumeList = ResumeDao.getInstance().getAllResume(dto);
 
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(resumeList);

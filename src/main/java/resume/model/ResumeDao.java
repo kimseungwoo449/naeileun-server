@@ -30,44 +30,8 @@ public class ResumeDao {
 	public static ResumeDao getInstance() {
 		return instance;
 	}
-	public List<ResumeResponseDto> findMyResumeAllByUserCode(String userCode) {
-
-		List<ResumeResponseDto> list = new ArrayList<ResumeResponseDto>();
-
-		try {
-			conn = DBManager.getConnection();
-
-			// 쿼리할 준비
-			conn = DBManager.getConnection();
-
-			String sql = "SELECT title FROM resume WHERE user_code";
-			pstmt = conn.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				int resumeCode = rs.getInt(1);
-				int code = Integer.parseInt(userCode);
-				String userName = rs.getString(3);
-				String title = rs.getString(4);
-				int userAge = rs.getInt(5);
-				String academicCareer = rs.getString(6);
-				String career = rs.getString(7);
-				String skill = rs.getString(8);
-				String certificate = rs.getString(9);
-				String language = rs.getString(10);
-				String award = rs.getString(11);
-				Timestamp writeDate = rs.getTimestamp(12);
-				Timestamp updateDate = rs.getTimestamp(13);
-				
-				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, code, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
-				list.add(resume);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+	
+	
 	public ResumeResponseDto createResume(ResumeRequestDto dto) {
 		ResumeResponseDto response = null;
 
@@ -249,7 +213,7 @@ public class ResumeDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT * FROM resume WHERE `user_code` =?";
+			String sql = "SELECT * FROM resume WHERE `user_code` = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getUserCode());
 			rs = pstmt.executeQuery();
