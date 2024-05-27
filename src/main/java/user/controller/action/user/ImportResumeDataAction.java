@@ -29,10 +29,10 @@ public class ImportResumeDataAction implements Action {
 		InputStream in = request.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String data = "";
-		System.out.println(data);
 		while (br.ready()) {
 			data += br.readLine() + "\n";
 		}
+		System.out.println(data);
 		JSONObject object = new JSONObject(data);
 
 		String userCode = object.getString("userCode");
