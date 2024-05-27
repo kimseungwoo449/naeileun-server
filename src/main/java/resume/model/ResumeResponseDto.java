@@ -11,13 +11,13 @@ public class ResumeResponseDto {
 	private String academicCareer;
 	private String career;
 	private String skill;
-	private String cetificate;
+	private String certificate;
 	private String language;
 	private String award;
 	private Timestamp writeDate;
 	private Timestamp updateDate;
 	
-	public ResumeResponseDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String cetificate, String language, String award,
+	public ResumeResponseDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String certificate, String language, String award,
 			Timestamp writeDate, Timestamp updateDate) {
 		super();
 		this.resumeCode = resumeCode;
@@ -28,7 +28,7 @@ public class ResumeResponseDto {
 		this.academicCareer = academicCareer;
 		this.career = career;
 		this.skill = skill;
-		this.cetificate = cetificate;
+		this.certificate = certificate;
 		this.language = language;
 		this.award = award;
 		this.writeDate = writeDate;
@@ -103,12 +103,12 @@ public class ResumeResponseDto {
 		this.skill = skill;
 	}
 
-	public String getCetificate() {
-		return cetificate;
+	public String getCertificate() {
+		return certificate;
 	}
 
-	public void setCetificate(String cetificate) {
-		this.cetificate = cetificate;
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
 	}
 
 	public String getLanguage() {

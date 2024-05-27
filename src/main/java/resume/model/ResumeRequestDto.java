@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import user.model.UserDao;
 
 public class ResumeRequestDto {
+	UserDao userDao = UserDao.getInstance();
 	private int resumeCode;
 	private int userCode;
 	private String name;
@@ -15,13 +16,13 @@ public class ResumeRequestDto {
 	private String academicCareer;
 	private String career;
 	private String skill;
-	private String cetificate;
+	private String certificate;
 	private String language;
 	private String award;
 	private Timestamp writeDate;
 	private Timestamp updateDate;
 	
-	public ResumeRequestDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String cetificate, String language, String award,
+	public ResumeRequestDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String certificate, String language, String award,
 			Timestamp writeDate, Timestamp updateDate) {
 		super();
 		this.resumeCode = resumeCode;
@@ -32,7 +33,7 @@ public class ResumeRequestDto {
 		this.academicCareer = academicCareer;
 		this.career = career;
 		this.skill = skill;
-		this.cetificate = cetificate;
+		this.certificate = certificate;
 		this.language = language;
 		this.award = award;
 		this.writeDate = writeDate;
@@ -43,8 +44,10 @@ public class ResumeRequestDto {
 		
 	}
 	
-	public ResumeRequestDto(JSONObject obj) {
-		UserDao userDao = UserDao.getInstance();
+	public ResumeRequestDto(JSONObject obj,String state) {
+		if(state.equals("update")) {
+			this.resumeCode = obj.getInt("resume_code");			
+		}
 		this.userCode = userDao.findUserCodeById(obj.getString("user_id"));
 		this.name = obj.getString("name");
 		this.title = obj.getString("title");
@@ -52,7 +55,7 @@ public class ResumeRequestDto {
 		this.academicCareer = obj.getString("academic_career");
 		this.career = obj.getString("career");
 		this.skill = obj.getString("skill");
-		this.cetificate = obj.getString("certificate");
+		this.certificate = obj.getString("certificate");
 		this.language = obj.getString("language");
 		this.award = obj.getString("award");
 	}
@@ -69,8 +72,8 @@ public class ResumeRequestDto {
 		return userCode;
 	}
 
-	public void setUserCode(int userCode) {
-		this.userCode = userCode;
+	public void setUserCode(String userId) {
+		this.userCode = userDao.findUserCodeById(userId);
 	}
 
 	public String getName() {
@@ -121,12 +124,12 @@ public class ResumeRequestDto {
 		this.skill = skill;
 	}
 
-	public String getCetificate() {
-		return cetificate;
+	public String getCertificate() {
+		return certificate;
 	}
 
-	public void setCetificate(String cetificate) {
-		this.cetificate = cetificate;
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
 	}
 
 	public String getLanguage() {

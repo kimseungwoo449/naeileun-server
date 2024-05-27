@@ -48,6 +48,8 @@ public class ServiceServlet extends HttpServlet{
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);
+
+			System.out.println("server command : " + command);
 			System.out.println("here");
 			if(action != null) {
 				action.excute(request, response);
