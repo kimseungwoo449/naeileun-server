@@ -12,147 +12,151 @@ import java.util.List;
 import utill.DBManager;
 
 public class ResumeDao {
-	private Connection conn;
-	private PreparedStatement pstmt;
-	private ResultSet rs;
+    private Connection conn;
+    private PreparedStatement pstmt;
+    private ResultSet rs;
 
-	// UserDao 객체를 단일 인스턴스로 만들기 위해
-	// Singleton Pattern 적용
+    // UserDao 객체를 단일 인스턴스로 만들기 위해
+    // Singleton Pattern 적용
 
-	// 1. 생성자를 private으로
-	private ResumeDao() {
-	}
+    // 1. 생성자를 private으로
+    private ResumeDao() {
+    }
 
-	// 2. 단일 인스턴스를 생성 (클래스 내부에서)
-	private static ResumeDao instance = new ResumeDao();
+    // 2. 단일 인스턴스를 생성 (클래스 내부에서)
+    private static ResumeDao instance = new ResumeDao();
 
-	// 3. 단일 인스턴스에 대한 getter
-	public static ResumeDao getInstance() {
-		return instance;
-	}
-	public List<ResumeResponseDto> findMyResumeAllByUserCode(String userCode) {
+    // 3. 단일 인스턴스에 대한 getter
+    public static ResumeDao getInstance() {
+        return instance;
+    }
 
-		List<ResumeResponseDto> list = new ArrayList<ResumeResponseDto>();
+    public List<ResumeResponseDto> findMyResumeAllByUserCode(String userCode) {
 
-		try {
-			conn = DBManager.getConnection();
+        List<ResumeResponseDto> list = new ArrayList<ResumeResponseDto>();
 
-			// 쿼리할 준비
-			conn = DBManager.getConnection();
+        try {
+            conn = DBManager.getConnection();
 
-			String sql = "SELECT * FROM resume WHERE user_code";
-			pstmt = conn.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				int resumeCode = rs.getInt(1);
-				int code = Integer.parseInt(userCode);
-				String userName = rs.getString(3);
-				String title = rs.getString(4);
-				int userAge = rs.getInt(5);
-				String academicCareer = rs.getString(6);
-				String career = rs.getString(7);
-				String skill = rs.getString(8);
-				String certificate = rs.getString(9);
-				String language = rs.getString(10);
-				String award = rs.getString(11);
-				Timestamp writeDate = rs.getTimestamp(12);
-				Timestamp updateDate = rs.getTimestamp(13);
-				
-				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, code, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
-				list.add(resume);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	public ResumeResponseDto createResume(ResumeRequestDto dto) {
-		ResumeResponseDto response = null;
+            // 쿼리할 준비
+            conn = DBManager.getConnection();
 
-		try {
-			conn = DBManager.getConnection();
+            String sql = "SELECT * FROM resume WHERE user_code = ?";
+            int code = Integer.parseInt(userCode);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, code);
+            rs = pstmt.executeQuery();
 
-			String sql = "INSERT INTO resume(user_code,name,title,user_age,academic_career,career,skill,certificate,language,award) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            while (rs.next()) {
+                int resumeCode = rs.getInt(1);
+                String userName = rs.getString(3);
+                String title = rs.getString(4);
+                int userAge = rs.getInt(5);
+                String academicCareer = rs.getString(6);
+                String career = rs.getString(7);
+                String skill = rs.getString(8);
+                String certificate = rs.getString(9);
+                String language = rs.getString(10);
+                String award = rs.getString(11);
+                Timestamp writeDate = rs.getTimestamp(12);
+                Timestamp updateDate = rs.getTimestamp(13);
 
-			pstmt = conn.prepareStatement(sql);
+                ResumeResponseDto resume = new ResumeResponseDto(resumeCode, code, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
+                list.add(resume);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return list;
+    }
 
-			// sql 구문에 맵핑할 값 설정
-			pstmt.setInt(1, dto.getUserCode());
-			pstmt.setString(2, dto.getName());
-			pstmt.setString(3, dto.getTitle());
-			pstmt.setInt(4, dto.getUserAge());
-			pstmt.setString(5, dto.getAcademicCareer());
-			pstmt.setString(6, dto.getCareer());
-			pstmt.setString(7, dto.getSkill());
-			pstmt.setString(8, dto.getCetificate());
-			pstmt.setString(9, dto.getLanguage());
-			pstmt.setString(10, dto.getAward());
+    public ResumeResponseDto createResume(ResumeRequestDto dto) {
+        ResumeResponseDto response = null;
 
-			pstmt.execute();
+        try {
+            conn = DBManager.getConnection();
 
-			response = findResumeByResumeCode(lastResumeCode());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
+            String sql = "INSERT INTO resume(user_code,name,title,user_age,academic_career,career,skill,certificate,language,award) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
-		return response;
-	}
+            pstmt = conn.prepareStatement(sql);
 
-	private int lastResumeCode() {
-		int lastResumeCode = -1;
-		try {
-			String sql = "SELECT MAX(resume_code) FROM resume";
-			pstmt = conn.prepareStatement(sql);
+            // sql 구문에 맵핑할 값 설정
+            pstmt.setInt(1, dto.getUserCode());
+            pstmt.setString(2, dto.getName());
+            pstmt.setString(3, dto.getTitle());
+            pstmt.setInt(4, dto.getUserAge());
+            pstmt.setString(5, dto.getAcademicCareer());
+            pstmt.setString(6, dto.getCareer());
+            pstmt.setString(7, dto.getSkill());
+            pstmt.setString(8, dto.getCetificate());
+            pstmt.setString(9, dto.getLanguage());
+            pstmt.setString(10, dto.getAward());
 
-			rs = pstmt.executeQuery();
+            pstmt.execute();
 
-			while (rs.next()) {
-				lastResumeCode = rs.getInt(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lastResumeCode;
-	}
+            response = findResumeByResumeCode(lastResumeCode());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
 
-	public ResumeResponseDto findResumeByResumeCode(int resumeCode) {
-		ResumeResponseDto resume = null;
+        return response;
+    }
 
-		try {
-			conn = DBManager.getConnection();
+    private int lastResumeCode() {
+        int lastResumeCode = -1;
+        try {
+            String sql = "SELECT MAX(resume_code) FROM resume";
+            pstmt = conn.prepareStatement(sql);
 
-			String sql = "SELECT * FROM resume WHERE `resume_code` =?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, resumeCode);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				int userCode = rs.getInt(2);
-				String userName = rs.getString(3);
-				String title = rs.getString(4);
-				int userAge = rs.getInt(5);
-				String academicCareer = rs.getString(6);
-				String career = rs.getString(7);
-				String skill = rs.getString(8);
-				String certificate = rs.getString(9);
-				String language = rs.getString(10);
-				String award = rs.getString(11);
-				Timestamp writeDate = rs.getTimestamp(12);
-				Timestamp updateDate = rs.getTimestamp(13);
-				
-				resume = new ResumeResponseDto(resumeCode, userCode, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
+            rs = pstmt.executeQuery();
 
-		return resume;
-	}
+            while (rs.next()) {
+                lastResumeCode = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lastResumeCode;
+    }
+
+    public ResumeResponseDto findResumeByResumeCode(int resumeCode) {
+        ResumeResponseDto resume = null;
+
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT * FROM resume WHERE `resume_code` =?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, resumeCode);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int userCode = rs.getInt(2);
+                String userName = rs.getString(3);
+                String title = rs.getString(4);
+                int userAge = rs.getInt(5);
+                String academicCareer = rs.getString(6);
+                String career = rs.getString(7);
+                String skill = rs.getString(8);
+                String certificate = rs.getString(9);
+                String language = rs.getString(10);
+                String award = rs.getString(11);
+                Timestamp writeDate = rs.getTimestamp(12);
+                Timestamp updateDate = rs.getTimestamp(13);
+
+                resume = new ResumeResponseDto(resumeCode, userCode, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+
+        return resume;
+    }
 }
