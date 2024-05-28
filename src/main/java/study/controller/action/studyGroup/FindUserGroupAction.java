@@ -33,16 +33,17 @@ public class FindUserGroupAction implements Action{
 			obj.put("meta", meta);
 		} else {
 
-			//로그인 백엔드 생성 후 토글 지우기
 			//HttpSession session = request.getSession();
 			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 			
-			//String userId = user.getId();
-			//UserDao userDao = UserDao.getInstance();
-			//String userCode = userDao.findUserCodeById(userId);
-			
-			String userCode = "2"; // 수정 후 삭제
-			
+//			String userId = user.getId();
+//			UserDao userDao = UserDao.getInstance();
+//			String userCode = String.valueOf(userDao.findUserCodeById(userId));
+//			System.out.println("usercode" + userCode);
+//			System.out.println("usercode" + userDao.findUserCodeById(userId));
+
+			String userCode = "2";
+			System.out.println(userCode);
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
 			
