@@ -31,15 +31,16 @@ public class LoginAction implements Action{
 		while (br.ready()) {
 			data += br.readLine() + "\n";
 		}
-		
+
+		UserDao userDao = UserDao.getInstance();
 		JSONObject object = new JSONObject(data);
+
 		String id = object.getString("id");
 		String password = object.getString("password");
-		
+
 
 		request.setCharacterEncoding("UTF-8");
-		
-		UserDao userDao = UserDao.getInstance();
+
 		UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
 		
 		
