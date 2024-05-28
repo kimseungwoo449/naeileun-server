@@ -56,7 +56,7 @@
 			<param-name>cors.exposed.headers</param-name>
 			<param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
 		</init-param>
-		 
+
 		<init-param>
 			<param-name>cors.support.credentials</param-name>
 			<param-value>true</param-value>
@@ -110,5 +110,13 @@
 		<servlet-name>StudyServiceServlet</servlet-name>
 		<url-pattern>/study/*</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>IntroductionServiceServlet</servlet-name>
+		<servlet-class>introduction.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IntroductionServiceServlet</servlet-name>
+		<url-pattern>/self-introduction/*</url-pattern>
+	</servlet-mapping>
 </web-app>
