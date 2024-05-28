@@ -1,5 +1,6 @@
 package introduction.model;
 
+import org.json.JSONObject;
 import user.model.UserDao;
 
 public class IntroductionRequestDto {
@@ -28,6 +29,13 @@ public class IntroductionRequestDto {
         this.body = body;
         this.documentCode = documentCode;
         this.userCode = userDao.findUserCodeById(userId);
+    }
+
+    public IntroductionRequestDto(JSONObject obj){
+        this.head = obj.getString("head");
+        this.title = obj.getString("title");
+        this.body = obj.getString("body");
+        this.userCode = userDao.findUserCodeById(obj.getString("id"));
     }
 
     public IntroductionRequestDto() {
