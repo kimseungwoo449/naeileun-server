@@ -63,16 +63,13 @@ public class FindStudyBoardAction implements Action{
 			boolean isMember = gmDao.getIsMember(groupCode,userCode);
 			JSONObject member = new JSONObject(isMember);
 
-			JSONObject page = new JSONObject(postLists.size());
-
 			JSONObject object = new JSONObject();
 			object.put("study", s);
 			object.put("post", p);
 			object.put("isMember", member);
-			object.put("page", page);
 			
 			meta = new JSONObject();
-			meta.put("total_count", 1);
+			meta.put("total_count", postLists.size());
 			
 			result =  new JSONArray();
 			result.put(object);
