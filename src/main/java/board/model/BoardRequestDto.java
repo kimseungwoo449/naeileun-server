@@ -7,7 +7,7 @@ public class BoardRequestDto {
 	private String title;
 	private String content;
 	private int userCode;
-	private int recommandation;
+	private int recommendation;
 	private int postCode;
 	
 	// 기본 생성자
@@ -31,20 +31,20 @@ public class BoardRequestDto {
 
 	// 게시판 설명 제외 생성자
 	public BoardRequestDto(int boardCode, String boardName, String title, String content, int userCode,
-			int recommandation, int postCode) {
+			int recommendation, int postCode) {
 		super();
 		this.boardCode = boardCode;
 		this.boardName = boardName;
 		this.title = title;
 		this.content = content;
 		this.userCode = userCode;
-		this.recommandation = recommandation;
+		this.recommendation = recommendation;
 		this.postCode = postCode;
 	}
 
 	// 게시판 설명 포함 셍성자
 	public BoardRequestDto(int boardCode, String boardName, String description, String title, String content,
-			int userCode, int recommandation, int postCode) {
+			int userCode, int recommendation, int postCode) {
 		super();
 		this.boardCode = boardCode;
 		this.boardName = boardName;
@@ -52,7 +52,7 @@ public class BoardRequestDto {
 		this.title = title;
 		this.content = content;
 		this.userCode = userCode;
-		this.recommandation = recommandation;
+		this.recommendation = recommendation;
 		this.postCode = postCode;
 	}
 
@@ -104,12 +104,12 @@ public class BoardRequestDto {
 		this.userCode = userCode;
 	}
 
-	public int getRecommandation() {
-		return recommandation;
+	public int getRecommendation() {
+		return recommendation;
 	}
 
-	public void setRecommandation(int recommandation) {
-		this.recommandation = recommandation;
+	public void setRecommendation(int recommendation) {
+		this.recommendation = recommendation;
 	}
 
 	public int getPostCode() {

@@ -12,7 +12,7 @@ public class Board {
 	private int userCode;
 	private Timestamp writeDate;
 	private Timestamp updateDate;
-	private int recommandation;
+	private int recommendation;
 	private int postCode;
 	
 	// 보드 카테고리 생성자
@@ -108,12 +108,12 @@ public class Board {
 		this.updateDate = updateDate;
 	}
 
-	public int getRecommandation() {
-		return recommandation;
+	public int getRecommendation() {
+		return recommendation;
 	}
 
-	public void setRecommandation(int recommandation) {
-		this.recommandation = recommandation;
+	public void setRecommendation(int recommendation) {
+		this.recommendation = recommendation;
 	}
 
 	public int getPostCode() {

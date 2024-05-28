@@ -13,11 +13,11 @@ public class BoardResponseDto {
 	private String userId;
 	private Timestamp writeDate;
 	private Timestamp updateDate;
-	private int recommandation;
+	private int recommendation;
 	private int postCode;
 	
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
-			String content, int userCode, Timestamp writeDate, Timestamp updateDate, int recommandation, int postCode) {
+			String content, int userCode, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode) {
 		super();
 		this.boardCode = boardCode;
 		this.boardName = boardName;
@@ -28,12 +28,12 @@ public class BoardResponseDto {
 		this.userCode = userCode;
 		this.writeDate = writeDate;
 		this.updateDate = updateDate;
-		this.recommandation = recommandation;
+		this.recommendation = recommendation;
 		this.postCode = postCode;
 	}
 
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
-			String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommandation,
+			String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommendation,
 			int postCode) {
 		super();
 		this.boardCode = boardCode;
@@ -45,7 +45,7 @@ public class BoardResponseDto {
 		this.userId = userId;
 		this.writeDate = writeDate;
 		this.updateDate = updateDate;
-		this.recommandation = recommandation;
+		this.recommendation = recommendation;
 		this.postCode = postCode;
 	}
 
@@ -58,14 +58,14 @@ public class BoardResponseDto {
 	}
 
 	public BoardResponseDto(String title, String content, String userId, Timestamp writeDate,
-			Timestamp updateDate, int recommandation, int postCode, int boardCode) {
+			Timestamp updateDate, int recommendation, int postCode, int boardCode) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.userId = userId;
 		this.writeDate = writeDate;
 		this.updateDate = updateDate;
-		this.recommandation = recommandation;
+		this.recommendation = recommendation;
 		this.postCode = postCode;
 		this.boardCode = boardCode;
 	}
@@ -150,12 +150,12 @@ public class BoardResponseDto {
 		this.updateDate = updateDate;
 	}
 
-	public int getRecommandation() {
-		return recommandation;
+	public int getRecommendation() {
+		return recommendation;
 	}
 
-	public void setRecommandation(int recommandation) {
-		this.recommandation = recommandation;
+	public void setRecommendation(int recommendation) {
+		this.recommendation = recommendation;
 	}
 
 	public int getPostCode() {

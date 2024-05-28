@@ -26,29 +26,28 @@ public class BoardDao {
 		return instance;
 	}
 	
-	public BoardResponseDto createBoard(BoardRequestDto boardDto) {
+	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
 		try {
 			conn = DBManager.getConnection();
+			UserDao userDao = UserDao.getInstance();
 			
-			String sql = "";
-			
-			if(boardDto.getDescription() != null) {
-				sql = "INSERT INTO board_category(board_name, description) VALUES(?, ?)";
-				
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setString(1, boardDto.getBoardName());
-				pstmt.setString(2, boardDto.getDescription());
-			} else {
-				sql = "INSERT INTO board_category(board_name) VALUES(?)";
+			String sql = "INSERT INTO posts(title, content, user_code, board_code) VALUES(?,?, ?, ?)";
 
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setString(1, boardDto.getBoardName());
-			}
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, reqTitle);
+			pstmt.setString(2, reqContent);
+			pstmt.setInt(3, userDao.findUserCodeById(reqUserId));
+			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
+
 			pstmt.execute();
-			
-			return findBoardByName(boardDto.getBoardName());
+
+			String[] tempCode = findPostCodeAndBoardCodeRecently().split("/");
+
+			int postCode = Integer.parseInt(tempCode[0]);
+			int boardCode = Integer.parseInt(tempCode[1]);
+
+			return readPostByBoardCodeAndPostCode(boardCode, postCode);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,7 +57,33 @@ public class BoardDao {
 		
 		return null;
 	}
-	
+
+	public String findPostCodeAndBoardCodeRecently() {
+		String postAndBoardCode = "";
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT post_code, board_code FROM posts ORDER BY write_date DESC LIMIT 1";
+
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int postCode = rs.getInt("post_code");
+				int boardCode = rs.getInt("board_code");
+
+				postAndBoardCode = postCode + "/" + boardCode;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return postAndBoardCode;
+	}
+
 	public BoardResponseDto findBoardByName(String name) {
 		BoardResponseDto board = null;
 		
@@ -115,10 +140,10 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
-				int recommandation = rs.getInt(10);
+				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(12);
 				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -184,10 +209,10 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
-				int recommandation = rs.getInt(10);
+				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(11);
 				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -220,11 +245,11 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(3)+"");
 				Timestamp writeDate = rs.getTimestamp(4);
 				Timestamp updateDate = rs.getTimestamp(5);
-				int recommandation = rs.getInt(6);
+				int recommendation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommandation, postCode, boardCode);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
