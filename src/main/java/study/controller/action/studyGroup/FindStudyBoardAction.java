@@ -63,7 +63,8 @@ public class FindStudyBoardAction implements Action{
 
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			boolean isMember = gmDao.getIsMember(groupCode,userCode);
-			JSONObject member = new JSONObject(isMember);
+			JSONObject member = new JSONObject();
+			member.put("isMember", isMember);
 
 			JSONObject page = new JSONObject(postLists.size());
 
