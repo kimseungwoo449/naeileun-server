@@ -20,7 +20,7 @@ public class ActionFactory {
 		Action action = null;
 		
 		if(command == null) {
-			if(method.equals("POST")){
+			if(method.equals("GET")){
 				action = new ReadAllBoardAction();
 			}
 		} else {
@@ -29,12 +29,12 @@ public class ActionFactory {
 			if(method.equals("POST")) {
 				action = new CreatePostAction();
 			}
-			else if(method.equals("GET") && commands.length > 1) {
-				if(commands.length == 2) {
+			else if(method.equals("GET") && commands.length > 2) {
+				if(commands.length == 3) {
 					int code = Integer.parseInt(commands[2]);
 					System.out.println("code : " + code);
 					action = new ReadAllPostAction(code);
-				}else if(commands.length == 3) {
+				}else if(commands.length == 4) {
 					int boardCode = Integer.parseInt(commands[2]);
 					int postCode = Integer.parseInt(commands[3]);
 					System.out.println("boardCode : " + boardCode);
