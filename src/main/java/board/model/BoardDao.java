@@ -112,8 +112,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-//				String userId = userDao(rs.getInt(7));
-				String userId = "1234";
+				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
@@ -182,8 +181,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-//				String userId = userDao(rs.getInt(7));
-				String userId = "1234";
+				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommandation = rs.getInt(10);
@@ -206,26 +204,28 @@ public class BoardDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			
+			UserDao userDao = UserDao.getInstance();
+
 			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
-			
+
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, boardCodeTemp);
-			pstmt.setInt(2, postCodeTemp);
-			
+			pstmt.setInt(1, postCodeTemp);
+			pstmt.setInt(2, boardCodeTemp);
+
 			rs = pstmt.executeQuery();
-			
+
 			if(rs.next()) {
 				String title = rs.getString(1);
 				String content = rs.getString(2);
-				int userCode = rs.getInt(3);
+				String userId = userDao.findUserIdByCode(rs.getInt(3)+"");
 				Timestamp writeDate = rs.getTimestamp(4);
 				Timestamp updateDate = rs.getTimestamp(5);
 				int recommandation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
-				
-				post = new BoardResponseDto(title, content, userCode, writeDate, updateDate, recommandation, postCode, boardCode);
+
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommandation, postCode, boardCode);
+				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
