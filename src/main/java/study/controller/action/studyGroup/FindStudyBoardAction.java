@@ -52,7 +52,6 @@ public class FindStudyBoardAction implements Action{
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
 			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
 
-
 			JSONObject s = new JSONObject(study);
 			System.out.println("study"+ s);
 			//groupPost 객체 만들기
