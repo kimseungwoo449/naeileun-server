@@ -7,13 +7,12 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
-import utill.IPAdressManager;
+import utill.KeyManager;
 import study.model.groupMember.GroupMemberDao;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
@@ -29,7 +28,7 @@ public class FindUserGroupAction implements Action{
 		JSONArray result = new JSONArray();
 		JSONObject meta = new JSONObject();
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) { //IPAdressManager.ADMIN_KEY
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) { //IPAdressManager.ADMIN_KEY
 			obj.put("result",result);
 			obj.put("meta", meta);
 		} else {

@@ -6,7 +6,12 @@
 
 /build
 /bin
+
+
 context.xml
+
+KeyManager.java
+
 /docs
 .idea
 *.iml

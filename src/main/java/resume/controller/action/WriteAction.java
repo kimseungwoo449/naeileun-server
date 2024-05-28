@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import resume.controller.Action;
 import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class WriteAction implements Action {
 	@Override
@@ -24,7 +24,7 @@ public class WriteAction implements Action {
 		boolean status = true;
 		String message = "Resume is created..";
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			status = false;
 			message = "Resume is blocked.";
 		} else {
