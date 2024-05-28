@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -33,9 +32,7 @@ public class FindStudyBoardAction implements Action{
 		JSONArray result = null;
 		JSONObject meta = null;
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
-			
-		} else {
+		if (request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)){
 
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -47,11 +44,11 @@ public class FindStudyBoardAction implements Action{
 			}
 			
 			String groupCode = new JSONObject(data).getString("group_code");
+			String userCode = new JSONObject(data).getString("user_code");
 			System.out.println(groupCode);
 
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
 			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
-
 
 			JSONObject s = new JSONObject(study);
 			System.out.println("study"+ s);
@@ -62,9 +59,17 @@ public class FindStudyBoardAction implements Action{
 			JSONArray p = new JSONArray(postLists);
 			System.out.println("post"+ p);
 
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			boolean isMember = gmDao.getIsMember(groupCode,userCode);
+			JSONObject member = new JSONObject(isMember);
+
+			JSONObject page = new JSONObject(postLists.size());
+
 			JSONObject object = new JSONObject();
 			object.put("study", s);
 			object.put("post", p);
+			object.put("isMember", member);
+			object.put("page", page);
 			
 			meta = new JSONObject();
 			meta.put("total_count", 1);
