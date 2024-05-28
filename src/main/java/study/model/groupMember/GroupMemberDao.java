@@ -31,17 +31,16 @@ public class GroupMemberDao {
 			return list;
 		
 		try {
+			list = new ArrayList<>();
+
 			conn = DBManager.getConnection();
 			String sql="SELECT group_code FROM  group_member WHERE user_code=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, userCode);
-			
+
 			rs = pstmt.executeQuery();
-			
-			list = new ArrayList<>();
-			
 			while(rs.next()) {
 				String groupCode = rs.getString(1);
 				list.add(groupCode);
@@ -63,14 +62,14 @@ public class GroupMemberDao {
 		List<String> list = null;
 		
 		try {
-			conn = DBManager.getConnection();
-			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC";
-			
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
 			int n = 0;
 			list = new ArrayList<>();
+
+			conn = DBManager.getConnection();
+			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
 			while(rs.next()) {
 				String groupCode = rs.getString(1);
 				
@@ -88,7 +87,30 @@ public class GroupMemberDao {
 		}
 		
 		return list;
- 	}
-	
+	}
+
+	 public boolean getIsMember(String groupCode, String userCode){
+		boolean isMember = false;
+
+		try{
+			conn = DBManager.getConnection();
+			String sql = "SELECT member_code FROM group_member WHERE group_code=? AND user_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, groupCode);
+			pstmt.setString(2, userCode);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				isMember = true;
+			}
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return isMember;
+	 }
 	
 }
