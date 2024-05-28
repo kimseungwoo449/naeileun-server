@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
+import study.model.groupMember.GroupMemberDao;
 import study.model.groupPost.GroupPostDao;
 import study.model.groupPost.GroupPostResponseDto;
 import study.model.studyGroup.StudyGroupDao;
@@ -45,6 +46,7 @@ public class FindStudyBoardAction implements Action{
 			}
 			
 			String groupCode = new JSONObject(data).getString("group_code");
+			String userCode = new JSONObject(data).getString("user_code");
 			System.out.println(groupCode);
 
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
@@ -60,10 +62,18 @@ public class FindStudyBoardAction implements Action{
 			JSONArray p = new JSONArray(postLists);
 			System.out.println("post"+ p);
 
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			boolean isMember = gmDao.getIsMember(groupCode,userCode);
+			JSONObject member = new JSONObject(isMember);
+
+			JSONObject page = new JSONObject(postLists.size());
+
 			JSONObject object = new JSONObject();
 			object.put("study", s);
 			object.put("post", p);
-			
+			object.put("isMember", member);
+			object.put("page", page);
+
 			meta = new JSONObject();
 			meta.put("total_count", 1);
 			
