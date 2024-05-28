@@ -90,7 +90,7 @@ public class ResumeDao {
             pstmt.setString(5, dto.getAcademicCareer());
             pstmt.setString(6, dto.getCareer());
             pstmt.setString(7, dto.getSkill());
-            pstmt.setString(8, dto.getCetificate());
+            pstmt.setString(8, dto.getCertificate());
             pstmt.setString(9, dto.getLanguage());
             pstmt.setString(10, dto.getAward());
 
