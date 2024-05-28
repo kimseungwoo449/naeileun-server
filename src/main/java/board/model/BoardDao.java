@@ -115,10 +115,10 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
-				int recommandation = rs.getInt(10);
+				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(12);
 				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -184,10 +184,10 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
-				int recommandation = rs.getInt(10);
+				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(11);
 				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommandation, postCode);
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -220,11 +220,11 @@ public class BoardDao {
 				String userId = userDao.findUserIdByCode(rs.getInt(3)+"");
 				Timestamp writeDate = rs.getTimestamp(4);
 				Timestamp updateDate = rs.getTimestamp(5);
-				int recommandation = rs.getInt(6);
+				int recommendation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommandation, postCode, boardCode);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
