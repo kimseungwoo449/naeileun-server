@@ -2,6 +2,8 @@ package introduction.model;
 
 import user.model.UserDao;
 
+import java.sql.Timestamp;
+
 public class IntroductionResponseDto {
     UserDao userDao = UserDao.getInstance();
 
@@ -11,23 +13,30 @@ public class IntroductionResponseDto {
     private String body;
     private int documentCode;
     private int userCode;
+    private Timestamp writeDate;
+    private Timestamp updateDate;
 
-    public IntroductionResponseDto(int documentNumber, String title, String head, String body, int documentCode, int userCode) {
+
+    public IntroductionResponseDto(int documentNumber, String title, String head, String body, int documentCode, int userCode, Timestamp writeDate, Timestamp updateDate) {
         this.documentNumber = documentNumber;
         this.title = title;
         this.head = head;
         this.body = body;
         this.documentCode = documentCode;
         this.userCode = userCode;
+        this.writeDate = writeDate;
+        this.updateDate = updateDate;
     }
 
-    public IntroductionResponseDto(int documentNumber, String title, String head, String body, int documentCode, String userId) {
+    public IntroductionResponseDto(int documentNumber, String title, String head, String body, int documentCode, String userId,Timestamp writeDate, Timestamp updateDate) {
         this.documentNumber = documentNumber;
         this.title = title;
         this.head = head;
         this.body = body;
         this.documentCode = documentCode;
         this.userCode = userDao.findUserCodeById(userId);
+        this.writeDate = writeDate;
+        this.updateDate = updateDate;
     }
 
     public IntroductionResponseDto() {
@@ -83,5 +92,21 @@ public class IntroductionResponseDto {
 
     public void setUserCode(String userId) {
         this.userCode = userDao.findUserCodeById(userId);
+    }
+
+    public Timestamp getWriteDate() {
+        return writeDate;
+    }
+
+    public void setWriteDate(Timestamp writeDate) {
+        this.writeDate = writeDate;
+    }
+
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 }

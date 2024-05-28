@@ -1,6 +1,7 @@
 package introduction.controller;
 
 import introduction.controller.action.createIntroduction;
+import introduction.controller.action.getAllIntroductionByUserId;
 import resume.controller.action.*;
 
 public class ActionFactory {
@@ -19,7 +20,7 @@ public class ActionFactory {
 			if(method.equals("POST")) {
 				action = new createIntroduction();
 			}else if(method.equals("GET")) {
-
+				action = new getAllIntroductionByUserId();
 			}else if(method.equals("PUT")) {
 
 			}else if(method.equals("DELETE")) {
