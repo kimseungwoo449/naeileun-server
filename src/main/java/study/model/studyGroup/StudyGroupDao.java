@@ -49,7 +49,6 @@ public class StudyGroupDao {
 			conn = DBManager.getConnection();
 			String sql = "SELECT name,decription, admin_code, is_public FROM study_group WHERE group_code =?";
 			pstmt = conn.prepareStatement(sql);
-				
 			pstmt.setString(1,groupCode);
 
 			rs = pstmt.executeQuery();
@@ -98,6 +97,25 @@ public class StudyGroupDao {
 		}
 		
 		return list;
+	}
+
+	public boolean deleteStudyByGroupCode(String groupCode){
+		boolean isValid = false;
+		try{
+			conn = DBManager.getConnection();
+			String sql = "DELETE FROM study_group WHERE group_code =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,groupCode);
+
+			System.out.println("excute result : " +pstmt.execute());
+			isValid = true;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt);
+		}
+
+		return isValid;
 	}
 
 }
