@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import resume.controller.Action;
 import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class DeleteAllResume implements Action{
 	@Override
@@ -24,7 +24,7 @@ JSONObject resObj = new JSONObject();
 		boolean status = true;
 		String message = "User's resumes is all deleted.";
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			status = false;
 			message = "User's resumes is not deleted.";
 		} else {

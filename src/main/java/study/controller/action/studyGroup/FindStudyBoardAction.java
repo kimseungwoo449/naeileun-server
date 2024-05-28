@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,12 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
-import study.model.groupMember.GroupMemberDao;
 import study.model.groupPost.GroupPostDao;
 import study.model.groupPost.GroupPostResponseDto;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class FindStudyBoardAction implements Action{
 	
@@ -33,7 +31,7 @@ public class FindStudyBoardAction implements Action{
 		JSONArray result = null;
 		JSONObject meta = null;
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			
 		} else {
 

@@ -15,7 +15,7 @@ import study.controller.Action;
 import study.model.groupMember.GroupMemberDao;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class FindPopularStudyGroupAction implements Action{
 
@@ -28,7 +28,7 @@ public class FindPopularStudyGroupAction implements Action{
 		JSONArray result = null;
 		JSONObject meta = null;
 		
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			
 		} else {
 			
