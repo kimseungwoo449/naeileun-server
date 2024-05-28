@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
-import user.model.UserResponseDto;
 import utill.IPAdressManager;
 import study.model.groupMember.GroupMemberDao;
 import study.model.studyGroup.StudyGroupDao;
@@ -35,7 +34,7 @@ public class FindUserGroupAction implements Action{
 			obj.put("meta", meta);
 		} else {
 
-			HttpSession session = request.getSession();
+			//HttpSession session = request.getSession();
 			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 			
 //			String userId = user.getId();
