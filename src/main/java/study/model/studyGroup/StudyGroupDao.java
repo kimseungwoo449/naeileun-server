@@ -46,23 +46,24 @@ public class StudyGroupDao {
 			return study;
 		
 		try {
-			study = new StudyGroupResponseDto();
-			
 			conn = DBManager.getConnection();
-			String sql = "SELECT * FROM study_group WHERE group_code =?";
+			String sql = "SELECT name,decription, admin_code, is_public FROM study_group WHERE group_code =?";
 			pstmt = conn.prepareStatement(sql);
 				
 			pstmt.setString(1,groupCode);
-			
+
 			rs = pstmt.executeQuery();
-			
+
 			if(rs.next()) {
-				String name = rs.getString(2);
-				String decription =  rs.getString(3);
-				String adminCode =  rs.getString(4);
-				String isPublic =  rs.getString(5).equals("0") ? "false" : "true";
-				
-				study = new StudyGroupResponseDto(groupCode, name, decription == null ? "" : decription,adminCode,isPublic);
+				String name = rs.getString(1);
+				String decription =  rs.getString(2);
+				String adminCode =  rs.getString(3);
+				String isPublic =  rs.getString(4).equals("0") ? "false" : "true";
+
+				if(decription == null)
+					study = new StudyGroupResponseDto(groupCode, name,adminCode,isPublic);
+				else
+					study = new StudyGroupResponseDto(groupCode, name,decription,adminCode,isPublic);
 			}
 			
 			System.out.println("DB 연동 성공");
@@ -71,7 +72,6 @@ public class StudyGroupDao {
 		}finally {
 			DBManager.close(conn, pstmt, rs);
 		}
-		
 		
 		return study;
 	}
@@ -89,7 +89,6 @@ public class StudyGroupDao {
 			
 			if(rs.next()) {
 				list = new ArrayList<>();
-				
 				
 			}
 		} catch (SQLException e) {

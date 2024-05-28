@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import study.controller.Action;
 import study.model.groupMember.GroupMemberDao;
+import study.model.groupPost.GroupPostDao;
+import study.model.groupPost.GroupPostResponseDto;
 import study.model.studyGroup.StudyGroupDao;
 import study.model.studyGroup.StudyGroupResponseDto;
 import utill.IPAdressManager;
@@ -44,19 +46,25 @@ public class FindStudyBoardAction implements Action{
 				data = br.readLine();
 			}
 			
-			String studyCode = new JSONObject(data).getString("group_code");
-			System.out.println(studyCode);
-			
+			String groupCode = new JSONObject(data).getString("group_code");
+			System.out.println(groupCode);
+
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
-			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(studyCode);
+			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
+
+
 			JSONObject s = new JSONObject(study);
-			
+			System.out.println("study"+ s);
 			//groupPost 객체 만들기
-			JSONObject p = new JSONObject("post", "post");
-			
+
+			GroupPostDao gpDao = GroupPostDao.getInstance();
+			List<GroupPostResponseDto> postLists = gpDao.getGroupPostsByGroupCode(groupCode);
+			JSONArray p = new JSONArray(postLists);
+			System.out.println("post"+ p);
+
 			JSONObject object = new JSONObject();
 			object.put("study", s);
-			object.put("post", "post");
+			object.put("post", p);
 			
 			meta = new JSONObject();
 			meta.put("total_count", 1);

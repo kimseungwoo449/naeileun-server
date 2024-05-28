@@ -50,7 +50,6 @@ public class ServiceServlet extends HttpServlet{
 			Action action = af.getAction(command);
 
 			System.out.println("server command : " + command);
-			System.out.println("here");
 			if(action != null) {
 				action.excute(request, response);
 			}else {
