@@ -71,7 +71,28 @@ public class UserDao {
 		}
 		return list;
 	}
+	public boolean checkIdAvailability(String id){
+		conn = DBManager.getConnection();
 
+		// 쿼리할 준비
+
+		// 쿼리 실행
+        try {
+		String sql = "SELECT COUNT(*) FROM users WHERE id = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				return count == 0;
+			}
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+			DBManager.close(conn, pstmt);
+		}
+        return false;
+	}
 	public UserResponseDto findUserByIdAndPassword(String id, String password) {
 		UserResponseDto user = null;
 
