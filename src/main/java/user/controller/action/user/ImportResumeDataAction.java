@@ -29,11 +29,11 @@ public class ImportResumeDataAction implements Action {
 		System.out.println("123");
 		InputStream in = request.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
 		String data = "";
 		while (br.ready()) {
 			data += br.readLine() + "\n";
 		}
+		System.out.println(data);
 		JSONObject object = new JSONObject(data);
 
 		String userId = object.getString("id");

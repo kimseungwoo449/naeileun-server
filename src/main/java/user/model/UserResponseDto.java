@@ -29,6 +29,7 @@ public class UserResponseDto {
 		this.password = passWord;
 		this.name = name;
 		this.resident_number = resident_number;
+		this.age = User.caculateAge(resident_number);
 		this.phone = phone;
 		this.admin = admin;
 		this.email = email;
