@@ -41,9 +41,9 @@ public class FindUserGroupAction implements Action{
 			//String userId = user.getId();
 			//UserDao userDao = UserDao.getInstance();
 			//String userCode = userDao.findUserCodeById(userId);
-			
+
 			String userCode = "2"; // 수정 후 삭제
-			
+
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
 			
