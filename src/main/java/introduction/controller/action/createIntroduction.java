@@ -5,7 +5,7 @@ import introduction.model.IntroductionDao;
 import introduction.model.IntroductionRequestDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class createIntroduction implements Action {
         boolean status = true;
         String message = "Introduction is created..";
 
-        if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+        if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
             status = false;
             message = "Introduction is blocked.";
         } else {

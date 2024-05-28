@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.json.JSONObject;
 import utill.DBManager;
 
 public class ResumeDao {
@@ -239,6 +240,8 @@ public class ResumeDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn,pstmt,rs);
 		}
 
 		if(response.size() == 0) {

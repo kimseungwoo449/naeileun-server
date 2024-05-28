@@ -1,9 +1,6 @@
 package resume.controller.action;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,14 +13,14 @@ import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
 import resume.model.ResumeResponseDto;
 import user.model.UserDao;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class ViewResume implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
 
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			resObj = null;
 		} else {
 			String strResumeCode = request.getPathInfo();

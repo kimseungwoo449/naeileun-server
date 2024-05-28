@@ -51,5 +51,4 @@ public class ImportResumeDataAction implements Action {
 		// JSON 응답을 출력에 작성
 		response.getWriter().write(jsonResponse);
 	}
-
 }

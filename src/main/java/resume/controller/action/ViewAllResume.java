@@ -16,15 +16,14 @@ import resume.controller.Action;
 import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
 import resume.model.ResumeResponseDto;
-import user.model.UserDao;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 public class ViewAllResume implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
 		List<ResumeResponseDto> resumes =null;
-		if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
 			resObj = null;
 		} else {
 			
