@@ -1,9 +1,11 @@
 package board.controller;
 
 import board.controller.ActionFactory;
+import board.controller.action.CreatePostAction;
 import board.controller.action.ReadAllBoardAction;
 import board.controller.action.ReadAllPostAction;
 import board.controller.action.ReadDetailPostAction;
+import resume.controller.action.WriteAction;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -14,38 +16,32 @@ public class ActionFactory {
 		return instance;
 	}
 	
-	public Action getAction(String command) {
+	public Action getAction(String command, String method) {
 		Action action = null;
 		
-		String[] commands = new String[] {};
-		
-		if(command != null)
-			commands = command.split("/");
 		if(command == null) {
-			action = new ReadAllBoardAction();
-		}
-		else if(commands.length > 2 && commands[1].equals("view")) {
-			
-			if(commands.length == 3) {
-				int code = Integer.parseInt(commands[2]);
-				System.out.println("code : " + code);
-				action = new ReadAllPostAction(code);
-			} else {
-				int boardCode = Integer.parseInt(commands[2]);
-				int postCode = Integer.parseInt(commands[3]);
-				System.out.println("boardCode : " + boardCode);
-				System.out.println("postCode : " + postCode);
-				action = new ReadDetailPostAction(boardCode, postCode);
+			if(method.equals("POST")){
+				action = new ReadAllBoardAction();
 			}
-		}
-		
-		return action;
-	}
-	
-	public Action getAction(String command, String params) {
-		Action action = null;
-		if(command.equals("/view/")) {
-			
+		} else {
+			String[] commands = command.split("/");
+
+			if(method.equals("POST")) {
+				action = new CreatePostAction();
+			}
+			else if(method.equals("GET")) {
+				if(commands.length == 2) {
+					int code = Integer.parseInt(commands[2]);
+					System.out.println("code : " + code);
+					action = new ReadAllPostAction(code);
+				}else if(commands.length == 3) {
+					int boardCode = Integer.parseInt(commands[2]);
+					int postCode = Integer.parseInt(commands[3]);
+					System.out.println("boardCode : " + boardCode);
+					System.out.println("postCode : " + postCode);
+					action = new ReadDetailPostAction(boardCode, postCode);
+				}
+			}
 		}
 		
 		return action;
