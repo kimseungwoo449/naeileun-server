@@ -29,7 +29,7 @@ public class ActionFactory {
 			if(method.equals("POST")) {
 				action = new CreatePostAction();
 			}
-			else if(method.equals("GET")) {
+			else if(method.equals("GET") && commands.length > 1) {
 				if(commands.length == 2) {
 					int code = Integer.parseInt(commands[2]);
 					System.out.println("code : " + code);
