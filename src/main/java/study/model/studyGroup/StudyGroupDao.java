@@ -83,12 +83,11 @@ public class StudyGroupDao {
 			conn = DBManager.getConnection();
 			String sql = "SELECT group_code, name, admin_code,is_public, decription,(SELECT )";
 			pstmt = conn.prepareStatement(sql);
-			
+
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			while(rs.next()) {
 				list = new ArrayList<>();
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
