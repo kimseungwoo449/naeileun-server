@@ -36,7 +36,7 @@ public class FindUserGroupAction implements Action{
 		} else {
 
 			HttpSession session = request.getSession();
-			UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 			
 //			String userId = user.getId();
 //			UserDao userDao = UserDao.getInstance();
