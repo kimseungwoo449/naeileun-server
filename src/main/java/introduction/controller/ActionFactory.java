@@ -1,6 +1,7 @@
 package introduction.controller;
 
 import introduction.controller.action.createIntroduction;
+import introduction.controller.action.deleteAllIntroductionByUserId;
 import introduction.controller.action.getAllIntroductionByUserId;
 import resume.controller.action.*;
 
@@ -24,7 +25,7 @@ public class ActionFactory {
 			}else if(method.equals("PUT")) {
 
 			}else if(method.equals("DELETE")) {
-
+				action = new deleteAllIntroductionByUserId();
 			}
 		}else {
 			if(method.equals("GET")) {
