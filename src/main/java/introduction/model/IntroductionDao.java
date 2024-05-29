@@ -177,4 +177,20 @@ public class IntroductionDao {
         }
         return docCodes;
     }
+
+    public boolean deleteAllIntroductionByUserCode(IntroductionRequestDto dto) {
+        try {
+            conn = DBManager.getConnection();
+            String sql = "DELETE FROM self_introduction WHERE `user_code` = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getUserCode());
+            pstmt.execute();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
 }
