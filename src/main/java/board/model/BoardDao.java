@@ -102,64 +102,6 @@ public class BoardDao {
 		return responseDto;
 	}
 
-/*	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
-		try {
-			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
-
-			String sql = "INSERT INTO posts(title, content, user_code, board_code) VALUES(?,?, ?, ?)";
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, reqTitle);
-			pstmt.setString(2, reqContent);
-			pstmt.setInt(3, userDao.findUserCodeById(reqUserId));
-			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
-
-			pstmt.execute();
-
-			String[] tempCode = findPostCodeAndBoardCodeRecently().split("/");
-
-			int postCode = Integer.parseInt(tempCode[0]);
-			int boardCode = Integer.parseInt(tempCode[1]);
-
-			return readPostByBoardCodeAndPostCode(boardCode, postCode);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-
-		return null;
-	}*/
-
-	public String findPostCodeAndBoardCodeRecently() {
-		String postAndBoardCode = "";
-
-		try {
-			conn = DBManager.getConnection();
-
-			String sql = "SELECT post_code, board_code FROM posts ORDER BY write_date DESC LIMIT 1";
-
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				int postCode = rs.getInt("post_code");
-				int boardCode = rs.getInt("board_code");
-
-				postAndBoardCode = postCode + "/" + boardCode;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-
-		return postAndBoardCode;
-	}
-
 	public BoardResponseDto findBoardByName(String name) {
 		BoardResponseDto board = null;
 		
