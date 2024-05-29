@@ -33,7 +33,7 @@ public class FindStudyBoardAction implements Action{
 		JSONArray result = null;
 		JSONObject meta = null;
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			
 		} else {
 
