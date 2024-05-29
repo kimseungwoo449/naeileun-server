@@ -45,16 +45,18 @@ public class FindUserGroupAction implements Action{
 
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
-			
+			System.out.println("groupCodes :"+ groupCodes.toString());
 			StudyGroupDao sg = StudyGroupDao.getInstance();
 			
 			List<StudyGroupResponseDto> list = new ArrayList<>();
 			
 			for(String code : groupCodes) {
+				System.out.println("code :"+ code);
 				StudyGroupResponseDto study = sg.getStudyByGroupCode(code);
-				list.add(study);
+				if(study != null) {
+					list.add(study);
+				}
 			}
-			
 			result = new JSONArray(list);
 			
 			meta = new JSONObject();
