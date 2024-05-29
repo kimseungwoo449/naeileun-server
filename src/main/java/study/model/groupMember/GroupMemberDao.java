@@ -112,5 +112,24 @@ public class GroupMemberDao {
 
 		return isMember;
 	 }
+
+	 public boolean addMemberByGroupCode(String groupCode, String userCode){
+		boolean isValid = false;
+		try{
+			conn = DBManager.getConnection();
+			String sql = "INSERT INTO group_member (group_code,user_code) VALUES (?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, groupCode);
+			pstmt.setString(2, userCode);
+			pstmt.execute();
+			isValid = true;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt);
+		}
+
+		return isValid;
+	 }
 	
 }
