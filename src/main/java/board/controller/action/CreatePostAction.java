@@ -2,7 +2,7 @@ package board.controller.action;
 
 import board.controller.Action;
 import org.json.JSONObject;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public class CreatePostAction implements Action {
 
         boolean status = true;
 
-        if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             status = false;
         } else {
             InputStream in = request.getInputStream();

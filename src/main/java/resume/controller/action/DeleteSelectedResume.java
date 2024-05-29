@@ -21,7 +21,7 @@ public class DeleteSelectedResume implements Action {
 		boolean status = true;
 		String message = "Resume is deleted.";
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			status = false;
 			message = "Resume is not deleted";
 		} else {

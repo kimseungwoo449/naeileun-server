@@ -25,7 +25,7 @@ public class createIntroduction implements Action {
         boolean status = true;
         String message = "Introduction is created..";
 
-        if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             status = false;
             message = "Introduction is blocked.";
         } else {
