@@ -3,6 +3,7 @@ package introduction.controller;
 import introduction.controller.action.CreateIntroduction;
 import introduction.controller.action.DeleteAllIntroductionByUserId;
 import introduction.controller.action.GetAllIntroductionByUserId;
+import introduction.controller.action.UpdateIntroduction;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -22,7 +23,7 @@ public class ActionFactory {
 			}else if(method.equals("GET")) {
 				action = new GetAllIntroductionByUserId();
 			}else if(method.equals("PUT")) {
-
+				action = new UpdateIntroduction();
 			}else if(method.equals("DELETE")) {
 				action = new DeleteAllIntroductionByUserId();
 			}
