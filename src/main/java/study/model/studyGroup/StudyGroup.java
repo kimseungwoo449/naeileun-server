@@ -6,24 +6,28 @@ public class StudyGroup {
 	String decription;
 	String adminCode;
 	String isPublic;
+	String autoMemberAccess;
+
 	public StudyGroup() {
 		super();
 	}
-	public StudyGroup(String groupCode, String name, String adminCode, String isPublic) {
+	public StudyGroup(String groupCode, String name, String adminCode, String isPublic,String autoMemberAccess) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
+		this.autoMemberAccess = autoMemberAccess;
 	}
 	
-	public StudyGroup(String groupCode, String name, String decription, String adminCode, String isPublic) {
+	public StudyGroup(String groupCode, String name, String decription, String adminCode, String isPublic,String autoMemberAccess) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
 		this.decription = decription;
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
+		this.autoMemberAccess = autoMemberAccess;
 	}
 	
 	public String getGroupCode() {
@@ -41,6 +45,7 @@ public class StudyGroup {
 	public String getIsPublic() {
 		return isPublic;
 	}
-	
-	
+	public String getAutoMemberAccess() {
+		return autoMemberAccess;
+	}
 }
