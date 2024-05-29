@@ -24,7 +24,7 @@ public class WriteAction implements Action {
 		boolean status = true;
 		String message = "Resume is created..";
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			status = false;
 			message = "Resume is blocked.";
 		} else {
