@@ -26,11 +26,14 @@ public class ImportResumeDataAction implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		InputStream in = request.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String data = "";
+        String data = "";
+        try (InputStream in = request.getInputStream()) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		while (br.ready()) {
 			data += br.readLine() + "\n";
+		}
+        }catch (IOException e){
+			e.printStackTrace();
 		}
 		JSONObject object = new JSONObject(data);
 
@@ -49,4 +52,5 @@ public class ImportResumeDataAction implements Action {
 		// JSON 응답을 출력에 작성
 		response.getWriter().write(jsonResponse);
 	}
+
 }
