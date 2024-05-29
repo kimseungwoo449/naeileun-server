@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class createIntroduction implements Action {
+public class CreateIntroduction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resObj = new JSONObject();

@@ -1,9 +1,8 @@
 package introduction.controller;
 
-import introduction.controller.action.createIntroduction;
-import introduction.controller.action.deleteAllIntroductionByUserId;
-import introduction.controller.action.getAllIntroductionByUserId;
-import resume.controller.action.*;
+import introduction.controller.action.CreateIntroduction;
+import introduction.controller.action.DeleteAllIntroductionByUserId;
+import introduction.controller.action.GetAllIntroductionByUserId;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -19,13 +18,13 @@ public class ActionFactory {
 
 		if(pathInfo==null) {
 			if(method.equals("POST")) {
-				action = new createIntroduction();
+				action = new CreateIntroduction();
 			}else if(method.equals("GET")) {
-				action = new getAllIntroductionByUserId();
+				action = new GetAllIntroductionByUserId();
 			}else if(method.equals("PUT")) {
 
 			}else if(method.equals("DELETE")) {
-				action = new deleteAllIntroductionByUserId();
+				action = new DeleteAllIntroductionByUserId();
 			}
 		}else {
 			if(method.equals("GET")) {
