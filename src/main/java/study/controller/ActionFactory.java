@@ -1,10 +1,7 @@
 package study.controller;
 
 import study.controller.Action;
-import study.controller.action.studyGroup.DeleteStudyAction;
-import study.controller.action.studyGroup.FindPopularStudyGroupAction;
-import study.controller.action.studyGroup.FindStudyBoardAction;
-import study.controller.action.studyGroup.FindUserGroupAction;
+import study.controller.action.studyGroup.*;
 
 public class ActionFactory{
 	
@@ -28,6 +25,8 @@ public class ActionFactory{
 			action = new FindStudyBoardAction();
 		}else if(command.equals("/delete")){
 			action = new DeleteStudyAction();
+		}else if(command.equals("/createStudy")){
+			action = new CreateStudyAction();
 		}
 		
 		return action;
