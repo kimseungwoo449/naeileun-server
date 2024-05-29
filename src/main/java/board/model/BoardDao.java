@@ -1,20 +1,24 @@
 package board.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import user.model.UserDao;
 import utill.DBManager;
 
+import javax.servlet.http.Part;
+
 public class BoardDao {
 	
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
+	private static final String UPLOAD_DIR = "src/main/java/board/image";
 
 	private BoardDao() {
 		
@@ -26,11 +30,83 @@ public class BoardDao {
 		return instance;
 	}
 	
-	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
+	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode, String reqImagePath) {
+		BoardResponseDto responseDto = null;
+
+		UserDao userDao = UserDao.getInstance();
+		int userCode = userDao.findUserCodeById(reqUserId);
+		System.out.println("userCode : " + userCode);
+
+		boolean isSuccess = false;
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "INSERT INTO posts(title, content, user_code, board_code, image_path) VALUES(?,?,?,?,?)";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, reqTitle);
+			pstmt.setString(2, reqContent);
+			pstmt.setInt(3, userCode);
+			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
+			pstmt.setString(5, reqImagePath);
+
+			pstmt.execute();
+			isSuccess = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+
+			if(isSuccess) {
+				responseDto = findBoardByUserCodeLatest(userCode);
+			}
+		}
+
+		return responseDto;
+	}
+
+	private BoardResponseDto findBoardByUserCodeLatest(int userCode) {
+		BoardResponseDto responseDto = null;
+
+		String sql = "SELECT * FROM post_res WHERE user_code=? ORDER BY write_date DESC LIMIT 1";
+
+		try {
+			conn = DBManager.getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				String title = rs.getString(1);
+				String content = rs.getString(2);
+				String userId = rs.getString(4);
+				Timestamp writeDate = rs.getTimestamp(5);
+				Timestamp updateDate = rs.getTimestamp(6);
+				int recommendation = rs.getInt(7);
+				int postCode = rs.getInt(8);
+				int boardCode = rs.getInt(9);
+				String imagePath = rs.getString(10);
+
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return responseDto;
+	}
+
+/*	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
 		try {
 			conn = DBManager.getConnection();
 			UserDao userDao = UserDao.getInstance();
-			
+
 			String sql = "INSERT INTO posts(title, content, user_code, board_code) VALUES(?,?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
@@ -48,15 +124,15 @@ public class BoardDao {
 			int boardCode = Integer.parseInt(tempCode[1]);
 
 			return readPostByBoardCodeAndPostCode(boardCode, postCode);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		
+
 		return null;
-	}
+	}*/
 
 	public String findPostCodeAndBoardCodeRecently() {
 		String postAndBoardCode = "";
@@ -259,5 +335,16 @@ public class BoardDao {
 		}
 		
 		return post;
+	}
+
+	public String saveImage(Part filePart) throws IOException {
+		// 파일명 추출
+		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+		// 저장할 경로 설정
+		Path targetPath = Paths.get(UPLOAD_DIR, fileName);
+		// 파일 저장
+		Files.copy(filePart.getInputStream(), targetPath);
+
+		return targetPath.toString();
 	}
 }
