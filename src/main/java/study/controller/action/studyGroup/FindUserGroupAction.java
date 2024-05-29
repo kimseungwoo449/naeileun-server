@@ -28,7 +28,7 @@ public class FindUserGroupAction implements Action{
 		JSONArray result = new JSONArray();
 		JSONObject meta = new JSONObject();
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) { //IPAdressManager.ADMIN_KEY
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) { //IPAdressManager.ADMIN_KEY
 			obj.put("result",result);
 			obj.put("meta", meta);
 		} else {

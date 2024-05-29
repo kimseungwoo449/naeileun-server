@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
 import study.model.studyGroup.StudyGroupDao;
-import utill.IPAdressManager;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class DeleteStudyAction implements Action {
         boolean state = false;
         String message = null;
 
-        if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
                 message ="admin key is not correct";
         }else{
             InputStream in = request.getInputStream();

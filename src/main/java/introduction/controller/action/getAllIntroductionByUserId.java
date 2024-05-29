@@ -76,7 +76,7 @@ public class getAllIntroductionByUserId implements Action {
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resObj = new JSONObject();
         Map<Integer, List<IntroductionResponseDto>> introductions = null;
-        if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             resObj = null;
         } else {
             InputStream in = request.getInputStream();

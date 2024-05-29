@@ -24,7 +24,7 @@ JSONObject resObj = new JSONObject();
 		boolean status = true;
 		String message = "User's resumes is all deleted.";
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.ADMIN_KEY)) {
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			status = false;
 			message = "User's resumes is not deleted.";
 		} else {
