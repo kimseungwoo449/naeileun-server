@@ -39,8 +39,11 @@ public class FindPopularStudyGroupAction implements Action{
 			
 			List<StudyGroupResponseDto> popularStudy = new ArrayList<>();
 			for(String groupCode : list) {
-				StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
-				popularStudy.add(study);
+				StudyGroupResponseDto study = sgDao.getPopularStudyByGroupCode(groupCode);
+				if(study != null) {
+					popularStudy.add(study);
+				}
+
 			}
 			
 			meta = new JSONObject();
