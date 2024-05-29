@@ -6,26 +6,29 @@ public class StudyGroupResponseDto {
 	String decription;
 	String adminCode;
 	String isPublic;
+	String autoMemberAccess;
 	
 	public StudyGroupResponseDto() {
 		super();
 	}
 	
-	public StudyGroupResponseDto(String groupCode, String name, String adminCode, String isPublic) {
+	public StudyGroupResponseDto(String groupCode, String name, String adminCode, String isPublic,String autoMemberAccess) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
+		this.autoMemberAccess = autoMemberAccess;
 	}
 	
-	public StudyGroupResponseDto(String groupCode, String name, String decription, String adminCode, String isPublic) {
+	public StudyGroupResponseDto(String groupCode, String name, String decription, String adminCode, String isPublic,String auto_member_access) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
 		this.decription = decription;
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
+		this.autoMemberAccess = auto_member_access;
 	}
 	
 	public StudyGroupResponseDto(StudyGroup sg) {
@@ -34,6 +37,7 @@ public class StudyGroupResponseDto {
 		this.decription = sg.getDecription();
 		this.adminCode = sg.getAdminCode();
 		this.isPublic = sg.getIsPublic();
+		this.autoMemberAccess =sg.getAutoMemberAccess();
 		
 	}
 	
@@ -67,6 +71,12 @@ public class StudyGroupResponseDto {
 	public void setIsPublic(String isPublic) {
 		this.isPublic = isPublic;
 	}
-	
-	
+
+	public String getAutoMemberAccess() {
+		return autoMemberAccess;
+	}
+
+	public void setAutoMemberAccess(String autoMemberAccess) {
+		this.autoMemberAccess = autoMemberAccess;
+	}
 }

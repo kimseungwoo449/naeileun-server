@@ -7,13 +7,14 @@ public class StudyGroupRequestDto {
 	String adminCode;
 	String isPublic;
 	String created_date;
+	String autoMemberAccess;
 	
 	public StudyGroupRequestDto() {
 		super();
 	}
 	
 	public StudyGroupRequestDto(String groupCode, String name, String decription, String adminCode, String isPublic,
-			String created_date) {
+			String created_date,String autoMemberAccess) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
@@ -21,14 +22,16 @@ public class StudyGroupRequestDto {
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
 		this.created_date = created_date;
+		this.autoMemberAccess = autoMemberAccess;
 	}
 	
-	public StudyGroupRequestDto(String groupCode, String name, String adminCode, String isPublic) {
+	public StudyGroupRequestDto(String groupCode, String name, String adminCode, String isPublic,String autoMemberAccess) {
 		super();
 		this.groupCode = groupCode;
 		this.name = name;
 		this.adminCode = adminCode;
 		this.isPublic = isPublic;
+		this.autoMemberAccess = autoMemberAccess;
 	}
 
 	public String getGroupCode() {
@@ -78,7 +81,12 @@ public class StudyGroupRequestDto {
 	public void setCreated_date(String created_date) {
 		this.created_date = created_date;
 	}
-	
-	
-	
+
+	public String getAutoMemberAccess() {
+		return autoMemberAccess;
+	}
+
+	public void setAutoMemberAccess(String autoMemberAccess) {
+		this.autoMemberAccess = autoMemberAccess;
+	}
 }
