@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class deleteAllIntroductionByUserId implements Action {
+public class DeleteAllIntroductionByUserId implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resObj = new JSONObject();

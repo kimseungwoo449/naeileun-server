@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class getAllIntroductionByUserId implements Action {
+public class GetAllIntroductionByUserId implements Action {
 //    @Override
 //    public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        JSONObject resObj = new JSONObject();
