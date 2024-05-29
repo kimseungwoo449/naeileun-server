@@ -239,6 +239,8 @@ public class ResumeDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		if(response.size() == 0) {
