@@ -26,7 +26,7 @@ public class ActionFactory {
 			}
 		}else {
 			if(method.equals("GET")) {
-
+				action = new GetIntroductionByDocumentCode();
 			}else if(method.equals("DELETE")) {
 				action = new DeleteIntroductionByDocumentCode();
 			}

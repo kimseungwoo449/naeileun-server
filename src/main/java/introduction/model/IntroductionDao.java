@@ -263,4 +263,34 @@ public class IntroductionDao {
         }
         return userCode;
     }
+
+    public List<IntroductionResponseDto> getIntroductionByDocCode(IntroductionRequestDto dto){
+        List<IntroductionResponseDto> resList = null;
+        try {
+            conn = DBManager.getConnection();
+            String sql = "SELECT * FROM self_introduction WHERE document_code = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentCode());
+            rs = pstmt.executeQuery();
+            resList = new ArrayList<>();
+            while (rs.next()) {
+                int docNumber = rs.getInt(1);
+                String title = rs.getString(2);
+                String head = rs.getString(3);
+                String body = rs.getString(4);
+                int documentCode = rs.getInt(5);
+                int userCode = rs.getInt(6);
+                Timestamp writeDate = rs.getTimestamp(7);
+                Timestamp updateDate = rs.getTimestamp(8);
+
+                resList.add(new IntroductionResponseDto(docNumber, title, head, body, documentCode, userCode, writeDate, updateDate));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+
+        return  resList;
+    }
 }
