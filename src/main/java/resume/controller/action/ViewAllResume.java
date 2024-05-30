@@ -40,7 +40,6 @@ public class ViewAllResume implements Action {
 			ResumeRequestDto dto = new ResumeRequestDto();
 			
 			String userId = reqObj.getString("user_id");
-			System.out.println(userId);
 			dto.setUserCode(userId);
 			ResumeDao resumeDao = ResumeDao.getInstance();
 			
@@ -67,6 +66,10 @@ public class ViewAllResume implements Action {
 				temp.put("award", targetResume.getAward());
 				temp.put("write_date", targetResume.getWriteDate());
 				temp.put("update_date", targetResume.getUpdateDate());
+				temp.put("phone", targetResume.getPhone());
+				temp.put("expected_salary", targetResume.getExpectedSalary());
+				temp.put("expected_region", targetResume.getExpectedRegion());
+				temp.put("is_newbie", targetResume.isNewbie());
 				tempArr[i] = temp;
 			}
 			resObj.put("result", tempArr);

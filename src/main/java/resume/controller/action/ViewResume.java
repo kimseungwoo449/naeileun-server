@@ -42,9 +42,12 @@ public class ViewResume implements Action {
 			resObj.put("career", result.getCareer());
 			resObj.put("skill", result.getSkill());
 			resObj.put("certificate", result.getCertificate());
-			resObj.put("langauage", result.getLanguage());
+			resObj.put("language", result.getLanguage());
 			resObj.put("award", result.getAward());
-
+			resObj.put("phone", result.getPhone());
+			resObj.put("expected_salary", result.getExpectedSalary());
+			resObj.put("expected_region", result.getExpectedRegion());
+			resObj.put("is_newbie", result.isNewbie());
 		}
 
 		response.setCharacterEncoding("UTF-8");

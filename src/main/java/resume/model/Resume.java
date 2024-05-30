@@ -40,24 +40,6 @@ public class Resume {
 		this.expectedRegion = expectedRegion;
 		this.isNewbie = isNewbie;
 	}
-
-	public Resume(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String cetificate, String language, String award,
-				  Timestamp writeDate, Timestamp updateDate) {
-		super();
-		this.resumeCode = resumeCode;
-		this.userCode = userCode;
-		this.name = name;
-		this.title = title;
-		this.userAge = userAge;
-		this.academicCareer = academicCareer;
-		this.career = career;
-		this.skill = skill;
-		this.cetificate = cetificate;
-		this.language = language;
-		this.award = award;
-		this.writeDate = writeDate;
-		this.updateDate = updateDate;
-	}
 	
 	public Resume() {
 		
