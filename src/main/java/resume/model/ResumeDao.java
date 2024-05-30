@@ -56,12 +56,13 @@ public class ResumeDao {
 
 			pstmt.execute();
 
-			response = findResumeByResumeCode(lastResumeCode());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
+
+		response = findResumeByResumeCode(lastResumeCode());
 
 		return response;
 	}
@@ -92,12 +93,12 @@ public class ResumeDao {
 
 			pstmt.execute();
 
-			response = findResumeByResumeCode(dto.getResumeCode());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
+		response = findResumeByResumeCode(dto.getResumeCode());
 
 		return response;
 	}
