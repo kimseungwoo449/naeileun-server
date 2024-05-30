@@ -40,6 +40,7 @@ public class ReadDetailPostAction implements Action {
 
 			BoardResponseDto post = boardDao.readPostByBoardCodeAndPostCode(boardCode, postCode);
 			System.out.println("title : "+post.getTitle());
+			System.out.println("imagePath : "+post.getImagePath());
 
 			resObj.put("result", new JSONObject(post));
 			System.out.println(resObj);

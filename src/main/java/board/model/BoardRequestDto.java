@@ -7,8 +7,10 @@ public class BoardRequestDto {
 	private String title;
 	private String content;
 	private int userCode;
+	private String userId;
 	private int recommendation;
 	private int postCode;
+	private String imagePath;
 	
 	// 기본 생성자
 	public BoardRequestDto() {
@@ -104,6 +106,14 @@ public class BoardRequestDto {
 		this.userCode = userCode;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public int getRecommendation() {
 		return recommendation;
 	}
@@ -119,5 +129,9 @@ public class BoardRequestDto {
 	public void setPostCode(int postCode) {
 		this.postCode = postCode;
 	}
+
+	public String getImagePath() { return imagePath; }
+
+	public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 	
 }

@@ -90,7 +90,7 @@ public class BoardDao {
 				int boardCode = rs.getInt(9);
 				String imagePath = rs.getString(10);
 
-				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 			}
 
 		} catch (SQLException e) {
@@ -100,64 +100,6 @@ public class BoardDao {
 		}
 
 		return responseDto;
-	}
-
-/*	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
-		try {
-			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
-
-			String sql = "INSERT INTO posts(title, content, user_code, board_code) VALUES(?,?, ?, ?)";
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, reqTitle);
-			pstmt.setString(2, reqContent);
-			pstmt.setInt(3, userDao.findUserCodeById(reqUserId));
-			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
-
-			pstmt.execute();
-
-			String[] tempCode = findPostCodeAndBoardCodeRecently().split("/");
-
-			int postCode = Integer.parseInt(tempCode[0]);
-			int boardCode = Integer.parseInt(tempCode[1]);
-
-			return readPostByBoardCodeAndPostCode(boardCode, postCode);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-
-		return null;
-	}*/
-
-	public String findPostCodeAndBoardCodeRecently() {
-		String postAndBoardCode = "";
-
-		try {
-			conn = DBManager.getConnection();
-
-			String sql = "SELECT post_code, board_code FROM posts ORDER BY write_date DESC LIMIT 1";
-
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				int postCode = rs.getInt("post_code");
-				int boardCode = rs.getInt("board_code");
-
-				postAndBoardCode = postCode + "/" + boardCode;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-
-		return postAndBoardCode;
 	}
 
 	public BoardResponseDto findBoardByName(String name) {
@@ -307,7 +249,7 @@ public class BoardDao {
 			conn = DBManager.getConnection();
 			UserDao userDao = UserDao.getInstance();
 
-			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
+			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code, image_path FROM post_res WHERE post_code=? AND board_code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, postCodeTemp);
@@ -324,8 +266,9 @@ public class BoardDao {
 				int recommendation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
+				String imagePath = rs.getString(9);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
