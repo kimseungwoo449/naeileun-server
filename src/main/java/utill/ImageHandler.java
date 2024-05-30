@@ -1,24 +1,20 @@
 package utill;
 
-import javax.servlet.http.Part;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InputStream;
+import org.json.JSONObject;
+
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
 public class ImageHandler {
 
     private final static String boundary = "===" + UUID.randomUUID() + "===";
+    private final static String imageUrl = "https://ucarecdn.com/";
 
     public static String upload(String type, long size, byte[] fileContents) {
-        String imageUrl = null;
 
         if(type.equals("image")) {
-            imageUrl = "https://ucarecdn.com/";
-
             // 1) 이미지 사이즈가 100mb 미만인지 확인
             if(size < 104857600) {
                 // 2) Upload API 파일 업로드 요청
@@ -51,6 +47,55 @@ public class ImageHandler {
             }
         }
         return imageUrl;
+    }
+
+    public static Boolean deleteImage(String imageUrl) {
+        Boolean isDelete = false;
+
+        String uuid = imageUrl.split("/")[3];
+        System.out.println("uuid : " + uuid);
+
+        if(uuid != null) {
+            // 2) Rest API 파일 삭제 요청
+            String path = "https://api.uploadcare.com/files/"+uuid+"/storage/?uuid="+uuid;
+            String apiKey = KeyManager.getDeletecareKey();
+
+            try {
+                URL url = new URL(path);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("DELETE");
+                conn.setRequestProperty("Authorization", apiKey);
+
+                // 3) 응답 받고
+                int status = conn.getResponseCode();
+                System.out.println("status : " + status);
+
+                if(status == 200) {
+                    InputStream in = conn.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+                    String data ="";
+                    while(br.ready()) {
+                        data += br.readLine() + "\n";
+                    }
+
+                    JSONObject resObj = new JSONObject(data);
+
+                    String result = resObj.getString("datetime_removed");
+                    System.out.println("datetime_removed : " + result);
+
+                    isDelete = true;
+                } else {
+
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return isDelete;
     }
 
 }
