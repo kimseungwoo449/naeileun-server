@@ -28,7 +28,7 @@ public class FindUserGroupAction implements Action{
 		JSONArray result = new JSONArray();
 		JSONObject meta = new JSONObject();
 		
-		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) { //IPAdressManager.ADMIN_KEY
 			obj.put("result",result);
 			obj.put("meta", meta);
 		} else {
@@ -46,16 +46,18 @@ public class FindUserGroupAction implements Action{
 			System.out.println(userCode);
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
-			
+			System.out.println("groupCodes :"+ groupCodes.toString());
 			StudyGroupDao sg = StudyGroupDao.getInstance();
 			
 			List<StudyGroupResponseDto> list = new ArrayList<>();
 			
 			for(String code : groupCodes) {
+				System.out.println("code :"+ code);
 				StudyGroupResponseDto study = sg.getStudyByGroupCode(code);
-				list.add(study);
+				if(study != null) {
+					list.add(study);
+				}
 			}
-			
 			result = new JSONArray(list);
 			
 			meta = new JSONObject();

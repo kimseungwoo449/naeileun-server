@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class getAllIntroductionByUserId implements Action {
+public class GetAllIntroductionByUserId implements Action {
 //    @Override
 //    public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        JSONObject resObj = new JSONObject();
@@ -98,28 +98,6 @@ public class getAllIntroductionByUserId implements Action {
         }
 
         if (introductions != null) {
-//            Object[] keys = introductions.keySet().toArray();
-//
-//            JSONObject keyObj = new JSONObject();
-//            for (int i = 0; i < keys.length; i++) {
-//                List<IntroductionResponseDto> listOfKey = introductions.get(keys[i]);
-//                Object[] tempArr = new Object[listOfKey.size()];
-//                for (int j = 0; j < listOfKey.size(); j++) {
-//                    IntroductionResponseDto targetDoc = listOfKey.get(i);
-//
-//                    JSONObject temp = new JSONObject();
-//                    temp.put("document_no", targetDoc.getDocumentNumber());
-//                    temp.put("title", targetDoc.getTitle());
-//                    temp.put("head", targetDoc.getHead());
-//                    temp.put("body", targetDoc.getBody());
-//                    temp.put("document_code", targetDoc.getDocumentCode());
-//                    temp.put("user_code", targetDoc.getUserCode());
-//                    temp.put("write_date", targetDoc.getWriteDate());
-//                    temp.put("update_date", targetDoc.getUpdateDate());
-//                    tempArr[i] = temp;
-//                }
-//                keyObj.put(keys[i].toString(), tempArr);
-//            }
             resObj.put("result",introductions);
         } else {
             resObj = null;

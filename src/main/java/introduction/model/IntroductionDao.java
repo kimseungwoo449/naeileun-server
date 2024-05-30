@@ -177,4 +177,51 @@ public class IntroductionDao {
         }
         return docCodes;
     }
+
+    public boolean deleteAllIntroductionByUserCode(IntroductionRequestDto dto) {
+        try {
+            conn = DBManager.getConnection();
+            String sql = "DELETE FROM self_introduction WHERE `user_code` = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getUserCode());
+            pstmt.execute();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public boolean updateIntroductions(List<IntroductionRequestDto> dtoList){
+        try{
+            conn = DBManager.getConnection();
+            // 자동 커밋을 false로 설정하여 트랜잭션을 시작
+            conn.setAutoCommit(false);
+
+            String sql = "UPDATE self_introduction SET head = ?, body = ?,update_date = NOW() WHERE user_code = ? AND document_no = ?";
+            pstmt = conn.prepareStatement(sql);
+
+            for (IntroductionRequestDto dto : dtoList) {
+                pstmt.setString(1, dto.getHead());
+                pstmt.setString(2, dto.getBody());
+                pstmt.setInt(3, dto.getUserCode());
+                pstmt.setInt(4, dto.getDocumentNumber());
+
+                pstmt.addBatch();
+            }
+
+            // 모든 업데이트 쿼리를 배치로 실행
+            pstmt.executeBatch();
+            // 트랜잭션 커밋
+            conn.commit();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
 }

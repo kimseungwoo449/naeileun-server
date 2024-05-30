@@ -30,11 +30,12 @@ public class FindStudyBoardAction implements Action{
 		request.setCharacterEncoding("UTF-8");
 		
 		JSONObject obj = new JSONObject();
-		JSONArray result = null;
-		JSONObject meta = null;
+		JSONArray result ;
+		JSONObject meta ;
 		
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-			
+			result = null;
+			meta = null;
 		} else {
 
 			InputStream in = request.getInputStream();

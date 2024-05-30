@@ -115,7 +115,6 @@ public class UserDao {
 				String email = rs.getString(7);
 				String encyptedPassword = rs.getString(8);
 
-
 				if (PasswordCrypto.decrypt(password, encyptedPassword)) {
 					user = new UserResponseDto(userCode, id, password ,name, resident_number, phone, admin, email);
 				}
@@ -236,8 +235,8 @@ public class UserDao {
 			System.out.println(sql);
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, field);
-			pstmt.setString(2, value);
+			pstmt.setString(1, value);
+			pstmt.setString(2, userId);
 			pstmt.execute();
 			System.out.println("업데이트 성공");
 		} catch (SQLException e) {

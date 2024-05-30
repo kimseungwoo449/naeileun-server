@@ -57,8 +57,7 @@ public class LoginAction implements Action{
 			message = "User login is failed.";
 		} 
 		if(userDto != null) {
-			HttpSession session = request.getSession();
-            session.setAttribute("user", userDto);
+
 		    resObj.put("user", new JSONObject(json));
 		}
 		System.out.println(json);
