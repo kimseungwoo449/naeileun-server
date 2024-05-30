@@ -40,6 +40,12 @@ public class ActionFactory {
 			else if(method.equals("DELETE")) {
 				action = new DeleteImageAction();
 			}
+			else if(method.equals("PUT")) {
+				System.out.println("PUT command : " + command);
+				if(command.equals("recommendation")){
+					action = new UpdateRecommendationAction();
+				}
+			}
 		}
 
 		return action;
