@@ -38,7 +38,8 @@ public class ActionFactory {
 				}
 			}
 			else if(method.equals("DELETE")) {
-				action = new DeleteImageAction();
+				System.out.println("DELETE command : " + command);
+				action = new DeletePostAction();
 			}
 			else if(method.equals("PUT")) {
 				System.out.println("PUT command : " + command);
