@@ -2,6 +2,7 @@ package utill;
 
 import org.json.JSONObject;
 
+import javax.servlet.http.Part;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,40 +11,64 @@ import java.util.UUID;
 public class ImageHandler {
 
     private final static String boundary = "===" + UUID.randomUUID() + "===";
-    private final static String imageUrl = "https://ucarecdn.com/";
+    private final static String imageEndpoint = "https://ucarecdn.com/";
 
-    public static String upload(String type, long size, byte[] fileContents) {
+    public static String upload(Part part) throws IOException {
+        String imageUrl = null;
 
-        if(type.equals("image")) {
-            // 1) 이미지 사이즈가 100mb 미만인지 확인
-            if(size < 104857600) {
-                // 2) Upload API 파일 업로드 요청
-                String path = "https://upload.uploadcare.com/base/";
-                String apiKey = KeyManager.getUploadcareKey();
+        long size = part.getSize();
+        String type = part.getContentType().split("/")[0];
 
-                try {
-                    URL url = new URL(path);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        if(size < 10485760 && type.equals("image")) {   // 10mb 미만 (Demo plan Limit)
+            // Request
+            String apiKey = KeyManager.getUploadcareKey();
 
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                    conn.setRequestProperty("UPLOADCARE_PUB_KEY", apiKey);
+            String path = "https://upload.uploadcare.com/base/";
+            URL url = new URL(path);
 
-                    conn.setDoOutput(true);
-                    DataOutput out = (DataOutput) conn.getOutputStream();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-                    out.writeBytes(boundary);
-                    out.writeBytes("Content-Disposition: form-data; filename=");
-                    out.write(fileContents);
+            conn.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 
-                    // 3) 응답으로 저장된 이미지의 UUID 받고
-                    int status = conn.getResponseCode();
-                    System.out.println("status : " + status);
-                    // 4) url 완성
+            try {
+                // API key
+                out.writeBytes("--" + boundary + "\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"UPLOADCARE_PUB_KEY\"\r\n\r\n");
+                out.writeBytes(apiKey + "\r\n");
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                // File data
+                out.writeBytes("--" + boundary + "\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"" + part.getSubmittedFileName() + "\"\r\n");
+                out.writeBytes("Content-Type: " + part.getContentType() + "\r\n\r\n");
+
+                InputStream in = part.getInputStream();
+                out.write(in.readAllBytes());
+                in.close();
+
+                out.writeBytes("\r\n--" + boundary + "--\r\n");
+                out.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Response
+            int status = conn.getResponseCode();
+
+            if(status == 200) {
+                InputStream response = conn.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(response));
+
+                String source = "";
+                while(br.ready()) {
+                    source += br.readLine() + "\n";
                 }
+                JSONObject object = new JSONObject(source);
+                String uuid = object.getString("file");
+
+                imageUrl = imageEndpoint + uuid + "/";
             }
         }
         return imageUrl;
