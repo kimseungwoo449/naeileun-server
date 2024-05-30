@@ -119,4 +119,12 @@
 		<servlet-name>IntroductionServiceServlet</servlet-name>
 		<url-pattern>/self-introduction/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>CommentServiceServlet</servlet-name>
+		<servlet-class>comment.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CommentServiceServlet</servlet-name>
+		<url-pattern>/comment/*</url-pattern>
+	</servlet-mapping>
 </web-app>
