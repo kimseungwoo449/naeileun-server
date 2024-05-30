@@ -1,5 +1,6 @@
 package introduction.controller.action;
 
+import com.google.gson.Gson;
 import introduction.controller.Action;
 import introduction.model.IntroductionDao;
 import introduction.model.IntroductionRequestDto;
@@ -18,67 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 public class GetAllIntroductionByUserId implements Action {
-//    @Override
-//    public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        JSONObject resObj = new JSONObject();
-//        List<IntroductionResponseDto> introductions = null;
-//        if (!request.getHeader("Authorization").equals(IPAdressManager.ADMIN_KEY)) {
-//            resObj = null;
-//        }else{
-//            InputStream in = request.getInputStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//            String data = "";
-//
-//            while (br.ready()) {
-//                data += br.readLine() + "\n";
-//            }
-//
-//            JSONObject reqObj = new JSONObject(data);
-//            IntroductionRequestDto dto = new IntroductionRequestDto();
-//            String userId = reqObj.getString("user_id");
-//            System.out.println(userId);
-//            dto.setUserCode(userId);
-//
-//            IntroductionDao introductionDao = IntroductionDao.getInstance();
-//            introductions = introductionDao.getAllIntroductionByUserCode(dto);
-//        }
-//
-//        if(introductions!=null){
-//            Object[] tempArr  = new Object[introductions.size()];
-//
-//            for(int i =0;i<introductions.size();i++){
-//                IntroductionResponseDto targetDoc = introductions.get(i);
-//
-//                JSONObject temp = new JSONObject();
-//                temp.put("document_no",targetDoc.getDocumentNumber());
-//                temp.put("title",targetDoc.getTitle());
-//                temp.put("head",targetDoc.getHead());
-//                temp.put("body",targetDoc.getBody());
-//                temp.put("document_code",targetDoc.getDocumentCode());
-//                temp.put("user_code",targetDoc.getUserCode());
-//                temp.put("write_date",targetDoc.getWriteDate());
-//                temp.put("update_date",targetDoc.getUpdateDate());
-//                tempArr[i] = temp;
-//            }
-//            resObj.put("result",tempArr);
-//        }else{
-//            resObj=null;
-//        }
-//
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("application/json;charset=UTF-8");
-//
-//        response.getWriter().append(resObj.toString());
-//    }
 
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONObject resObj = new JSONObject();
         Map<Integer, List<IntroductionResponseDto>> introductions = null;
-        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-            resObj = null;
-        } else {
+
+        if (request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             InputStream in = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -97,15 +43,13 @@ public class GetAllIntroductionByUserId implements Action {
             introductions = introductionDao.getAllIntroductionByUserCode(dto);
         }
 
-        if (introductions != null) {
-            resObj.put("result",introductions);
-        } else {
-            resObj = null;
-        }
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(introductions);
 
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
 
-        response.getWriter().append(resObj.toString());
+        // JSON 응답을 출력에 작성
+        response.getWriter().write(jsonResponse);
     }
 }
