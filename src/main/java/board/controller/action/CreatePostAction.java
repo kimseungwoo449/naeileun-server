@@ -8,7 +8,6 @@ import utill.ImageHandler;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -18,7 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
- // 파일 업로드를 처리하기 위한 어노테이션
+// 파일 업로드를 처리하기 위한 어노테이션
 public class CreatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
