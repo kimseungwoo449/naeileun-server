@@ -21,7 +21,6 @@ public class DeleteIntroductionByDocumentCode implements Action {
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resObj = new JSONObject();
         boolean success = true;
-
         boolean status = true;
         String message = "Introduction is deleted.";
 
@@ -48,7 +47,6 @@ public class DeleteIntroductionByDocumentCode implements Action {
             }else{
                 IntroductionRequestDto dto = new IntroductionRequestDto();
                 dto.setDocumentCode(documentCode);
-
                 if(!introductionDao.deleteIntroductionByDocCode(dto)){
                     success = false;
                 }
