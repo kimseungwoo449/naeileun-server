@@ -15,6 +15,7 @@ public class BoardResponseDto {
 	private Timestamp updateDate;
 	private int recommendation;
 	private int postCode;
+	private String imagePath;
 	
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
 			String content, int userCode, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode) {
@@ -68,6 +69,19 @@ public class BoardResponseDto {
 		this.recommendation = recommendation;
 		this.postCode = postCode;
 		this.boardCode = boardCode;
+	}
+
+	public BoardResponseDto(String title, String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode, int boardCode, String imagePath) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.userId = userId;
+		this.writeDate = writeDate;
+		this.updateDate = updateDate;
+		this.recommendation = recommendation;
+		this.postCode = postCode;
+		this.boardCode = boardCode;
+		this.imagePath = imagePath;
 	}
 
 	public int getBoardCode() {
@@ -166,4 +180,7 @@ public class BoardResponseDto {
 		this.postCode = postCode;
 	}
 
+	public String getImagePath() { return imagePath; }
+
+	public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

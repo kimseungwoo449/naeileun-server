@@ -90,7 +90,7 @@ public class BoardDao {
 				int boardCode = rs.getInt(9);
 				String imagePath = rs.getString(10);
 
-				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 			}
 
 		} catch (SQLException e) {
@@ -249,7 +249,7 @@ public class BoardDao {
 			conn = DBManager.getConnection();
 			UserDao userDao = UserDao.getInstance();
 
-			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
+			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code, image_path FROM post_res WHERE post_code=? AND board_code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, postCodeTemp);
@@ -266,8 +266,9 @@ public class BoardDao {
 				int recommendation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
+				String imagePath = rs.getString(9);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
