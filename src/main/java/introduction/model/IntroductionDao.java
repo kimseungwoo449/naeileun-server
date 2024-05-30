@@ -224,4 +224,43 @@ public class IntroductionDao {
         }
         return false;
     }
+
+    public boolean deleteIntroductionByDocCode(IntroductionRequestDto dto){
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "DELETE FROM self_introduction WHERE document_code=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentCode());
+
+            pstmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public int findUserCodeByDocCode(int docCode){
+        int userCode = -1;
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT MAX(user_code) FROM self_introduction WHERE document_code = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, docCode);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                userCode = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+        return userCode;
+    }
 }

@@ -1,9 +1,6 @@
 package introduction.controller;
 
-import introduction.controller.action.CreateIntroduction;
-import introduction.controller.action.DeleteAllIntroductionByUserId;
-import introduction.controller.action.GetAllIntroductionByUserId;
-import introduction.controller.action.UpdateIntroduction;
+import introduction.controller.action.*;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -31,7 +28,7 @@ public class ActionFactory {
 			if(method.equals("GET")) {
 
 			}else if(method.equals("DELETE")) {
-
+				action = new DeleteIntroductionByDocumentCode();
 			}
 		}
 
