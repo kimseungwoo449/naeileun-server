@@ -41,24 +41,6 @@ public class ResumeResponseDto {
 		this.isNewbie = isNewbie;
 	}
 
-	public ResumeResponseDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String certificate, String language, String award,
-							 Timestamp writeDate, Timestamp updateDate) {
-		super();
-		this.resumeCode = resumeCode;
-		this.userCode = userCode;
-		this.name = name;
-		this.title = title;
-		this.userAge = userAge;
-		this.academicCareer = academicCareer;
-		this.career = career;
-		this.skill = skill;
-		this.certificate = certificate;
-		this.language = language;
-		this.award = award;
-		this.writeDate = writeDate;
-		this.updateDate = updateDate;
-	}
-	
 	public ResumeResponseDto() {
 		
 	}
