@@ -293,4 +293,43 @@ public class IntroductionDao {
 
         return  resList;
     }
+
+    public boolean deleteDocumentByDocNum(IntroductionRequestDto dto){
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "DELETE FROM self_introduction WHERE document_no=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentNumber());
+
+            pstmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public int findUserCodeByDocNum(int docNum){
+        int userCode = -1;
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT user_code FROM self_introduction WHERE document_no = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, docNum);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                userCode = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+        return userCode;
+    }
 }

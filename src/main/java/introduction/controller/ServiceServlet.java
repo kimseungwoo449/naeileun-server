@@ -11,11 +11,19 @@ public class ServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+
+
 		String method = request.getMethod();
 		String pathInfo = request.getPathInfo();
+		String command = request.getParameter("command");
+
+		System.out.println("Method: " + method);
+		System.out.println("pathInfo: " + pathInfo);
+		System.out.println("command: " + command);
 
 		ActionFactory af = ActionFactory.getInstance();
-		Action action = af.getAction(pathInfo, method);
+		Action action = af.getAction(pathInfo, method,command);
 		if(action != null) {
 			action.excute(request, response);
 		}else {
