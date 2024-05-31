@@ -82,6 +82,7 @@ public class ImageHandler {
 
         if(uuid != null) {
             // 2) Rest API 파일 삭제 요청
+            System.out.println("Rest API 파일 삭제 요청");
             String path = "https://api.uploadcare.com/files/"+uuid+"/storage/?uuid="+uuid;
             String apiKey = KeyManager.getDeletecareKey();
 
@@ -112,7 +113,7 @@ public class ImageHandler {
 
                     isDelete = true;
                 } else {
-
+                    isDelete = false;
                 }
 
 
