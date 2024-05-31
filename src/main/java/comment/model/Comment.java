@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Comment {
 	private int commentCode;
 	private int userCode;
+	private String userId;
 	private int postCode;
 	private String content;
 	private Timestamp writeDate;
@@ -35,6 +36,8 @@ public class Comment {
 	public int getUserCode() {
 		return userCode;
 	}
+
+	public String getUserId() { return userId; }
 
 	public int getPostCode() {
 		return postCode;

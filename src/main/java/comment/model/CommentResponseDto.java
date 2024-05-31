@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class CommentResponseDto {
     private int commentCode;
     private int userCode;
+    private String userId;
     private int postCode;
     private String content;
     private Timestamp writeDate;
@@ -14,9 +15,20 @@ public class CommentResponseDto {
 
     }
 
+    // userCode
     public CommentResponseDto(int commentCode, int userCode, int postCode, String content, Timestamp writeDate, Timestamp updateDate) {
         this.commentCode = commentCode;
         this.userCode = userCode;
+        this.postCode = postCode;
+        this.content = content;
+        this.writeDate = writeDate;
+        this.updateDate = updateDate;
+    }
+
+    // userId
+    public CommentResponseDto(int commentCode, String userId, int postCode, String content, Timestamp writeDate, Timestamp updateDate) {
+        this.commentCode = commentCode;
+        this.userId = userId;
         this.postCode = postCode;
         this.content = content;
         this.writeDate = writeDate;
@@ -45,6 +57,10 @@ public class CommentResponseDto {
     public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
+
+    public String getUserId() { return userId; }
+
+    public void setUserId(String userId) { this.userId = userId; }
 
     public int getPostCode() {
         return postCode;
