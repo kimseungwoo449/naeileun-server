@@ -131,5 +131,42 @@ public class GroupMemberDao {
 
 		return isValid;
 	 }
+
+	 public List<GroupMemberResponseDto> getStudyMembers(GroupMemberRequestDto groupMemberRequestDto){
+		 List<GroupMemberResponseDto> list = null;
+
+		 try{
+			 conn = DBManager.getConnection();
+			 String sql = "SELECT gm.user_code, gm.member_code,"
+			 +"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
+					 "FROM group_member gm WHERE group_code = ?";
+
+			 String groupCode = groupMemberRequestDto.getGroupCode();
+			 String adminCode = groupMemberRequestDto.getUserCode();
+
+			 pstmt = conn.prepareStatement(sql);
+			 pstmt.setString(1, groupCode);
+			 rs = pstmt.executeQuery();
+
+			 list = new ArrayList<>();
+			 while(rs.next()) {
+				GroupMemberResponseDto dto = new GroupMemberResponseDto();
+				 String userCode = rs.getString(1);
+				 String memberCode = rs.getString(2);
+				 String id = rs.getString(3);
+
+				 dto.setUserCode(userCode);
+				 dto.setMemberCode(memberCode);
+				 dto.setUserId(id);
+				 list.add(dto);
+			 }
+		 }catch(SQLException e){
+			e.printStackTrace();
+		 }finally{
+			 DBManager.close(conn, pstmt, rs);
+		 }
+
+		 return list;
+	 }
 	
 }
