@@ -1,7 +1,6 @@
 package board.controller.action;
 
 import board.controller.Action;
-import board.controller.action.DeleteImageAction;
 import board.model.BoardDao;
 import org.json.JSONObject;
 import utill.KeyManager;
@@ -21,6 +20,7 @@ public class DeletePostAction implements Action {
 
         JSONObject resObj = new JSONObject();
         boolean status = false;
+        boolean isDelete = false;
 
         // JSON 본문 읽기
         InputStream in = request.getInputStream();
@@ -31,15 +31,17 @@ public class DeletePostAction implements Action {
         while (br.ready()) {
             data += br.readLine() + "\n";
         }
-        System.out.println("resumeData : "+data);
+        System.out.println("postData : "+data);
         JSONObject reqObj = new JSONObject(data);
         String userId = reqObj.getString("user_id");
         int postCode = Integer.parseInt(reqObj.getString("post_code"));
         int boardCode = Integer.parseInt(reqObj.getString("board_code"));
+        String imagePath = reqObj.getString("image_path");
 
         System.out.println("userId: " + userId);
         System.out.println("postCode: " + postCode);
         System.out.println("boardCode: " + boardCode);
+        System.out.println("imagePath: " + imagePath);
 
         // AdminKey 검증
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
@@ -55,7 +57,14 @@ public class DeletePostAction implements Action {
             System.out.println("deletePostByPostCode status: " + status);
             if(status) {
                 // 이미지 삭제
-                Action action = new DeleteImageAction();
+                isDelete = boardDao.deleteImage(imagePath);
+
+                if(imagePath.equals("") && !isDelete){
+                    status = true;
+                }
+                else if(!imagePath.equals("") && isDelete){
+                    status = true;
+                }
             }
         }
 
