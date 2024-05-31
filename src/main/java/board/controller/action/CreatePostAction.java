@@ -21,7 +21,7 @@ import java.util.List;
 public class CreatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("게시글 생성하기?");
+        System.out.println("게시글 생성하기");
 
         JSONObject resObj = new JSONObject();
         BoardDao boardDao = BoardDao.getInstance();
