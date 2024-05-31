@@ -1,5 +1,6 @@
 package study.controller.action.studyGroup;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
 import study.model.groupMember.GroupMemberDao;
@@ -24,9 +25,11 @@ public class GetStudyMemberAction implements Action {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean state = false;
+        JSONArray result = null;
+        JSONObject meta = null;
         String message = null;
         String groupCode = null;
+
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
@@ -54,15 +57,17 @@ public class GetStudyMemberAction implements Action {
             List<GroupMemberResponseDto> list = gmDao.getStudyMembers(gmReqDto);
 
             boolean isValid = list.isEmpty() ? false : true;
-            state = isValid;
             if(!isValid) {
                 message = "Find Group Member failed.";
             }else{
                 message = "Find Group Member success.";
+                result = new JSONArray(list);
+                meta = new JSONObject(list.size());
             }
         }
 
-        obj.put("state", state);
+        obj.put("result", result);
+        obj.put("meta", meta);
         obj.put("message", message);
         obj.put("groupCode",groupCode);
 
