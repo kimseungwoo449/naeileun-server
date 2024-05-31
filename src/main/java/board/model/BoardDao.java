@@ -1,17 +1,12 @@
 package board.model;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import user.model.UserDao;
 import utill.DBManager;
-
-import javax.servlet.http.Part;
+import utill.ImageHandler;
 
 public class BoardDao {
 	
@@ -297,6 +292,20 @@ public class BoardDao {
 			} finally {
 				DBManager.close(conn, pstmt);
 			}
+		}
+
+		return isDelete;
+	}
+
+	public boolean deleteImage(String imageUrl) {
+		System.out.println("이미지 삭제하기");
+		boolean isDelete = false;
+
+		if(!imageUrl.equals("")) {
+			isDelete = ImageHandler.deleteImage(imageUrl);
+			System.out.println("isDelete : " + isDelete);
+		}else {
+			System.out.println("이미지 없음");
 		}
 
 		return isDelete;
