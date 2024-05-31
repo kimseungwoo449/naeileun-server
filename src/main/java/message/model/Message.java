@@ -6,17 +6,18 @@ public class Message {
     private int messageCode;
     private int sendUserCode;
     private int receiveUserCode;
-    private String title;
     private String content;
     private Timestamp sendDate;
+    private boolean isChecked;
 
-    public Message(int messageCode, int sendUserCode, int receiveUserCode, String title, String content, Timestamp sendDate) {
+
+    public Message(int messageCode, int sendUserCode, int receiveUserCode,  String content, Timestamp sendDate, boolean isChecked) {
         this.messageCode = messageCode;
         this.sendUserCode = sendUserCode;
         this.receiveUserCode = receiveUserCode;
-        this.title = title;
         this.content = content;
         this.sendDate = sendDate;
+        this.isChecked = isChecked;
     }
 
     public Message() {
@@ -34,10 +35,6 @@ public class Message {
         return receiveUserCode;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getContent() {
         return content;
     }
@@ -45,4 +42,6 @@ public class Message {
     public Timestamp getSendDate() {
         return sendDate;
     }
+
+    public boolean isChecked() {return isChecked;}
 }

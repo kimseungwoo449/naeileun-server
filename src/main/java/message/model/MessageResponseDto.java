@@ -8,17 +8,17 @@ public class MessageResponseDto {
     private int messageCode;
     private int sendUserCode;
     private int receiveUserCode;
-    private String title;
     private String content;
     private Timestamp sendDate;
+    private boolean isChecked;
 
-    public MessageResponseDto(int messageCode, int sendUserCode, int receiveUserCode, String title, String content, Timestamp sendDate) {
+    public MessageResponseDto(int messageCode, int sendUserCode, int receiveUserCode, String content, Timestamp sendDate, boolean isChecked) {
         this.messageCode = messageCode;
         this.sendUserCode = sendUserCode;
         this.receiveUserCode = receiveUserCode;
-        this.title = title;
         this.content = content;
         this.sendDate = sendDate;
+        this.isChecked = isChecked;
     }
 
     public MessageResponseDto() {
@@ -58,13 +58,6 @@ public class MessageResponseDto {
         this.receiveUserCode = receiveUserCode;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getContent() {
         return content;
@@ -80,5 +73,13 @@ public class MessageResponseDto {
 
     public void setSendDate(Timestamp sendDate) {
         this.sendDate = sendDate;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

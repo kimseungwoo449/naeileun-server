@@ -1,6 +1,8 @@
 package message.controller;
 
 
+import message.controller.action.SendMessage;
+
 public class ActionFactory {
     private ActionFactory() {
 
@@ -17,7 +19,7 @@ public class ActionFactory {
             if(method.equals("GET")) {
 
             }else if(method.equals("POST")) {
-
+                action = new SendMessage();
             }
         } else {
             if(method.equals("GET")) {

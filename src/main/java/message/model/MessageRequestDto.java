@@ -1,5 +1,6 @@
 package message.model;
 
+import org.json.JSONObject;
 import user.model.UserDao;
 
 import java.sql.Timestamp;
@@ -8,20 +9,27 @@ public class MessageRequestDto {
     private int messageCode;
     private int sendUserCode;
     private int receiveUserCode;
-    private String title;
     private String content;
     private Timestamp sendDate;
+    private boolean isChecked;
 
-    public MessageRequestDto(int messageCode, int sendUserCode, int receiveUserCode, String title, String content, Timestamp sendDate) {
+    public MessageRequestDto(int messageCode, int sendUserCode, int receiveUserCode, String content, Timestamp sendDate ,boolean isChecked) {
         this.messageCode = messageCode;
         this.sendUserCode = sendUserCode;
         this.receiveUserCode = receiveUserCode;
-        this.title = title;
         this.content = content;
         this.sendDate = sendDate;
+        this.isChecked = isChecked;
     }
 
     public MessageRequestDto() {
+    }
+
+    public MessageRequestDto(JSONObject reqObj){
+        UserDao userDao = UserDao.getInstance();
+        this.sendUserCode = userDao.findUserCodeById(reqObj.getString("user_id"));
+        this.receiveUserCode = userDao.findUserCodeById(reqObj.getString("target_id"));
+        this.content = reqObj.getString("content");
     }
 
     public int getMessageCode() {
@@ -58,13 +66,6 @@ public class MessageRequestDto {
         this.receiveUserCode = receiveUserCode;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getContent() {
         return content;
@@ -80,5 +81,13 @@ public class MessageRequestDto {
 
     public void setSendDate(Timestamp sendDate) {
         this.sendDate = sendDate;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

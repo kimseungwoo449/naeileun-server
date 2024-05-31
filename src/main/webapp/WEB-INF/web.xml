@@ -136,4 +136,13 @@
 		<servlet-name>JobPostingServiceServlet</servlet-name>
 		<url-pattern>/job/*</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>MessageServiceServlet</servlet-name>
+		<servlet-class>message.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MessageServiceServlet</servlet-name>
+		<url-pattern>/message/*</url-pattern>
+	</servlet-mapping>
 </web-app>
