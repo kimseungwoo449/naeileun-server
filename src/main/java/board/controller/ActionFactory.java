@@ -43,8 +43,10 @@ public class ActionFactory {
 			}
 			else if(method.equals("PUT")) {
 				System.out.println("PUT command : " + command);
-				if(command.equals("recommendation")){
+				if(command.equals("/recommendation")) {
 					action = new UpdateRecommendationAction();
+				}else if(command.equals("/update")) {
+					action = new UpdatePostAction();
 				}
 			}
 		}
