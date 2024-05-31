@@ -28,7 +28,7 @@ public class ActionFactory{
 		}else if(command.equals("/createStudy")){
 			action = new CreateStudyAction();
 		}else if(command.equals("/getMember")){
-
+			action = new GetStudyMemberAction();
 		}
 		
 		return action;
