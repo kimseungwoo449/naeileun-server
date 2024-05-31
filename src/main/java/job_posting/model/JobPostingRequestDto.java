@@ -6,21 +6,22 @@ public class JobPostingRequestDto {
     private int postingId;
     private int userCode;
     private String companyName;
+    private String jobTitle;
     private String position;
-    private Date startDate;
-    private Date endDate;
+    private Date applicationStart;
+    private Date applicationEnd;
     private String description;
     private String status;
     public JobPostingRequestDto() {
 
     }
-    public JobPostingRequestDto(int postingId, int userCode, String companyName, String position, Date startDate, Date endDate, String description, String status) {
+    public JobPostingRequestDto(int postingId, int userCode, String companyName, String position, Date applicationStart, Date applicationEnd, String description, String status) {
         this.postingId = postingId;
         this.userCode = userCode;
         this.companyName = companyName;
         this.position = position;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.applicationStart = applicationStart;
+        this.applicationEnd = applicationEnd;
         this.description = description;
         this.status = status;
     }
@@ -49,6 +50,14 @@ public class JobPostingRequestDto {
         this.companyName = companyName;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
     public String getPosition() {
         return position;
     }
@@ -57,20 +66,20 @@ public class JobPostingRequestDto {
         this.position = position;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getApplicationStart() {
+        return applicationStart;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setApplicationStart(Date applicationStart) {
+        this.applicationStart = applicationStart;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getApplicationEnd() {
+        return applicationEnd;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setApplicationEnd(Date endDate) {
+        this.applicationEnd = endDate;
     }
 
     public String getDescription() {
