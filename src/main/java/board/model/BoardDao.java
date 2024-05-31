@@ -310,4 +310,89 @@ public class BoardDao {
 
 		return isDelete;
 	}
+
+	public BoardResponseDto UpdatePost(String reqTitle, String reqContent, String reqUserId, int reqPostCode, String reqImagePath) {
+		BoardResponseDto responseDto = null;
+
+		UserDao userDao = UserDao.getInstance();
+		int userCode = userDao.findUserCodeById(reqUserId);
+		System.out.println("UpdatePost userCode : " + userCode);
+
+		boolean isSuccess = false;
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "";
+			if(reqImagePath.equals("")) {
+				sql = "UPDATE posts SET title = ?, content=? WHERE post_code=?";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, reqTitle);
+				pstmt.setString(2, reqContent);
+				pstmt.setInt(3, reqPostCode);
+			}
+			else if(!reqImagePath.equals("")) {
+				sql = "UPDATE posts SET title = ?, content=?, image_path=? WHERE post_code=?";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, reqTitle);
+				pstmt.setString(2, reqContent);
+				pstmt.setString(3, reqImagePath);
+				pstmt.setInt(4, reqPostCode);
+			}
+
+			pstmt.execute();
+			isSuccess = true;
+			System.out.println("UpdatePost isSuccess : " + isSuccess);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+
+			if(isSuccess) {
+				System.out.println("reqPostCode : " + reqPostCode);
+				responseDto = findPostByPostCode(reqPostCode);
+			}
+		}
+
+		return responseDto;
+	}
+
+	private BoardResponseDto findPostByPostCode(int resPostCode) {
+		BoardResponseDto responseDto = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM post_res WHERE post_code =?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, resPostCode);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				String title = rs.getString(1);
+				String content = rs.getString(2);
+				String userId = rs.getString(4);
+				Timestamp writeDate = rs.getTimestamp(5);
+				Timestamp updateDate = rs.getTimestamp(6);
+				int recommendation = rs.getInt(7);
+				int postCode = rs.getInt(8);
+				int boardCode = rs.getInt(9);
+				String imagePath = rs.getString(10);
+
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return responseDto;
+	}
 }
