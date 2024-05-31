@@ -53,7 +53,7 @@ public class GetStudyMemberAction implements Action {
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
             List<GroupMemberResponseDto> list = gmDao.getStudyMembers(gmReqDto);
 
-            boolean isValid = list.size() == 0 ? false : true;
+            boolean isValid = list.isEmpty() ? false : true;
             state = isValid;
             if(!isValid) {
                 message = "Find Group Member failed.";
