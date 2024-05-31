@@ -161,7 +161,7 @@ public class GroupMemberDao {
 				 list.add(dto);
 			 }
 		 }catch(SQLException e){
-
+			e.printStackTrace();
 		 }finally{
 			 DBManager.close(conn, pstmt, rs);
 		 }
