@@ -43,14 +43,16 @@ public class UpdateIntroduction implements Action {
             List<IntroductionRequestDto> dtoList = new ArrayList<>();
             for (int i = 0; i < reqObj.length(); i++) {
                 JSONObject obj = reqObj.getJSONObject(i);
+                String title = obj.getString("title");
                 String userId = obj.getString("user_id");
-                int docNumber = obj.getInt("document_no");
+                int docCode = obj.getInt("document_code");
                 String head = obj.getString("head");
                 String body = obj.getString("body");
                 IntroductionRequestDto dto = new IntroductionRequestDto();
+                dto.setTitle(title);
                 dto.setUserCode(userId);
                 dto.setBody(body);
-                dto.setDocumentNumber(docNumber);
+                dto.setDocumentCode(docCode);
                 dto.setHead(head);
                 dtoList.add(dto);
             }
