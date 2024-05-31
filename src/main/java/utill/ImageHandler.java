@@ -14,6 +14,7 @@ public class ImageHandler {
     private final static String imageEndpoint = "https://ucarecdn.com/";
 
     public static String upload(Part part) throws IOException {
+        System.out.println("API로 이미지 업로드하기");
         String imageUrl = null;
 
         long size = part.getSize();
