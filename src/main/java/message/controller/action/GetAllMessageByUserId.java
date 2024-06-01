@@ -25,7 +25,7 @@ public class GetAllMessageByUserId implements Action {
             resMap = null;
         } else {
             List<MessageResponseDto> resDtoArr = null;
-            String userId = request.getParameter("user_id");
+            String userId = request.getParameter("user");
             MessageRequestDto dto = new MessageRequestDto();
             dto.setReceiveUserCode(userId); // 받은 유저가 로그인 유저인경우
             dto.setSendUserCode(userId); // 보낸 유저가 로그인 유저인 경우
