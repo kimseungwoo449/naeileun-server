@@ -53,4 +53,37 @@ public class CommentDao {
 		return isSuccess;
 	}
 
+	public List<CommentResponseDto> readAllCommentByPostCode(int reqPostCode) {
+		List<CommentResponseDto> commentList = new ArrayList<>();
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM comment_res WHERE post_code=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, reqPostCode);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int commentCode = rs.getInt(1);
+				String userId = rs.getString(3);
+				String content = rs.getString(4);
+				int postCode = rs.getInt(5);
+				Timestamp writeDate = rs.getTimestamp(6);
+				Timestamp updateDate = rs.getTimestamp(7);
+
+				CommentResponseDto comment = new CommentResponseDto(commentCode, userId, postCode, content, writeDate, updateDate);
+				commentList.add(comment);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return commentList;
+	}
+
 }
