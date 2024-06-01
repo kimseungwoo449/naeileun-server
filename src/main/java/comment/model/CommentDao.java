@@ -109,4 +109,26 @@ public class CommentDao {
 		return commentList;
 	}
 
+	public boolean deleteComment(int reqCommentCode) {
+		boolean isSuccess = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM comment WHERE comment_code=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, reqCommentCode);
+
+			pstmt.execute();
+			isSuccess = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isSuccess;
+	}
+
 }
