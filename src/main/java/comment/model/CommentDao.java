@@ -29,7 +29,7 @@ public class CommentDao {
 		return instance;
 	}
 	
-	public Boolean createComment(CommentRequestDto commentRequestDto) {
+	public boolean createComment(CommentRequestDto commentRequestDto) {
 		boolean isSuccess = false;
 
 		try {
@@ -41,6 +41,29 @@ public class CommentDao {
 			pstmt.setInt(1, commentRequestDto.getUserCode());
 			pstmt.setString(2, commentRequestDto.getContent());
 			pstmt.setInt(3, commentRequestDto.getPostCode());
+
+			pstmt.execute();
+			isSuccess = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isSuccess;
+	}
+
+	public boolean updateComment(CommentRequestDto commentRequestDto) {
+		boolean isSuccess = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE comment SET content = ? WHERE comment_code = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, commentRequestDto.getContent());
+			pstmt.setInt(2, commentRequestDto.getCommentCode());
 
 			pstmt.execute();
 			isSuccess = true;
