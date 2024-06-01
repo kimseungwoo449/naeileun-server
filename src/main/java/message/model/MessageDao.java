@@ -70,13 +70,16 @@ public class MessageDao {
     public boolean refineIsChecked(MessageRequestDto req) {
         try{
             conn = DBManager.getConnection();
+            System.out.println("sendUserCode : " + req.getSendUserCode());
+            System.out.println("receiveUserCode : " + req.getReceiveUserCode());
 
-            String sql = "UPDATE messages SET is_checked=true WHERE send_user_code = ? AND receive_user_code = ?";
+            String sql = "UPDATE messages SET is_checked=TRUE WHERE send_user_code = ? AND receive_user_code = ?";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, req.getSendUserCode());
             pstmt.setInt(2, req.getReceiveUserCode());
 
+            pstmt.execute();
             return true;
         }catch (Exception e){
             e.printStackTrace();
