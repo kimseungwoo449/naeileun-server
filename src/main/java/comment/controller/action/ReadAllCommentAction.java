@@ -42,7 +42,7 @@ public class ReadAllCommentAction implements Action {
             System.out.println("CommentData : "+data);
 
             JSONObject object = new JSONObject(data);
-            int postCode = Integer.parseInt(object.getString("post_code"));
+            int postCode = object.getInt("post_code");
 
             CommentDao commentDao = CommentDao.getInstance();
 

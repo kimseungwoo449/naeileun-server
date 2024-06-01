@@ -50,7 +50,7 @@ public class CreateCommentAction implements Action {
 
             JSONObject object = new JSONObject(data);
             String userId = object.getString("user_id");
-            int postCode = Integer.parseInt(object.getString("post_code"));
+            int postCode = object.getInt("post_code");
             String content = object.getString("content");
 
             System.out.println("userId : "+userId);
