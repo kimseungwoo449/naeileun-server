@@ -5,6 +5,9 @@ import utill.DBManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageDao {
     private static MessageDao instance = new MessageDao();
@@ -33,5 +36,34 @@ public class MessageDao {
             DBManager.close(conn, pstmt);
         }
         return false;
+    }
+
+    public List<MessageResponseDto> getMessages(MessageRequestDto req) {
+        List<MessageResponseDto> res = new ArrayList<MessageResponseDto>();
+        try{
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT * FROM messages WHERE send_user_code=? OR receive_user_code=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, req.getSendUserCode());
+            pstmt.setInt(2, req.getReceiveUserCode());
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                int messageCode = rs.getInt("message_code");
+                int sendUserCode = rs.getInt("send_user_code");
+                int receiveUserCode = rs.getInt("receive_user_code");
+                String content = rs.getString("content");
+                Timestamp sendDate = rs.getTimestamp("send_date");
+                boolean isChecked = rs.getBoolean("is_checked");
+
+                MessageResponseDto dto = new MessageResponseDto(messageCode, sendUserCode, receiveUserCode, content, sendDate, isChecked);
+                res.add(dto);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt,rs);
+        }
+        return res;
     }
 }
