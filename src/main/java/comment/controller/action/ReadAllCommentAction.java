@@ -30,19 +30,7 @@ public class ReadAllCommentAction implements Action {
         } else {
             System.out.println("전체 댓글 가져오기");
 
-            InputStream in = request.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String data = "";
-
-            while (br.ready()) {
-                data += br.readLine() + "\n";
-            }
-            data = data.substring(0, data.length() - 1);
-            System.out.println("CommentData : "+data);
-
-            JSONObject object = new JSONObject(data);
-            int postCode = object.getInt("post_code");
+            int postCode = Integer.parseInt(request.getParameter("post_code"));
 
             CommentDao commentDao = CommentDao.getInstance();
 
@@ -50,7 +38,6 @@ public class ReadAllCommentAction implements Action {
 
             JSONObject meta = new JSONObject();
             meta.put("total_count", commentList.size());
-            meta.put("pageable_count", 10);
 
             JSONArray result = new JSONArray(commentList);
 
