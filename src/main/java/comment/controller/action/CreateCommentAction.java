@@ -9,6 +9,7 @@ import comment.model.CommentResponseDto;
 import org.json.JSONObject;
 import resume.model.ResumeDao;
 import resume.model.ResumeRequestDto;
+import user.model.UserDao;
 import utill.ImageHandler;
 import utill.KeyManager;
 
@@ -48,9 +49,16 @@ public class CreateCommentAction implements Action {
             System.out.println("CommentData : "+data);
 
             JSONObject object = new JSONObject(data);
-            int userCode = Integer.parseInt(object.getString("user_code"));
+            String userId = object.getString("user_id");
             int postCode = Integer.parseInt(object.getString("post_code"));
             String content = object.getString("content");
+
+            System.out.println("userId : "+userId);
+            System.out.println("postCode : "+postCode);
+            System.out.println("content : "+content);
+
+            UserDao userDao = UserDao.getInstance();
+            int userCode = userDao.findUserCodeById(userId);
 
             CommentRequestDto requestDto = new CommentRequestDto(userCode, postCode, content);
 
