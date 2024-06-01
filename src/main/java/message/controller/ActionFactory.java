@@ -1,6 +1,8 @@
 package message.controller;
 
 
+import message.controller.action.CheckMessages;
+import message.controller.action.GetAllMessageByUserId;
 import message.controller.action.SendMessage;
 
 public class ActionFactory {
@@ -17,13 +19,15 @@ public class ActionFactory {
 
         if (pathInfo == null) {
             if(method.equals("GET")) {
-
+                action = new GetAllMessageByUserId();
             }else if(method.equals("POST")) {
                 action = new SendMessage();
+            }else if(method.equals("PUT")) {
+                action = new CheckMessages();
             }
         } else {
             if(method.equals("GET")) {
-
+                action = new GetAllMessageByUserId();
             }
         }
 
