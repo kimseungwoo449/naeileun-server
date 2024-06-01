@@ -1,6 +1,7 @@
 package comment.controller;
 
 import comment.controller.action.CreateCommentAction;
+import comment.controller.action.ReadAllCommentAction;
 
 public class ActionFactory {
 	private ActionFactory() {
@@ -16,7 +17,7 @@ public class ActionFactory {
 
 		if(command == null) {
 			if(method.equals("GET")){
-
+				action = new ReadAllCommentAction();
 			}
 		} else {
 			String[] commands = command.split("/");
@@ -24,12 +25,8 @@ public class ActionFactory {
 			if(method.equals("POST")) {
 				action = new CreateCommentAction();
 			}
-			else if(method.equals("GET") && commands.length > 2) {
-				if(commands.length == 3) {
-
-				}else if(commands.length == 4) {
-
-				}
+			else if(method.equals("GET")) {
+				action = new ReadAllCommentAction();
 			}
 		}
 
