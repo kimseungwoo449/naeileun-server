@@ -66,4 +66,24 @@ public class MessageDao {
         }
         return res;
     }
+
+    public boolean refineIsChecked(MessageRequestDto req) {
+        try{
+            conn = DBManager.getConnection();
+
+            String sql = "UPDATE messages SET is_checked=true WHERE send_user_code = ? AND receive_user_code = ?";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, req.getSendUserCode());
+            pstmt.setInt(2, req.getReceiveUserCode());
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+
+        return false;
+    }
 }
