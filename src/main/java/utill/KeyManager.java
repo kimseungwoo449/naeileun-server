@@ -28,4 +28,17 @@ public class KeyManager {
         }
         return key;
     }
+
+    public static String getDeletecareKey() {
+        String key ="";
+        try {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:comp/env");
+            key = (String) envContext.lookup("DELETECARE_KEY");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return key;
+    }
 }

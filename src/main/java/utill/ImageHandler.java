@@ -14,6 +14,7 @@ public class ImageHandler {
     private final static String imageEndpoint = "https://ucarecdn.com/";
 
     public static String upload(Part part) throws IOException {
+        System.out.println("API로 이미지 업로드하기");
         String imageUrl = null;
 
         long size = part.getSize();
@@ -82,6 +83,7 @@ public class ImageHandler {
 
         if(uuid != null) {
             // 2) Rest API 파일 삭제 요청
+            System.out.println("Rest API 파일 삭제 요청");
             String path = "https://api.uploadcare.com/files/"+uuid+"/storage/?uuid="+uuid;
             String apiKey = KeyManager.getDeletecareKey();
 
@@ -112,7 +114,7 @@ public class ImageHandler {
 
                     isDelete = true;
                 } else {
-
+                    isDelete = false;
                 }
 
 

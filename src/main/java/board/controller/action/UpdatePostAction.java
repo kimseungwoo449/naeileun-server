@@ -17,11 +17,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-// 파일 업로드를 처리하기 위한 어노테이션
-public class CreatePostAction implements Action {
+public class UpdatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("게시글 생성하기");
+        System.out.println("게시글 수정하기");
 
         JSONObject resObj = new JSONObject();
         BoardDao boardDao = BoardDao.getInstance();
@@ -38,16 +37,16 @@ public class CreatePostAction implements Action {
             String title = "";
             String content = "";
             String userId = "";
-            String boardCate = "";
+            String postCode = "";
             String imageUrl = "";
+            String currentImagePath = "";
 
             for(Part part : parts) {
                 String name = part.getName();
-
+                System.out.println("name : " + name);
                 if(!name.equals("file")) {
                     InputStream in = part.getInputStream();
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
 
                     String data = "";
                     while(br.ready()) {
@@ -66,25 +65,43 @@ public class CreatePostAction implements Action {
                     else if(name.equals("user_id")) {
                         userId = data;
                         System.out.println("userId : " + userId);
-                    }else if(name.equals("board_code")) {
-                        boardCate = data;
                     }
+                    else if(name.equals("post_code")) {
+                        postCode = data;
+                    }
+                    else if(name.equals("image_path")){
+                        System.out.println("data : " + data);
+                        currentImagePath = data.equals("null") ? "" : data;
+                        System.out.println("currentImagePath : " + currentImagePath);
+                    }
+
                     br.close();
                     in.close();
 
-
                 } else {
+                    boolean isDeleted = boardDao.deleteImage(currentImagePath);
+                    System.out.println("isDeleted : " + isDeleted);
+
                     imageUrl = ImageHandler.upload(part);
+                    System.out.println("imageUrl : " + imageUrl);
+                    System.out.println("ImageHandler upload 빠져나오기");
                 }
             }
 
-            BoardResponseDto responseDto = boardDao.createPost(title, content, userId, boardCate, imageUrl);
+            System.out.println("for문 나오기");
+            System.out.println("title : " + title);
+            System.out.println("content : " + content);
+            System.out.println("userId : " + userId);
+            System.out.println("postCode : " + postCode);
+            System.out.println("imageUrl : " + imageUrl);
+
+            BoardResponseDto responseDto = boardDao.UpdatePost(title, content, userId, Integer.parseInt(postCode), imageUrl);
             System.out.println("CreatePost responseDto : " + responseDto);
             resObj = new JSONObject(responseDto);
         }
 
         resObj.put("status", status);
-        System.out.println("CreatePost resObj : " + resObj);
+        System.out.println("UpdatePost resObj : " + resObj);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().append(resObj.toString());
