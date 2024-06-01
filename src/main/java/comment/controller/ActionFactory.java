@@ -4,7 +4,6 @@ import comment.controller.action.CreateCommentAction;
 import comment.controller.action.DeleteCommentAction;
 import comment.controller.action.ReadAllCommentAction;
 import comment.controller.action.UpdateCommentAction;
-import user.controller.action.user.DeleteAction;
 
 public class ActionFactory {
 	private ActionFactory() {
