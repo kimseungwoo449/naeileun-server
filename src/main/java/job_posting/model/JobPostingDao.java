@@ -21,7 +21,9 @@ public class JobPostingDao {
 
     // 2. 단일 인스턴스를 생성 (클래스 내부에서)
     private static JobPostingDao instance = new JobPostingDao();
-
+    public static JobPostingDao getInstance() {
+        return instance;
+    }
     public List<JobPostingResponseDto> findMyJobPostingAll(String userId) {
 
         List<JobPostingResponseDto> list = new ArrayList<JobPostingResponseDto>();
@@ -30,9 +32,9 @@ public class JobPostingDao {
             conn = DBManager.getConnection();
 
             // 쿼리할 준비
-            String sql = "SELECT posting_id, user_code , company_name,job_title, application_start, application_end, job_description , status FROM job_posting";
+            String sql = "SELECT posting_id, user_code , company_name,job_title, application_start, application_end, job_description , status FROM job_posting WHERE user_id=?";
             pstmt = conn.prepareStatement(sql);
-
+            pstmt.setString(1, userId);
             // 쿼리 실행
             rs = pstmt.executeQuery();
 
@@ -58,4 +60,27 @@ public class JobPostingDao {
         }
         return list;
     }
+    public JobPostingResponseDto createJobPosting(JobPostingRequestDto jobPost){
+        JobPostingResponseDto dto = null;
+        try {
+            conn = DBManager.getConnection();
+            String sql = "INSERT INTO job-posting(user_code , company_name,job_title, application_start, application_end, job_description) VALUES(?,?,?,?,?,?)";;
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,jobPost.getUserCode());
+            pstmt.setString(2,jobPost.getCompanyName());
+            pstmt.setString(3,jobPost.getJobTitle());
+            pstmt.setDate(4,jobPost.getApplicationStart());
+            pstmt.setDate(5,jobPost.getApplicationEnd());
+            pstmt.setString(6,jobPost.getDescription());
+
+            pstmt.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return dto;
+    }
+
 }
