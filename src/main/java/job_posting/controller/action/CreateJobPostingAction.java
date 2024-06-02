@@ -1,6 +1,7 @@
 package job_posting.controller.action;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import job_posting.controller.Action;
 import job_posting.model.JobPostingDao;
 import job_posting.model.JobPostingRequestDto;
@@ -18,6 +19,8 @@ import java.io.InputStreamReader;
 public class CreateJobPostingAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("ok");
+        System.out.println("10");
         InputStream in = request.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -25,9 +28,12 @@ public class CreateJobPostingAction implements Action {
         while(br.ready()){
             data += br.readLine() + "\n";
         }
+        System.out.println("data: " + data);
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .create();
 
-        Gson gson = new Gson();
-        JobPostingRequestDto jobPost = gson.fromJson(data.toString(), JobPostingRequestDto.class);
+        JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
 
         // Create user
         JobPostingDao userDao = JobPostingDao.getInstance();

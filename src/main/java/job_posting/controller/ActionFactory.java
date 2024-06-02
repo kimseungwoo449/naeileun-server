@@ -4,7 +4,7 @@ package job_posting.controller;
 import job_posting.controller.action.CreateJobPostingAction;
 import job_posting.controller.action.DeleteJobPostingAction;
 import job_posting.controller.action.ReadJobPostingAction;
-import user.controller.action.user.JoinAction;
+import job_posting.controller.action.UpdateJobPostingAction;
 
 public class ActionFactory {
     private ActionFactory() {
@@ -24,7 +24,7 @@ public class ActionFactory {
         }else if (command.equals("/read")) {
             action = new ReadJobPostingAction();
         }else if (command.equals("/update")) {
-            action = new CreateJobPostingAction();
+            action = new UpdateJobPostingAction();
         }else if (command.equals("/delete")) {
             action = new DeleteJobPostingAction();
         }

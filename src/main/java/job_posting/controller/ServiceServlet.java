@@ -1,7 +1,5 @@
 package job_posting.controller;
 
-import user.controller.Action;
-import user.controller.ActionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +16,7 @@ public class ServiceServlet extends HttpServlet {
 		System.out.println("command : " + command);
 
 		if(command!=null) {
-			user.controller.ActionFactory af = ActionFactory.getInstance();
+			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);
 			if(action != null) {
 				action.excute(request, response);
