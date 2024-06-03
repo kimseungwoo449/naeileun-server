@@ -197,17 +197,23 @@ public class BoardDao {
 		return boardList;
 	}
 	
-	public List<BoardResponseDto> readAllPostByBoardCode(int code){
+	public List<BoardResponseDto> readAllPostByBoardCode(int page, String search, int code){
 		List<BoardResponseDto> postList = new ArrayList<BoardResponseDto>();
-		
+
+		int offset = (page - 1) * 10;
+		if(search == null || search.equals(""))
+			search = "%";
+
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, post_code FROM board WHERE board_code=?";
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, post_code FROM board WHERE board_code=? AND title LIKE ? LIMIT 10 OFFSET ?";
 			
 			pstmt =  conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
-			
+			pstmt.setString(2, "%" + search + "%");
+			pstmt.setInt(3, offset);
+
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -234,7 +240,31 @@ public class BoardDao {
 		
 		return postList;
 	}
-	
+
+	public int countPostByBoardCode(int boardCode) {
+		int count = -1;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT count(*) FROM board WHERE board_code=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardCode);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return count;
+	}
+
 	public BoardResponseDto readPostByBoardCodeAndPostCode(int boardCodeTemp, int postCodeTemp) {
 		BoardResponseDto post = null;
 
