@@ -35,14 +35,17 @@ public class ReadAllPostAction implements Action {
 			resObj.put("message", message);
 		} else {
 			System.out.println("전체 게시글 가져오기");
-			
+
+			int page = Integer.parseInt(request.getParameter("page"));
+			String search = request.getParameter("search");
+
 			BoardDao boardDao = BoardDao.getInstance();
 			
-			List<BoardResponseDto> postList = boardDao.readAllPostByBoardCode(code);
+			List<BoardResponseDto> postList = boardDao.readAllPostByBoardCode(page, search, code);
 			
 			JSONObject meta = new JSONObject();
-			meta.put("total_count", postList.size());
-			meta.put("pageable_count", 10);
+			meta.put("total_count", boardDao.countPostByBoardCode(code));
+			meta.put("pageable_count", boardDao.countPostByBoardCode(code));
 			
 			JSONArray result = new JSONArray(postList);
 			
