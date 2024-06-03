@@ -86,4 +86,23 @@ public class MessageDao {
 
         return false;
     }
+
+    public boolean deleteMessageByUserCode(MessageRequestDto req) {
+        try{
+            conn = DBManager.getConnection();
+
+            String sql = "DELETE FROM messages WHERE send_user_code=? OR receive_user_code=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, req.getSendUserCode());
+            pstmt.setInt(2, req.getReceiveUserCode());
+            pstmt.execute();
+            return true;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
 }

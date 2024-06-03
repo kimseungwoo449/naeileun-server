@@ -7,19 +7,19 @@ public class JobPostingResponseDto {
     private int userCode;
     private String companyName;
     private String jobTitle;
-    private Date applicationDate;
+    private Date applicationStart;
     private Date applicationEnd;
     private String description;
     private String status;
     public JobPostingResponseDto() {
 
     }
-    public JobPostingResponseDto(int postingId, int userCode, String companyName, String jobTitle, Date applicationDate, Date applicationEnd, String description, String status) {
+    public JobPostingResponseDto(int postingId, int userCode, String companyName, String jobTitle, Date applicationStart, Date applicationEnd, String description, String status) {
         this.postingId = postingId;
         this.userCode = userCode;
         this.companyName = companyName;
         this.jobTitle = jobTitle;
-        this.applicationDate = applicationDate;
+        this.applicationStart = applicationStart;
         this.applicationEnd = applicationEnd;
         this.description = description;
         this.status = status;
@@ -57,12 +57,12 @@ public class JobPostingResponseDto {
         this.jobTitle = jobTitle;
     }
 
-    public Date getApplicationDate() {
-        return applicationDate;
+    public Date getapplicationStart() {
+        return applicationStart;
     }
 
-    public void setApplicationDate(Date applicationDate) {
-        this.applicationDate = applicationDate;
+    public void setapplicationStart(Date applicationStart) {
+        this.applicationStart = applicationStart;
     }
 
     public Date getApplicationEnd() {
