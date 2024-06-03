@@ -28,6 +28,16 @@ public class ActionFactory{
 			action = new GetStudyMemberAction();
 		}else if(command.equals("/getAwaiter")){
 			action = new GetStudyAwaiterAction();
+		}else if(command.equals("/deleteMember")){
+			action = new DeleteStudyMemberAction();
+		}else if(command.equals("/joinMember")){
+			action = new JoinStudyMemberAction();
+		}else if(command.equals("/checkAwaiter")){
+			action = new CheckAwaiterAction();
+		}else if(command.equals("/addAwaiter")){
+			action = new AddAwaiterAction();
+		}else if(command.equals("/deleteMemberByMemberCode")){
+			action = new DeleteMemberByMemberCodeAction();
 		}
 		
 		return action;
