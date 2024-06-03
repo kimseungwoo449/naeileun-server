@@ -62,8 +62,22 @@ public class ServiceServlet extends HttpServlet{
 	
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+
+		String command = request.getPathInfo();
+
+		if(command!=null) {
+			ActionFactory af = ActionFactory.getInstance();
+			Action action = af.getAction(command);
+
+			System.out.println("server command : " + command);
+			if(action != null) {
+				action.excute(request, response);
+			}else {
+				response.sendError(404);
+			}
+		}else {
+			response.sendError(404);
+		}
 	}
 }
