@@ -167,15 +167,16 @@ public class BoardDao {
 		return postList;
 	}
 	
-	public List<BoardResponseDto> readAllBoard(){
+	public List<BoardResponseDto> readAllBoard(int index){
 		List<BoardResponseDto> boardList = new ArrayList<BoardResponseDto>();
 		
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "SELECT board_code, board_name, description, created_date FROM board_category";
+			String sql = "SELECT board_code, board_name, description, created_date FROM board_category LIMIT 8 OFFSET ?;";
 			
 			pstmt =  conn.prepareStatement(sql);
+			pstmt.setInt(1, index);
 			
 			rs = pstmt.executeQuery();
 			
@@ -394,5 +395,26 @@ public class BoardDao {
 		}
 
 		return responseDto;
+	}
+
+	public boolean deletePostByUserCode(int userCode) {
+		boolean isDelete = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM posts WHERE user_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+
+			pstmt.execute();
+			isDelete = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isDelete;
 	}
 }
