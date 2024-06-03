@@ -395,4 +395,25 @@ public class BoardDao {
 
 		return responseDto;
 	}
+
+	public boolean deletePostByUserCode(int userCode) {
+		boolean isDelete = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM posts WHERE user_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+
+			pstmt.execute();
+			isDelete = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isDelete;
+	}
 }
