@@ -48,4 +48,60 @@ public class GroupAwaiterDao {
         }
         return list;
     }
+
+    public boolean checkAwaiter(GroupAwaiterRequestDto gaReqDto) {
+       boolean isValid = false;
+
+       try{
+           conn = DBManager.getConnection();
+           String sql = "SELECT EXISTS (SELECT user_code FROM group_awaiter WHERE group_code = ? AND user_code = ?) AS SUCCESS";
+           pstmt = conn.prepareStatement(sql);
+           String groupCode = gaReqDto.getGroupCode();
+           String userCode = gaReqDto.getUserCode();
+
+           pstmt.setString(1, groupCode);
+           pstmt.setString(2, userCode);
+
+           rs = pstmt.executeQuery();
+           if(rs.next()) {
+               String isExist = rs.getString(1);
+               if(isExist.equals("1")){
+                   isValid = true;
+               }
+           }
+       }catch(SQLException e) {
+           e.printStackTrace();
+           isValid = false;
+       }finally{
+           DBManager.close(conn,pstmt,rs);
+       }
+
+       return isValid;
+    }
+
+    public boolean addAwaiter(GroupAwaiterRequestDto gaReqDto) {
+        boolean isValid = false;
+        try{
+            String groupCode = gaReqDto.getGroupCode();
+            String userCode = gaReqDto.getUserCode();
+            String comment = gaReqDto.getComment();
+
+            conn = DBManager.getConnection();
+            String sql = "INSERT INTO group_awaiter (group_code,user_code,comment) VALUES (?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1,groupCode);
+            pstmt.setString(2,userCode);
+            pstmt.setString(3,comment);
+
+            pstmt.execute();
+            isValid = true;
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt);
+        }
+
+        return isValid;
+    }
 }
