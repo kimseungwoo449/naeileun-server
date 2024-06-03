@@ -167,16 +167,15 @@ public class BoardDao {
 		return postList;
 	}
 	
-	public List<BoardResponseDto> readAllBoard(int index){
+	public List<BoardResponseDto> readAllBoard(){
 		List<BoardResponseDto> boardList = new ArrayList<BoardResponseDto>();
 		
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "SELECT board_code, board_name, description, created_date FROM board_category LIMIT 8 OFFSET ?;";
+			String sql = "SELECT board_code, board_name, description, created_date FROM board_category";
 			
 			pstmt =  conn.prepareStatement(sql);
-			pstmt.setInt(1, index);
 			
 			rs = pstmt.executeQuery();
 			
