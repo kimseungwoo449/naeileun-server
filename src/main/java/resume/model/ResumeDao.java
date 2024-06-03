@@ -58,7 +58,7 @@ public class ResumeDao {
 			pstmt.setString(13, dto.getExpectedRegion());
 			pstmt.setBoolean(14, dto.isNewbie());
 			pstmt.execute();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
