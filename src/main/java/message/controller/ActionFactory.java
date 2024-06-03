@@ -2,6 +2,7 @@ package message.controller;
 
 
 import message.controller.action.CheckMessages;
+import message.controller.action.DeleteAllMessageByUserId;
 import message.controller.action.GetAllMessageByUserId;
 import message.controller.action.SendMessage;
 
@@ -24,6 +25,8 @@ public class ActionFactory {
                 action = new SendMessage();
             }else if(method.equals("PUT")) {
                 action = new CheckMessages();
+            }else if(method.equals("DELETE")) {
+                action = new DeleteAllMessageByUserId();
             }
         } else {
             if(method.equals("GET")) {
