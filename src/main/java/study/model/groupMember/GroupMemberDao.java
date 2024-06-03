@@ -34,10 +34,10 @@ public class GroupMemberDao {
 			list = new ArrayList<>();
 
 			conn = DBManager.getConnection();
-			String sql="SELECT group_code FROM  group_member WHERE user_code=?";
+			String sql="SELECT group_code FROM  group_member WHERE user_code=? AND accessed = true";
 			
 			pstmt = conn.prepareStatement(sql);
-			
+			System.out.println("usercode : "+userCode);
 			pstmt.setString(1, userCode);
 
 			rs = pstmt.executeQuery();
@@ -66,7 +66,7 @@ public class GroupMemberDao {
 			list = new ArrayList<>();
 
 			conn = DBManager.getConnection();
-			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC";
+			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC LIMIT 4";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -139,7 +139,7 @@ public class GroupMemberDao {
 			 conn = DBManager.getConnection();
 			 String sql = "SELECT gm.user_code, gm.member_code,"
 			 +"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
-					 "FROM group_member gm WHERE group_code = ?";
+					 "FROM group_member gm WHERE group_code = ? AND accessed = true";
 
 			 String groupCode = groupMemberRequestDto.getGroupCode();
 			 String adminCode = groupMemberRequestDto.getUserCode();
@@ -168,5 +168,42 @@ public class GroupMemberDao {
 
 		 return list;
 	 }
+
+	public List<GroupMemberResponseDto> getStudyAwaiters(GroupMemberRequestDto groupMemberRequestDto){
+		List<GroupMemberResponseDto> list = null;
+
+		try{
+			conn = DBManager.getConnection();
+			String sql = "SELECT gm.user_code, gm.member_code,"
+					+"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
+					"FROM group_member gm WHERE group_code = ? AND accessed = false";
+
+			String groupCode = groupMemberRequestDto.getGroupCode();
+			String adminCode = groupMemberRequestDto.getUserCode();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, groupCode);
+			rs = pstmt.executeQuery();
+
+			list = new ArrayList<>();
+			while(rs.next()) {
+				GroupMemberResponseDto dto = new GroupMemberResponseDto();
+				String userCode = rs.getString(1);
+				String memberCode = rs.getString(2);
+				String id = rs.getString(3);
+
+				dto.setUserCode(userCode);
+				dto.setMemberCode(memberCode);
+				dto.setUserId(id);
+				list.add(dto);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return list;
+	}
 	
 }
