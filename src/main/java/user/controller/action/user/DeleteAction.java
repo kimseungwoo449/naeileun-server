@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import board.model.BoardDao;
 import org.json.JSONObject;
 
 import user.controller.Action;
@@ -39,24 +40,28 @@ public class DeleteAction implements Action{
 		
 
 		String id = object.getString("id");
-		
+		int userCode = Integer.parseInt(object.getString("userCode"));
+		BoardDao boardDao = BoardDao.getInstance();
 		UserRequestDto userDto = new UserRequestDto();
 
 		userDto.setId(id);
-		
 
 		boolean result = userDao.deleteUser(userDto);
 
 		JSONObject resObj = new JSONObject();
-        int status = result ? 200 : 400;
-        String message = result ? "User delete is success." : "User delete is failed.";
+		int status = result ? 200 : 400;
+		String message = result ? "User delete is success." : "User delete is failed.";
 
-        resObj.put("status", status);
-        resObj.put("message", message);
-        
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().append(resObj.toString());
+		if(status == 200) {
+			boardDao.deletePostByUserCode(userCode);
+		}
+
+		resObj.put("status", status);
+		resObj.put("message", message);
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
+		response.getWriter().append(resObj.toString());
 	}
 
 }
