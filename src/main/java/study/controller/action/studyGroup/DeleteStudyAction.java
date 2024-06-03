@@ -20,7 +20,7 @@ public class DeleteStudyAction implements Action {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean state = false;
+        boolean status = false;
         String message = null;
 
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
@@ -40,15 +40,16 @@ public class DeleteStudyAction implements Action {
             StudyGroupDao sgDao = StudyGroupDao.getInstance();
             boolean isValid = sgDao.deleteStudyByGroupCode(groupCode);
 
-            state = isValid;
+            status = isValid;
             if(isValid){
                 message = "Group Delete is successful.";
             }else{
                 message = "Group Delete failed.";
             }
         }
-
-        obj.put("state",state);
+        System.out.println(status);
+        System.out.println(message);
+        obj.put("status",status);
         obj.put("message", message);
 
         response.setCharacterEncoding("UTF-8");
