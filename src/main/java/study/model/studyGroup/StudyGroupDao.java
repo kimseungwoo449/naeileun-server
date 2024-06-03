@@ -114,12 +114,13 @@ public class StudyGroupDao {
 	public List<StudyGroupResponseDto> getUserStudyByUserCode(GroupMemberRequestDto gmReqDto){
 		List<StudyGroupResponseDto> list = new ArrayList<>();
 		try{
+			String userCode = gmReqDto.getUserCode();
+
 			conn = DBManager.getConnection();
-			String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code " +
-					"WHERE gm.user_code = ?";
+			String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code WHERE gm.user_code = ?";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,gmReqDto.getUserCode());
+			pstmt.setString(1,userCode);
 
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
