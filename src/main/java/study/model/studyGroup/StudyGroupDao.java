@@ -95,7 +95,7 @@ public class StudyGroupDao {
 				String decription =  rs.getString(2);
 				String adminCode =  rs.getString(3);
 				String isPublic =  rs.getString(4).equals("0") ? "false" : "true";
-
+				String autoMemberAccess = rs.getString(5).equals("0") ? "false" : "true";
 				if(decription == null)
 					study = new StudyGroupResponseDto(groupCode, name,adminCode,isPublic,autoMemberAccess);
 				else
