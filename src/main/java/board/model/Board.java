@@ -14,6 +14,7 @@ public class Board {
 	private Timestamp updateDate;
 	private int recommendation;
 	private int postCode;
+	private int commentCount;
 	
 	// 보드 카테고리 생성자
 	public Board(String boardName, String description) {
@@ -124,5 +125,7 @@ public class Board {
 		this.postCode = postCode;
 	}
 
-	
+	public int getCommentCount() { return commentCount; }
+
+	public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
 }

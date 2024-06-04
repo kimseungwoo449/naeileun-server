@@ -11,6 +11,7 @@ public class BoardRequestDto {
 	private int recommendation;
 	private int postCode;
 	private String imagePath;
+	private int commentCount;
 	
 	// 기본 생성자
 	public BoardRequestDto() {
@@ -133,5 +134,9 @@ public class BoardRequestDto {
 	public String getImagePath() { return imagePath; }
 
 	public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+
+	public int getCommentCount() { return commentCount; }
+
+	public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
 	
 }

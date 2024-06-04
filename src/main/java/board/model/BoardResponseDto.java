@@ -16,6 +16,7 @@ public class BoardResponseDto {
 	private int recommendation;
 	private int postCode;
 	private String imagePath;
+	private int commentCount;
 	
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
 			String content, int userCode, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode) {
@@ -35,7 +36,7 @@ public class BoardResponseDto {
 
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate, String title,
 			String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommendation,
-			int postCode) {
+			int postCode, int commentCount) {
 		super();
 		this.boardCode = boardCode;
 		this.boardName = boardName;
@@ -48,6 +49,7 @@ public class BoardResponseDto {
 		this.updateDate = updateDate;
 		this.recommendation = recommendation;
 		this.postCode = postCode;
+		this.commentCount = commentCount;
 	}
 
 	public BoardResponseDto(int boardCode, String boardName, String description, Timestamp createDate) {
@@ -71,7 +73,7 @@ public class BoardResponseDto {
 		this.boardCode = boardCode;
 	}
 
-	public BoardResponseDto(String title, String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode, int boardCode, String imagePath) {
+	public BoardResponseDto(String title, String content, String userId, Timestamp writeDate, Timestamp updateDate, int recommendation, int postCode, int boardCode, String imagePath, int commentCount) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -82,6 +84,7 @@ public class BoardResponseDto {
 		this.postCode = postCode;
 		this.boardCode = boardCode;
 		this.imagePath = imagePath;
+		this.commentCount = commentCount;
 	}
 
 	public int getBoardCode() {
@@ -183,4 +186,8 @@ public class BoardResponseDto {
 	public String getImagePath() { return imagePath; }
 
 	public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+
+	public int getCommentCount() { return commentCount; }
+
+	public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
 }
