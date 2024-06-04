@@ -446,4 +446,28 @@ public class BoardDao {
 
 		return isDelete;
 	}
+
+	public boolean updateRecommendationByPostCode(int postCode) {
+		boolean isUpdate = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE posts SET recommandation = recommandation+1 WHERE post_code =?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postCode);
+
+			pstmt.execute();
+			isUpdate = true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isUpdate;
+	}
+
 }
