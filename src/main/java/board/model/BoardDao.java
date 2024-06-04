@@ -84,8 +84,9 @@ public class BoardDao {
 				int postCode = rs.getInt(8);
 				int boardCode = rs.getInt(9);
 				String imagePath = rs.getString(10);
+				int commentCount = rs.getInt(11);
 
-				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath, commentCount);
 			}
 
 		} catch (SQLException e) {
@@ -136,7 +137,7 @@ public class BoardDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, rank() over (order by recommandation desc) AS ranking, post_code FROM board LIMIT 3";
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, rank() over (order by recommandation desc) AS ranking, post_code, comment_count FROM board LIMIT 3";
 			
 			pstmt =  conn.prepareStatement(sql);
 			
@@ -154,8 +155,9 @@ public class BoardDao {
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(12);
+				int commentCount = rs.getInt(13);
 				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode, commentCount);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -207,7 +209,7 @@ public class BoardDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, post_code FROM board WHERE board_code=? AND title LIKE ? LIMIT 10 OFFSET ?";
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, post_code, comment_count FROM board WHERE board_code=? AND title LIKE ? LIMIT 10 OFFSET ?";
 			
 			pstmt =  conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
@@ -228,8 +230,9 @@ public class BoardDao {
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommendation = rs.getInt(10);
 				int postCode = rs.getInt(11);
-				
-				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode);
+				int commentCount = rs.getInt(12);
+
+				BoardResponseDto post = new BoardResponseDto(boardCode, boardName, description, createdDate, title, content, userId, writeDate, updateDate, recommendation, postCode, commentCount);
 				postList.add(post);
 			}
 		} catch (Exception e) {
@@ -271,7 +274,7 @@ public class BoardDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT title, content, user_id, write_date, update_date, recommandation, post_code, board_code, image_path FROM post_res WHERE post_code=? AND board_code=?";
+			String sql = "SELECT title, content, user_id, write_date, update_date, recommandation, post_code, board_code, image_path, comment_count FROM post_res WHERE post_code=? AND board_code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, postCodeTemp);
@@ -289,8 +292,9 @@ public class BoardDao {
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
 				String imagePath = rs.getString(9) == null ? "" : rs.getString(9);
+				int commentCount = rs.getInt(10);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath, commentCount);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
@@ -413,8 +417,9 @@ public class BoardDao {
 				int postCode = rs.getInt(8);
 				int boardCode = rs.getInt(9);
 				String imagePath = rs.getString(10);
+				int commentCount = rs.getInt(11);
 
-				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath, commentCount);
 			}
 
 		} catch (SQLException e) {
