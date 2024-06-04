@@ -1,6 +1,5 @@
 package study.controller;
 
-import study.controller.Action;
 import study.controller.action.studyGroup.*;
 
 public class ActionFactory{
@@ -18,9 +17,7 @@ public class ActionFactory{
 	public Action getAction(String command) {
 		Action action = null;
 		if(command.equals("/myGroup")) {
-			action = new FindUserGroupAction();
-		}else if(command.equals("/popularGroup")){
-			action = new FindPopularStudyGroupAction();
+			action = new GetStudyGroupAction();
 		}else if(command.equals("/board")){
 			action = new FindStudyBoardAction();
 		}else if(command.equals("/delete")){
@@ -29,6 +26,18 @@ public class ActionFactory{
 			action = new CreateStudyAction();
 		}else if(command.equals("/getMember")){
 			action = new GetStudyMemberAction();
+		}else if(command.equals("/getAwaiter")){
+			action = new GetStudyAwaiterAction();
+		}else if(command.equals("/deleteMember")){
+			action = new DeleteStudyMemberAction();
+		}else if(command.equals("/joinMember")){
+			action = new JoinStudyMemberAction();
+		}else if(command.equals("/checkAwaiter")){
+			action = new CheckAwaiterAction();
+		}else if(command.equals("/addAwaiter")){
+			action = new AddAwaiterAction();
+		}else if(command.equals("/deleteMemberByMemberCode")){
+			action = new DeleteMemberByMemberCodeAction();
 		}
 		
 		return action;

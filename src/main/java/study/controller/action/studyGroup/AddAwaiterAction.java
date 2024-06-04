@@ -1,9 +1,9 @@
 package study.controller.action.studyGroup;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.studyGroup.StudyGroupDao;
+import study.model.groupAwaiter.GroupAwaiterDao;
+import study.model.groupAwaiter.GroupAwaiterRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class DeleteStudyAction implements Action {
+public class AddAwaiterAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -22,10 +22,9 @@ public class DeleteStudyAction implements Action {
         JSONObject obj = new JSONObject();
         boolean status = false;
         String message = null;
-
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-                message ="admin key is not correct";
-        }else{
+            message = "admin key is not correct";
+        } else {
             InputStream in = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -35,21 +34,26 @@ public class DeleteStudyAction implements Action {
                 data = br.readLine();
             }
 
-            String groupCode = new JSONObject(data).getString("group_code");
+            JSONObject reqObj = new JSONObject(data);
+            String groupcode = reqObj.getString("group_code");
+            String userCode = reqObj.getString("user_code");
+            String comment = reqObj.getString("comment");
+            GroupAwaiterRequestDto gaReqDto = new GroupAwaiterRequestDto();
+            gaReqDto.setGroupCode(groupcode);
+            gaReqDto.setUserCode(userCode);
+            gaReqDto.setComment(comment);
 
-            StudyGroupDao sgDao = StudyGroupDao.getInstance();
-            boolean isValid = sgDao.deleteStudyByGroupCode(groupCode);
+            GroupAwaiterDao gaDao = GroupAwaiterDao.getInstance();
+            status = gaDao.addAwaiter(gaReqDto);
 
-            status = isValid;
-            if(isValid){
-                message = "Group Delete is successful.";
+            if(!status) {
+                message = "Add Awaiter failed";
             }else{
-                message = "Group Delete failed.";
+                message = "Add Awaiter success";
             }
         }
-        System.out.println(status);
-        System.out.println(message);
-        obj.put("status",status);
+
+        obj.put("status", status);
         obj.put("message", message);
 
         response.setCharacterEncoding("UTF-8");

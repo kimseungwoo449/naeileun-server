@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import study.model.groupMember.GroupMemberDao;
+import study.model.groupMember.GroupMemberRequestDto;
 import utill.DBManager;
 
 public class StudyGroupDao {
 	Connection conn;
 	PreparedStatement pstmt;
-	PreparedStatement pstmt2;
 	ResultSet rs;
-	ResultSet rs2;
 	
 	private StudyGroupDao() {}
 	
@@ -39,31 +38,31 @@ public class StudyGroupDao {
 		return list;
 	}
 
-	public StudyGroupResponseDto getPopularStudyByGroupCode(String groupCode){
-
-		StudyGroupResponseDto study = null;
-
-		if(groupCode == null)
-			return study;
+	public List<StudyGroupResponseDto> getPopularStudy(){
+		List<StudyGroupResponseDto> list = new ArrayList<>();
 
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT name,decription, admin_code, is_public,auto_member_access FROM study_group WHERE group_code =?";
+			String sql = "SELECT group_code,name,decription,admin_code,is_public,auto_member_access FROM popular_studys";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,groupCode);
 
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				String name = rs.getString(1);
-				String decription =  rs.getString(2);
-				String adminCode =  rs.getString(3);
-				String isPublic =  rs.getString(4).equals("0") ? "false" : "true";
-				String autoMemberAccess = rs.getString(5).equals("0") ? "false" : "true";
-
-				if(decription == null)
-					study = new StudyGroupResponseDto(groupCode, name,adminCode,isPublic,autoMemberAccess);
-				else
-					study = new StudyGroupResponseDto(groupCode, name,decription,adminCode,isPublic,autoMemberAccess);
+			while(rs.next()) {
+				String groupCode = rs.getString(1);
+				String name = rs.getString(2);
+				String decription =  rs.getString(3);
+				String adminCode =  rs.getString(4);
+				String isPublic =  rs.getString(5).equals("0") ? "false" : "true";
+				String autoMemberAccess = rs.getString(6).equals("0") ? "false" : "true";
+				System.out.println("name ; " + name);
+				if(decription == null) {
+					StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, adminCode, isPublic, autoMemberAccess);
+					list.add(study);
+				}
+				else {
+					StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, decription, adminCode, isPublic, autoMemberAccess);
+					list.add(study);
+				}
 			}
 
 			System.out.println("DB 연동 성공");
@@ -73,7 +72,7 @@ public class StudyGroupDao {
 			DBManager.close(conn, pstmt, rs);
 		}
 
-		return study;
+		return list;
 	}
 	public StudyGroupResponseDto getStudyByGroupCode(String groupCode){
 
@@ -84,18 +83,19 @@ public class StudyGroupDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT name,decription, admin_code, is_public,auto_member_access FROM study_group WHERE group_code =?";
-			pstmt2 = conn.prepareStatement(sql);
-			pstmt2.setString(1,groupCode);
+			String sql = "SELECT name,decription, admin_code, is_public FROM study_group WHERE group_code =?";
+			pstmt = conn.prepareStatement(sql);
+				
+			pstmt.setString(1,groupCode);
 
-			rs2 = pstmt2.executeQuery();
-			if(rs2.next()) {
-				String name = rs2.getString(1);
-				String decription =  rs2.getString(2);
-				String adminCode =  rs2.getString(3);
-				String isPublic =  rs2.getString(4).equals("0") ? "false" : "true";
-				String autoMemberAccess = rs2.getString(5).equals("0") ? "false" : "true";
+			rs = pstmt.executeQuery();
 
+			if(rs.next()) {
+				String name = rs.getString(1);
+				String decription =  rs.getString(2);
+				String adminCode =  rs.getString(3);
+				String isPublic =  rs.getString(4).equals("0") ? "false" : "true";
+				String autoMemberAccess = rs.getString(5).equals("0") ? "false" : "true";
 				if(decription == null)
 					study = new StudyGroupResponseDto(groupCode, name,adminCode,isPublic,autoMemberAccess);
 				else
@@ -106,32 +106,37 @@ public class StudyGroupDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt2, rs2);
+			DBManager.close(conn, pstmt, rs);
 		}
 		
 		return study;
 	}
-	
-	
-	public List<String> getStudyBoardByGroupCode(String groupCode){
-		List<String> list = null;
-		
-		try {
+
+	public List<StudyGroupResponseDto> getUserStudyByUserCode(GroupMemberRequestDto gmReqDto){
+		List<StudyGroupResponseDto> list = new ArrayList<>();
+		try{
+			String userCode = gmReqDto.getUserCode();
 			conn = DBManager.getConnection();
-			String sql = "SELECT group_code, name, admin_code,is_public, decription,(SELECT )";
+			String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code WHERE gm.user_code = ?";
 			pstmt = conn.prepareStatement(sql);
-
+			pstmt.setString(1,userCode);
 			rs = pstmt.executeQuery();
-
 			while(rs.next()) {
-				list = new ArrayList<>();
+				String groupCode = rs.getString(1);
+				String groupName = rs.getString(2);
+				String decription = rs.getString(3);
+				String adminCode = rs.getString(4);
+				String isPublic = rs.getString(5);
+				String autoMemberAccess = rs.getString(6);
+
+				StudyGroupResponseDto sg = new StudyGroupResponseDto(groupCode,groupName,decription,adminCode,isPublic,autoMemberAccess);
+				list.add(sg);
 			}
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			e.printStackTrace();
-		}finally {
+		}finally{
 			DBManager.close(conn, pstmt, rs);
 		}
-		
 		return list;
 	}
 

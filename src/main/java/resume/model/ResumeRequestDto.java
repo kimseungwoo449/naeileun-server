@@ -46,7 +46,7 @@ public class ResumeRequestDto {
 		this.isNewbie = isNewbie;
 	}
 
-	
+
 	public ResumeRequestDto() {
 		
 	}

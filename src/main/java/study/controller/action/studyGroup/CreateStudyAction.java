@@ -21,7 +21,7 @@ public class CreateStudyAction implements Action {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean state = false;
+        boolean status = false;
         String message = null;
         String groupCode = null;
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
@@ -33,26 +33,18 @@ public class CreateStudyAction implements Action {
             String data = "";
 
             while (br.ready()) {
-                data = br.readLine();
+                data += br.readLine();
             }
-            //HttpSession session = request.getSession();
-            //UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 
-//			String userId = user.getId();
-//			UserDao userDao = UserDao.getInstance();
-//			String userCode = String.valueOf(userDao.findUserCodeById(userId));
-//			System.out.println("usercode" + userCode);
-//			System.out.println("usercode" + userDao.findUserCodeById(userId));
-
-            //delete after user setting
-            String userCode = "2";
-            System.out.println("here");
             JSONObject reqObj = new JSONObject(data);
             System.out.println(reqObj);
 
             String groupName = reqObj.getString("group_name");
             System.out.println("groupName: " + groupName);
 
+            //String userCode = reqObj.getString("user_code"); //userId일 시 수정
+            //user Id일 시 userDao로 userCode 찾기
+            String userCode = "2";  //수정 시 해당 열 삭제
 
             String decription = reqObj.getString("decription").equals("") ? null : reqObj.getString("decription");
             System.out.println("decription: " + decription);
@@ -70,7 +62,7 @@ public class CreateStudyAction implements Action {
             boolean addMember = gmDao.addMemberByGroupCode(groupCode,userCode);
 
             boolean isValid = groupCode == null ? false : true;
-            state = isValid;
+            status = isValid;
             if(!isValid) {
                 message = "Group Create failed.";
             }else if (!addMember) {
@@ -80,7 +72,7 @@ public class CreateStudyAction implements Action {
             }
         }
 
-        obj.put("state", state);
+        obj.put("status", status);
         obj.put("message", message);
         obj.put("groupCode",groupCode);
 
