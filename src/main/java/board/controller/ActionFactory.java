@@ -1,24 +1,19 @@
 package board.controller;
 
-import board.controller.ActionFactory;
-import board.controller.action.CreatePostAction;
-import board.controller.action.ReadAllBoardAction;
-import board.controller.action.ReadAllPostAction;
-import board.controller.action.ReadDetailPostAction;
-import resume.controller.action.WriteAction;
+import board.controller.action.*;
 
 public class ActionFactory {
 	private ActionFactory() {
-		
+
 	}
 	private static  ActionFactory instance = new ActionFactory();
 	public static ActionFactory getInstance() {
 		return instance;
 	}
-	
+
 	public Action getAction(String command, String method) {
 		Action action = null;
-		
+
 		if(command == null) {
 			if(method.equals("GET")){
 				action = new ReadAllBoardAction();
@@ -42,8 +37,20 @@ public class ActionFactory {
 					action = new ReadDetailPostAction(boardCode, postCode);
 				}
 			}
+			else if(method.equals("DELETE")) {
+				System.out.println("DELETE command : " + command);
+				action = new DeletePostAction();
+			}
+			else if(method.equals("PUT")) {
+				System.out.println("PUT command : " + command);
+				if(command.equals("/recommendation")) {
+					action = new UpdateRecommendationAction();
+				}else if(command.equals("/update")) {
+					action = new UpdatePostAction();
+				}
+			}
 		}
-		
+
 		return action;
 	}
 }

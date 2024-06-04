@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.json.JSONObject;
 import utill.DBManager;
 
 public class ResumeDao {
@@ -39,7 +38,7 @@ public class ResumeDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "INSERT INTO resume(user_code,name,title,user_age,academic_career,career,skill,certificate,language,award) VALUES(?,?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO resume(user_code,name,title,user_age,academic_career,career,skill,certificate,language,award,phone,expected_salary,expected_region,is_newbie) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -54,15 +53,19 @@ public class ResumeDao {
 			pstmt.setString(8, dto.getCertificate());
 			pstmt.setString(9, dto.getLanguage());
 			pstmt.setString(10, dto.getAward());
-
+			pstmt.setString(11, dto.getPhone());
+			pstmt.setString(12, dto.getExpectedSalary());
+			pstmt.setString(13, dto.getExpectedRegion());
+			pstmt.setBoolean(14, dto.isNewbie());
 			pstmt.execute();
-
-			response = findResumeByResumeCode(lastResumeCode());
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
+
+		response = findResumeByResumeCode(lastResumeCode());
 
 		return response;
 	}
@@ -77,7 +80,7 @@ public class ResumeDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "UPDATE resume SET title=?, academic_career=?, career=?, skill=?, certificate=?, language=?, award=?, update_date=NOW() WHERE resume_code = ?";
+			String sql = "UPDATE resume SET title=?, academic_career=?, career=?, skill=?, certificate=?, language=?, award=?, expected_salary=?,expected_region=?,is_newbie=?,phone=?,update_date=NOW() WHERE resume_code = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -89,16 +92,20 @@ public class ResumeDao {
 			pstmt.setString(5, dto.getCertificate());
 			pstmt.setString(6, dto.getLanguage());
 			pstmt.setString(7, dto.getAward());
-			pstmt.setInt(8, dto.getResumeCode());
+			pstmt.setString(8, dto.getExpectedSalary());
+			pstmt.setString(9, dto.getExpectedRegion());
+			pstmt.setBoolean(10, dto.isNewbie());
+			pstmt.setString(11, dto.getPhone());
+			pstmt.setInt(12, dto.getResumeCode());
 
 			pstmt.execute();
 
-			response = findResumeByResumeCode(dto.getResumeCode());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
+		response = findResumeByResumeCode(dto.getResumeCode());
 
 		return response;
 	}
@@ -126,6 +133,10 @@ public class ResumeDao {
 				response.setCertificate(rs.getString(9));
 				response.setLanguage(rs.getString(10));
 				response.setAward(rs.getString(11));
+				response.setPhone(rs.getString(14));
+				response.setExpectedSalary(rs.getString(15));
+				response.setExpectedRegion(rs.getString(16));
+				response.setNewbie(rs.getBoolean(17));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -234,14 +245,15 @@ public class ResumeDao {
 				String award = rs.getString(11);
 				Timestamp writeDate = rs.getTimestamp(12);
 				Timestamp updateDate = rs.getTimestamp(13);
-
-				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, dto.getUserCode(), userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
+				String phone = rs.getString(14);
+				String expectedSalary = rs.getString(15);
+				String expectedRegion = rs.getString(16);
+				boolean newbie = rs.getBoolean(17);
+				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, dto.getUserCode(), userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate,phone, expectedSalary, expectedRegion, newbie);
 				response.add(resume);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			DBManager.close(conn,pstmt,rs);
 		}
 
 		if(response.size() == 0) {
@@ -275,8 +287,11 @@ public class ResumeDao {
 				String award = rs.getString(11);
 				Timestamp writeDate = rs.getTimestamp(12);
 				Timestamp updateDate = rs.getTimestamp(13);
-
-				resume = new ResumeResponseDto(resumeCode, userCode, userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate);
+				String phone = rs.getString(14);
+				String expectedSalary = rs.getString(15);
+				String expectedRegion = rs.getString(16);
+				boolean isNewbie = rs.getBoolean(17);
+				resume = new ResumeResponseDto(resumeCode,userCode,userName,title,userAge,academicCareer,career,skill,certificate,language,award,writeDate,updateDate,phone,expectedSalary,expectedRegion,isNewbie);
 			}
 
 		} catch (Exception e) {

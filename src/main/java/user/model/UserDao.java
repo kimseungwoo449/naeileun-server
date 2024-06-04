@@ -68,6 +68,8 @@ public class UserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
 		}
 		return list;
 	}
@@ -123,7 +125,7 @@ public class UserDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 		return user;
 	}
@@ -238,6 +240,7 @@ public class UserDao {
 			pstmt.setString(1, value);
 			pstmt.setString(2, userId);
 			pstmt.execute();
+			user = getUserById(userId);
 			System.out.println("업데이트 성공");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -246,57 +249,57 @@ public class UserDao {
 		return user;
 	}
 
-	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
-		UserResponseDto user = null;
-
-		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
-			return user;
-
-		try {
-			conn = DBManager.getConnection();
-
-			String sql = "UPDATE users SET email=?  WHERE id=?";
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userDto.getEmail());
-			pstmt.setString(2, userDto.getId());
-
-			pstmt.execute();
-
-			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-		return user;
-	}
-
-	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
-		UserResponseDto user = null;
-
-		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
-			return user;
-
-		try {
-			conn = DBManager.getConnection();
-
-			String sql = "UPDATE users SET phone=? WHERE id=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, userDto.getPhone());
-			pstmt.setString(2, userDto.getId());
-
-			pstmt.execute();
-
-			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-		return user;
-	}
+//	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
+//		UserResponseDto user = null;
+//
+//		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
+//			return user;
+//
+//		try {
+//			conn = DBManager.getConnection();
+//
+//			String sql = "UPDATE users SET email=?  WHERE id=?";
+//
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, userDto.getEmail());
+//			pstmt.setString(2, userDto.getId());
+//
+//			pstmt.execute();
+//
+//			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			DBManager.close(conn, pstmt);
+//		}
+//		return user;
+//	}
+//
+//	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
+//		UserResponseDto user = null;
+//
+//		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
+//			return user;
+//
+//		try {
+//			conn = DBManager.getConnection();
+//
+//			String sql = "UPDATE users SET phone=? WHERE id=?";
+//			pstmt = conn.prepareStatement(sql);
+//
+//			pstmt.setString(1, userDto.getPhone());
+//			pstmt.setString(2, userDto.getId());
+//
+//			pstmt.execute();
+//
+//			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			DBManager.close(conn, pstmt);
+//		}
+//		return user;
+//	}
 
 	public boolean deleteUser(UserRequestDto userDto) {
 	

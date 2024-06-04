@@ -46,24 +46,7 @@ public class ResumeRequestDto {
 		this.isNewbie = isNewbie;
 	}
 
-	public ResumeRequestDto(int resumeCode, int userCode, String name, String title, int userAge, String academicCareer, String career, String skill, String certificate, String language, String award,
-							Timestamp writeDate, Timestamp updateDate) {
-		super();
-		this.resumeCode = resumeCode;
-		this.userCode = userCode;
-		this.name = name;
-		this.title = title;
-		this.userAge = userAge;
-		this.academicCareer = academicCareer;
-		this.career = career;
-		this.skill = skill;
-		this.certificate = certificate;
-		this.language = language;
-		this.award = award;
-		this.writeDate = writeDate;
-		this.updateDate = updateDate;
-	}
-	
+
 	public ResumeRequestDto() {
 		
 	}
@@ -82,6 +65,10 @@ public class ResumeRequestDto {
 		this.certificate = obj.getString("certificate");
 		this.language = obj.getString("language");
 		this.award = obj.getString("award");
+		this.phone = obj.getString("phone");
+		this.expectedSalary = obj.getString("expected_salary");
+		this.expectedRegion = obj.getString("expected_region");
+		this.isNewbie = obj.getBoolean("is_newbie");
 	}
 	
 	public int getResumeCode() {

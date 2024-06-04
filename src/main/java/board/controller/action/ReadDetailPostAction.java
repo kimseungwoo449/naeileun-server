@@ -26,6 +26,7 @@ public class ReadDetailPostAction implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
+		// test(in feature message)
 
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			boolean status = false;
@@ -40,6 +41,7 @@ public class ReadDetailPostAction implements Action {
 
 			BoardResponseDto post = boardDao.readPostByBoardCodeAndPostCode(boardCode, postCode);
 			System.out.println("title : "+post.getTitle());
+			System.out.println("imagePath : "+post.getImagePath());
 
 			resObj.put("result", new JSONObject(post));
 			System.out.println(resObj);

@@ -1,40 +1,43 @@
 package introduction.controller;
 
-import introduction.controller.action.CreateIntroduction;
-import introduction.controller.action.DeleteAllIntroductionByUserId;
-import introduction.controller.action.GetAllIntroductionByUserId;
-import introduction.controller.action.UpdateIntroduction;
+import introduction.controller.action.*;
 
 public class ActionFactory {
-	private ActionFactory() {
-		
-	}
-	private static  ActionFactory instance = new ActionFactory();
-	public static ActionFactory getInstance() {
-		return instance;
-	}
+    private ActionFactory() {
 
-	public Action getAction(String pathInfo,String method) {
-		Action action = null;
+    }
 
-		if(pathInfo==null) {
-			if(method.equals("POST")) {
-				action = new CreateIntroduction();
-			}else if(method.equals("GET")) {
-				action = new GetAllIntroductionByUserId();
-			}else if(method.equals("PUT")) {
-				action = new UpdateIntroduction();
-			}else if(method.equals("DELETE")) {
-				action = new DeleteAllIntroductionByUserId();
-			}
-		}else {
-			if(method.equals("GET")) {
+    private static ActionFactory instance = new ActionFactory();
 
-			}else if(method.equals("DELETE")) {
+    public static ActionFactory getInstance() {
+        return instance;
+    }
 
-			}
-		}
+    public Action getAction(String pathInfo, String method, String command) {
+        Action action = null;
 
-		return action;
-	}
+        if (pathInfo == null) {
+            if (method.equals("POST")) {
+                action = new CreateIntroduction();
+            } else if (method.equals("GET")) {
+                action = new GetAllIntroductionByUserId();
+            } else if (method.equals("PUT")) {
+                action = new UpdateIntroduction();
+            } else if (method.equals("DELETE")) {
+                action = new DeleteAllIntroductionByUserId();
+            }
+        } else {
+            if (method.equals("GET")) {
+                action = new GetIntroductionByDocumentCode();
+            } else if (method.equals("DELETE")) {
+                if (command == null || command.equals("")) {
+                    action = new DeleteIntroductionByDocumentCode();
+                } else {
+                    action = new DeleteDocumentByDocumentNumber();
+                }
+            }
+        }
+
+        return action;
+    }
 }

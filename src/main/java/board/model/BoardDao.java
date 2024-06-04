@@ -1,17 +1,12 @@
 package board.model;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import user.model.UserDao;
 import utill.DBManager;
-
-import javax.servlet.http.Part;
+import utill.ImageHandler;
 
 public class BoardDao {
 	
@@ -90,7 +85,7 @@ public class BoardDao {
 				int boardCode = rs.getInt(9);
 				String imagePath = rs.getString(10);
 
-				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 			}
 
 		} catch (SQLException e) {
@@ -100,59 +95,6 @@ public class BoardDao {
 		}
 
 		return responseDto;
-	}
-
-/*	public BoardResponseDto createPost(String reqTitle, String reqContent, String reqUserId, String reqBoardCode) {
-		try {
-			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
-
-			String sql = "INSERT INTO posts(title, content, user_code, board_code) VALUES(?,?, ?, ?)";
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, reqTitle);
-			pstmt.setString(2, reqContent);
-			pstmt.setInt(3, userDao.findUserCodeById(reqUserId));
-			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
-
-			pstmt.execute();
-			
-			return findBoardByName(boardDto.getBoardName());
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-		
-		return null;
-	}*/
-
-	public String findPostCodeAndBoardCodeRecently() {
-		String postAndBoardCode = "";
-
-		try {
-			conn = DBManager.getConnection();
-
-			String sql = "SELECT post_code, board_code FROM posts ORDER BY write_date DESC LIMIT 1";
-
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				int postCode = rs.getInt("post_code");
-				int boardCode = rs.getInt("board_code");
-
-				postAndBoardCode = postCode + "/" + boardCode;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-
-		return postAndBoardCode;
 	}
 
 	public BoardResponseDto findBoardByName(String name) {
@@ -193,9 +135,8 @@ public class BoardDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
-			
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_code, write_date, update_date, recommandation, rank() over (order by recommandation desc) AS ranking, post_code FROM board LIMIT 3";
+
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, rank() over (order by recommandation desc) AS ranking, post_code FROM board LIMIT 3";
 			
 			pstmt =  conn.prepareStatement(sql);
 			
@@ -208,7 +149,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
+				String userId = rs.getString(7);
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommendation = rs.getInt(10);
@@ -261,9 +202,8 @@ public class BoardDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
-			
-			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_code, write_date, update_date, recommandation, post_code FROM board WHERE board_code=?";
+
+			String sql = "SELECT board_code, board_name, description, created_date, title, content, user_id, write_date, update_date, recommandation, post_code FROM board WHERE board_code=?";
 			
 			pstmt =  conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
@@ -277,7 +217,7 @@ public class BoardDao {
 				Timestamp createdDate = rs.getTimestamp(4);
 				String title = rs.getString(5);
 				String content = rs.getString(6);
-				String userId = userDao.findUserIdByCode(rs.getInt(7)+"");
+				String userId = rs.getString(7);
 				Timestamp writeDate = rs.getTimestamp(8);
 				Timestamp updateDate = rs.getTimestamp(9);
 				int recommendation = rs.getInt(10);
@@ -297,12 +237,11 @@ public class BoardDao {
 	
 	public BoardResponseDto readPostByBoardCodeAndPostCode(int boardCodeTemp, int postCodeTemp) {
 		BoardResponseDto post = null;
-		
+
 		try {
 			conn = DBManager.getConnection();
-			UserDao userDao = UserDao.getInstance();
 
-			String sql = "SELECT title, content, user_code, write_date, update_date, recommandation, post_code, board_code FROM posts WHERE post_code=? AND board_code=?";
+			String sql = "SELECT title, content, user_id, write_date, update_date, recommandation, post_code, board_code, image_path FROM post_res WHERE post_code=? AND board_code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, postCodeTemp);
@@ -313,14 +252,15 @@ public class BoardDao {
 			if(rs.next()) {
 				String title = rs.getString(1);
 				String content = rs.getString(2);
-				String userId = userDao.findUserIdByCode(rs.getInt(3)+"");
+				String userId = rs.getString(3);
 				Timestamp writeDate = rs.getTimestamp(4);
 				Timestamp updateDate = rs.getTimestamp(5);
 				int recommendation = rs.getInt(6);
 				int postCode = rs.getInt(7);
 				int boardCode = rs.getInt(8);
+				String imagePath = rs.getString(9) == null ? "" : rs.getString(9);
 
-				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode);
+				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
 				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
@@ -332,14 +272,148 @@ public class BoardDao {
 		return post;
 	}
 
-	public String saveImage(Part filePart) throws IOException {
-		// 파일명 추출
-		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-		// 저장할 경로 설정
-		Path targetPath = Paths.get(UPLOAD_DIR, fileName);
-		// 파일 저장
-		Files.copy(filePart.getInputStream(), targetPath);
+	public boolean deletePostByPostCode(int boardCode, String userId, int postCode) {
+		boolean isDelete = false;
 
-		return targetPath.toString();
+		BoardResponseDto post = readPostByBoardCodeAndPostCode(boardCode, postCode);
+		if(post.getUserId().equals(userId)){
+			try {
+				conn = DBManager.getConnection();
+
+				String sql = "DELETE FROM posts WHERE post_code = ?";
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, postCode);
+
+				pstmt.execute();
+				isDelete = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, pstmt);
+			}
+		}
+
+		return isDelete;
+	}
+
+	public boolean deleteImage(String imageUrl) {
+		System.out.println("이미지 삭제하기");
+		boolean isDelete = false;
+
+		if(!imageUrl.equals("")) {
+			isDelete = ImageHandler.deleteImage(imageUrl);
+			System.out.println("isDelete : " + isDelete);
+		}else {
+			System.out.println("이미지 없음");
+		}
+
+		return isDelete;
+	}
+
+	public BoardResponseDto UpdatePost(String reqTitle, String reqContent, String reqUserId, int reqPostCode, String reqImagePath) {
+		BoardResponseDto responseDto = null;
+
+		UserDao userDao = UserDao.getInstance();
+		int userCode = userDao.findUserCodeById(reqUserId);
+		System.out.println("UpdatePost userCode : " + userCode);
+
+		boolean isSuccess = false;
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "";
+			if(reqImagePath.equals("")) {
+				sql = "UPDATE posts SET title = ?, content=? WHERE post_code=?";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, reqTitle);
+				pstmt.setString(2, reqContent);
+				pstmt.setInt(3, reqPostCode);
+			}
+			else if(!reqImagePath.equals("")) {
+				sql = "UPDATE posts SET title = ?, content=?, image_path=? WHERE post_code=?";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, reqTitle);
+				pstmt.setString(2, reqContent);
+				pstmt.setString(3, reqImagePath);
+				pstmt.setInt(4, reqPostCode);
+			}
+
+			pstmt.execute();
+			isSuccess = true;
+			System.out.println("UpdatePost isSuccess : " + isSuccess);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+
+			if(isSuccess) {
+				System.out.println("reqPostCode : " + reqPostCode);
+				responseDto = findPostByPostCode(reqPostCode);
+			}
+		}
+
+		return responseDto;
+	}
+
+	private BoardResponseDto findPostByPostCode(int resPostCode) {
+		BoardResponseDto responseDto = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM post_res WHERE post_code =?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, resPostCode);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				String title = rs.getString(1);
+				String content = rs.getString(2);
+				String userId = rs.getString(4);
+				Timestamp writeDate = rs.getTimestamp(5);
+				Timestamp updateDate = rs.getTimestamp(6);
+				int recommendation = rs.getInt(7);
+				int postCode = rs.getInt(8);
+				int boardCode = rs.getInt(9);
+				String imagePath = rs.getString(10);
+
+				responseDto = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return responseDto;
+	}
+
+	public boolean deletePostByUserCode(int userCode) {
+		boolean isDelete = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM posts WHERE user_code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+
+			pstmt.execute();
+			isDelete = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return isDelete;
 	}
 }

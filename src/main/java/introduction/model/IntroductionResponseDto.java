@@ -5,7 +5,7 @@ import user.model.UserDao;
 import java.sql.Timestamp;
 
 public class IntroductionResponseDto {
-    UserDao userDao = UserDao.getInstance();
+
 
     private int documentNumber;
     private String title;
@@ -29,6 +29,7 @@ public class IntroductionResponseDto {
     }
 
     public IntroductionResponseDto(int documentNumber, String title, String head, String body, int documentCode, String userId,Timestamp writeDate, Timestamp updateDate) {
+        UserDao userDao = UserDao.getInstance();
         this.documentNumber = documentNumber;
         this.title = title;
         this.head = head;
@@ -91,6 +92,7 @@ public class IntroductionResponseDto {
     }
 
     public void setUserCode(String userId) {
+        UserDao userDao = UserDao.getInstance();
         this.userCode = userDao.findUserCodeById(userId);
     }
 
