@@ -26,7 +26,7 @@ public class IntroductionDao {
     }
 
     public boolean addIntroduction(List<IntroductionRequestDto> dtoArr) {
-        int documentCode = getMaxDocumentCode() + 1;
+        int documentCode = dtoArr.get(0).getDocumentCode()==0?getMaxDocumentCode() + 1:dtoArr.get(0).getDocumentCode();
         try {
             conn = DBManager.getConnection();
             String sql = "INSERT INTO self_introduction(title,head,body,document_code,user_code) VALUES ";
@@ -70,43 +70,6 @@ public class IntroductionDao {
         return lastCode;
     }
 
-//    public List<IntroductionResponseDto> getAllIntroductionByUserCode(IntroductionRequestDto dto) {
-//        List<IntroductionResponseDto> response = null;
-//        Map<Integer, List<IntroductionResponseDto>> docMap = null;
-//        try {
-//            conn = DBManager.getConnection();
-//
-//            String sql = "SELECT * FROM self_introduction WHERE `user_code` = ?";
-//            pstmt = conn.prepareStatement(sql);
-//            pstmt.setInt(1, dto.getUserCode());
-//            rs = pstmt.executeQuery();
-//
-//            response = new ArrayList<>();
-//            while (rs.next()) {
-//                int documentNumber = rs.getInt(1);
-//                String title = rs.getString(2);
-//                String head = rs.getString(3);
-//                String body = rs.getString(4);
-//                int documentCode = rs.getInt(5);
-//                int userCode = rs.getInt(6);
-//                Timestamp writeDate = rs.getTimestamp(7);
-//                Timestamp updateDate = rs.getTimestamp(8);
-//
-//                IntroductionResponseDto introduction = new IntroductionResponseDto(documentNumber, title, head, body, documentCode, userCode, writeDate, updateDate);
-//                response.add(introduction);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            DBManager.close(conn, pstmt, rs);
-//        }
-//
-//        if (response.size() == 0) {
-//            response = null;
-//        }
-//        return response;
-//    }
 
     public Map<Integer, List<IntroductionResponseDto>> getAllIntroductionByUserCode(IntroductionRequestDto dto) {
         List<Integer> docCodes = getDocumentCodes(dto);
@@ -176,5 +139,168 @@ public class IntroductionDao {
             DBManager.close(conn, pstmt, rs);
         }
         return docCodes;
+    }
+
+    public boolean deleteAllIntroductionByUserCode(IntroductionRequestDto dto) {
+        try {
+            conn = DBManager.getConnection();
+            String sql = "DELETE FROM self_introduction WHERE `user_code` = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getUserCode());
+            pstmt.execute();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public boolean updateIntroductions(List<IntroductionRequestDto> dtoList){
+//        int docCode = dtoList.get(0).getDocumentCode();
+//        deleteAllIntroductionByUserCode(dtoList.get(0));
+//
+//        try{
+//            conn = DBManager.getConnection();
+//            // 자동 커밋을 false로 설정하여 트랜잭션을 시작
+//            conn.setAutoCommit(false);
+//
+//            String sql = "UPDATE self_introduction SET head = ?, body = ?,update_date = NOW(), title=? WHERE user_code = ? AND document_no = ?";
+//            pstmt = conn.prepareStatement(sql);
+//
+//            for (IntroductionRequestDto dto : dtoList) {
+//                pstmt.setString(1, dto.getHead());
+//                pstmt.setString(2, dto.getBody());
+//                pstmt.setString(3, dto.getTitle());
+//                pstmt.setInt(4, dto.getUserCode());
+//                pstmt.setInt(5, dto.getDocumentNumber());
+//
+//                pstmt.addBatch();
+//            }
+//
+//            // 모든 업데이트 쿼리를 배치로 실행
+//            pstmt.executeBatch();
+//            // 트랜잭션 커밋
+//            conn.commit();
+//            return true;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            DBManager.close(conn, pstmt);
+//        }
+//        return false;
+        IntroductionRequestDto dto = dtoList.get(0);
+        deleteIntroductionByDocCode(dto);
+        return addIntroduction(dtoList);
+    }
+
+    public boolean deleteIntroductionByDocCode(IntroductionRequestDto dto){
+
+        try {
+            conn = DBManager.getConnection();
+            System.out.println(dto.getDocumentCode());
+            String sql = "DELETE FROM self_introduction WHERE document_code=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentCode());
+
+            pstmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public int findUserCodeByDocCode(int docCode){
+        int userCode = -1;
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT MAX(user_code) FROM self_introduction WHERE document_code = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, docCode);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                userCode = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+        return userCode;
+    }
+
+    public List<IntroductionResponseDto> getIntroductionByDocCode(IntroductionRequestDto dto){
+        List<IntroductionResponseDto> resList = null;
+        try {
+            conn = DBManager.getConnection();
+            String sql = "SELECT * FROM self_introduction WHERE document_code = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentCode());
+            rs = pstmt.executeQuery();
+            resList = new ArrayList<>();
+            while (rs.next()) {
+                int docNumber = rs.getInt(1);
+                String title = rs.getString(2);
+                String head = rs.getString(3);
+                String body = rs.getString(4);
+                int documentCode = rs.getInt(5);
+                int userCode = rs.getInt(6);
+                Timestamp writeDate = rs.getTimestamp(7);
+                Timestamp updateDate = rs.getTimestamp(8);
+
+                resList.add(new IntroductionResponseDto(docNumber, title, head, body, documentCode, userCode, writeDate, updateDate));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+
+        return  resList;
+    }
+
+    public boolean deleteDocumentByDocNum(IntroductionRequestDto dto){
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "DELETE FROM self_introduction WHERE document_no=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, dto.getDocumentNumber());
+
+            pstmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
+    }
+
+    public int findUserCodeByDocNum(int docNum){
+        int userCode = -1;
+        try {
+            conn = DBManager.getConnection();
+
+            String sql = "SELECT user_code FROM self_introduction WHERE document_no = ?;";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, docNum);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                userCode = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
+        return userCode;
     }
 }
