@@ -27,15 +27,11 @@ public class ImportResumeDataAction implements Action {
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("123");
-
-        String data = "";
-        try (InputStream in = request.getInputStream()) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		InputStream in = request.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String data = "";
 		while (br.ready()) {
 			data += br.readLine() + "\n";
-		}
-        }catch (IOException e){
-			e.printStackTrace();
 		}
 		System.out.println(data);
 		JSONObject object = new JSONObject(data);
@@ -55,5 +51,4 @@ public class ImportResumeDataAction implements Action {
 		// JSON 응답을 출력에 작성
 		response.getWriter().write(jsonResponse);
 	}
-
 }

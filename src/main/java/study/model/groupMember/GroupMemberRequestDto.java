@@ -5,10 +5,14 @@ public class GroupMemberRequestDto {
 	String userCode;
 	String joinedDate;
 	String memberCode;
-	
+	String userId;
 	
 	public GroupMemberRequestDto() {
 		super();
+	}
+
+	public GroupMemberRequestDto(String groupCode){
+		this.groupCode = groupCode;
 	}
 
 	public GroupMemberRequestDto(String groupCode, String userCode, String joinedDate, String memberCode) {
@@ -23,6 +27,14 @@ public class GroupMemberRequestDto {
 		super();
 		this.groupCode = groupCode;
 		this.userCode = userCode;
+	}
+
+	public GroupMemberRequestDto(String groupCode, String userCode, String joinedDate, String memberCode, String userId) {
+		this.groupCode = groupCode;
+		this.userCode = userCode;
+		this.joinedDate = joinedDate;
+		this.memberCode = memberCode;
+		this.userId = userId;
 	}
 
 	public String getGroupCode() {
@@ -56,8 +68,12 @@ public class GroupMemberRequestDto {
 	public void setMemberCode(String memberCode) {
 		this.memberCode = memberCode;
 	}
-	
-	
-	
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }

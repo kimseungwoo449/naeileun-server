@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -53,6 +54,7 @@ public class FindStudyBoardAction implements Action{
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
 			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
 
+
 			JSONObject s = new JSONObject(study);
 			System.out.println("study"+ s);
 			//groupPost 객체 만들기
@@ -67,16 +69,13 @@ public class FindStudyBoardAction implements Action{
 			JSONObject member = new JSONObject();
 			member.put("isMember", isMember);
 
-			JSONObject page = new JSONObject(postLists.size());
-
 			JSONObject object = new JSONObject();
 			object.put("study", s);
 			object.put("post", p);
 			object.put("isMember", member);
-			object.put("page", page);
 
 			meta = new JSONObject();
-			meta.put("total_count", 1);
+			meta.put("total_count", postLists.size());
 			
 			result =  new JSONArray();
 			result.put(object);

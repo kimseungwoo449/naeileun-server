@@ -7,7 +7,6 @@
 /build
 /bin
 
-
 context.xml
 
 
@@ -15,5 +14,3 @@ context.xml
 .idea
 *.iml
 /out
-
-KeyManager.java

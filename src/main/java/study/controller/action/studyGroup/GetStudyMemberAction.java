@@ -1,10 +1,13 @@
 package study.controller.action.studyGroup;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupMember.GroupMember;
 import study.model.groupMember.GroupMemberDao;
+import study.model.groupMember.GroupMemberRequestDto;
+import study.model.groupMember.GroupMemberResponseDto;
 import study.model.studyGroup.StudyGroupDao;
+import user.model.UserDao;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -14,16 +17,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
-public class CreateStudyAction implements Action {
+public class GetStudyMemberAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean status = false;
+        JSONArray result = null;
+        JSONObject meta = null;
         String message = null;
         String groupCode = null;
+
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
@@ -33,46 +39,35 @@ public class CreateStudyAction implements Action {
             String data = "";
 
             while (br.ready()) {
-                data += br.readLine();
+                data = br.readLine();
             }
 
             JSONObject reqObj = new JSONObject(data);
             System.out.println(reqObj);
 
-            String groupName = reqObj.getString("group_name");
-            System.out.println("groupName: " + groupName);
+            groupCode = reqObj.getString("group_code");
+            System.out.println("groupCode: " + groupCode);
+            //String userId = reqObj.getString("user_id");
+            //UserDoa userDao = UserDao.getInstance();
+            //int userCode = userDao.findUserCodeById(userId);
+            String userCode = "2";
 
-            //String userCode = reqObj.getString("user_code"); //userId일 시 수정
-            //user Id일 시 userDao로 userCode 찾기
-            String userCode = "2";  //수정 시 해당 열 삭제
-
-            String decription = reqObj.getString("decription").equals("") ? null : reqObj.getString("decription");
-            System.out.println("decription: " + decription);
-
-            boolean isPublic = reqObj.getBoolean("is_public");
-            boolean autoMemberAccess = reqObj.getBoolean("auto_member_access");
-
-            System.out.println("isPublic: " + isPublic);
-            System.out.println("autoMemberAccess: " + autoMemberAccess);
-
-            StudyGroupDao sgDao = StudyGroupDao.getInstance();
-            groupCode = sgDao.createStudyAndGetGroupCode(groupName,userCode,decription,isPublic,autoMemberAccess);
-
+            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto(groupCode, userCode);
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
-            boolean addMember = gmDao.addMemberByGroupCode(groupCode,userCode);
+            List<GroupMemberResponseDto> list = gmDao.getStudyMembers(gmReqDto);
 
-            boolean isValid = groupCode == null ? false : true;
-            status = isValid;
+            boolean isValid = list.isEmpty() ? false : true;
             if(!isValid) {
-                message = "Group Create failed.";
-            }else if (!addMember) {
-                message = "Add Member is failed.";
+                message = "Find Group Member failed.";
             }else{
-                message = "Group Create success.";
+                message = "Find Group Member success.";
+                result = new JSONArray(list);
+                meta = new JSONObject(list.size());
             }
         }
 
-        obj.put("status", status);
+        obj.put("result", result);
+        obj.put("meta", meta);
         obj.put("message", message);
         obj.put("groupCode",groupCode);
 

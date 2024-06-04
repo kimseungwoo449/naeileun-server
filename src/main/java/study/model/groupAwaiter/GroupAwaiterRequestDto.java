@@ -10,6 +10,11 @@ public class GroupAwaiterRequestDto {
     public GroupAwaiterRequestDto() {
     }
 
+    public GroupAwaiterRequestDto(String groupCode, String userCode) {
+        this.groupCode = groupCode;
+        this.userCode = userCode;
+    }
+
     public GroupAwaiterRequestDto(String userCode, String groupCode, String comment) {
         this.userCode = userCode;
         this.groupCode = groupCode;

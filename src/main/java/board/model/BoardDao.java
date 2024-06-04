@@ -117,20 +117,15 @@ public class BoardDao {
 			pstmt.setInt(4, Integer.parseInt(reqBoardCode));
 
 			pstmt.execute();
-
-			String[] tempCode = findPostCodeAndBoardCodeRecently().split("/");
-
-			int postCode = Integer.parseInt(tempCode[0]);
-			int boardCode = Integer.parseInt(tempCode[1]);
-
-			return readPostByBoardCodeAndPostCode(boardCode, postCode);
-
+			
+			return findBoardByName(boardDto.getBoardName());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-
+		
 		return null;
 	}*/
 
