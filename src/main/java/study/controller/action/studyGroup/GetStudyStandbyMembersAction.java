@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetStudyStandbyMemberAction implements Action {
+public class GetStudyStandbyMembersAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -46,11 +46,7 @@ public class GetStudyStandbyMemberAction implements Action {
 
             groupCode = reqObj.getString("group_code");
             System.out.println("groupCode: " + groupCode);
-            //String userId = reqObj.getString("user_id");
-            //UserDoa userDao = UserDao.getInstance();
-            //int userCode = userDao.findUserCodeById(userId);
-            String userCode = "2";
-
+            String userCode = reqObj.getString("user_code");
             StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto(groupCode, userCode);
 
             StandbyMemberDao smDao = StandbyMemberDao.getInstance();
@@ -71,7 +67,6 @@ public class GetStudyStandbyMemberAction implements Action {
         obj.put("result", result);
         obj.put("meta", meta);
         obj.put("message", message);
-        obj.put("groupCode",groupCode);
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
