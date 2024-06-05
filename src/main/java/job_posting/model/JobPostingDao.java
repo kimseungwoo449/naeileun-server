@@ -12,14 +12,12 @@ public class JobPostingDao {
     private PreparedStatement pstmt;
     private ResultSet rs;
 
-    // JobPostingDao 객체를 단일 인스턴스로 만들기 위해
-    // Singleton Pattern 적용
 
-    // 1. 생성자를 private으로
+
     private JobPostingDao() {
     }
 
-    // 2. 단일 인스턴스를 생성 (클래스 내부에서)
+
     private static JobPostingDao instance = new JobPostingDao();
     public static JobPostingDao getInstance() {
         return instance;
@@ -37,8 +35,8 @@ public class JobPostingDao {
             pstmt.setDate(4,jobPost.getApplicationStart());
             pstmt.setDate(5,jobPost.getApplicationEnd());
             pstmt.setString(6,jobPost.getDescription());
-
             pstmt.execute();
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -84,5 +82,70 @@ public class JobPostingDao {
             DBManager.close(conn, pstmt,rs);
         }
         return list;
+    }
+    public JobPostingResponseDto findJobPostingById(int postingId) {
+        JobPostingResponseDto dto = null;
+        try {
+            conn = DBManager.getConnection();
+            String sql = "SELECT * FROM job_posting WHERE posting_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, postingId);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                dto = new JobPostingResponseDto();
+                dto.setPostingId(postingId);
+                dto.setCompanyName(rs.getString(2));
+                dto.setJobTitle(rs.getString(3));
+                dto.setApplicationStart(rs.getDate(4));
+                dto.setApplicationEnd(rs.getDate(5));
+                dto.setDescription(rs.getString(6));
+                dto.setStatus(rs.getString(7));
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+
+        return dto;
+    }
+    public JobPostingResponseDto updateJobPosting(JobPostingRequestDto jobPostingRequestDto){
+        JobPostingResponseDto post = null;
+        try{
+            String sql = "UPDATE job_posting SET company_name = ? job_title = ? application_start = ? application_end = ? job_description = ? status =? WHERE posting_id = ?";
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,jobPostingRequestDto.getCompanyName());
+            pstmt.setString(2,jobPostingRequestDto.getJobTitle());
+            pstmt.setDate(3,jobPostingRequestDto.getApplicationStart());
+            pstmt.setDate(4,jobPostingRequestDto.getApplicationEnd());
+            pstmt.setString(5,jobPostingRequestDto.getDescription());
+            pstmt.setString(6,jobPostingRequestDto.getStatus());
+            pstmt.setInt(7,jobPostingRequestDto.getPostingId());
+            pstmt.executeUpdate();
+            post = findJobPostingById(jobPostingRequestDto.getPostingId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn, pstmt);
+        }
+        return null;
+    }
+    public boolean deleteJobPosting(JobPostingRequestDto jobPostingRequestDto){
+        try {
+            conn = DBManager.getConnection();
+            String sql = "DELETE FROM job_posting WHERE posting_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,jobPostingRequestDto.getPostingId());
+            pstmt.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return false;
     }
 }

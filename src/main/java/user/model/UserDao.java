@@ -130,18 +130,9 @@ public class UserDao {
 		return user;
 	}
 
-//	public boolean userExists(UserRequestDto userDto) {
-//		return findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) != null;
-//	}
-//
-//	public boolean userExists(String id) {
-//		return findUserById(id) != null;
-//	}
+
 
 	public UserResponseDto createUser(UserRequestDto userDto) {
-		// sql 구문을 쿼리하고
-		// 성공을 했다면 -> UserResponseDto 객체 생성하여
-		// 반환
 
 		try {
 			conn = DBManager.getConnection();
@@ -249,57 +240,7 @@ public class UserDao {
 		return user;
 	}
 
-//	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
-//		UserResponseDto user = null;
-//
-//		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
-//			return user;
-//
-//		try {
-//			conn = DBManager.getConnection();
-//
-//			String sql = "UPDATE users SET email=?  WHERE id=?";
-//
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, userDto.getEmail());
-//			pstmt.setString(2, userDto.getId());
-//
-//			pstmt.execute();
-//
-//			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			DBManager.close(conn, pstmt);
-//		}
-//		return user;
-//	}
-//
-//	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
-//		UserResponseDto user = null;
-//
-//		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
-//			return user;
-//
-//		try {
-//			conn = DBManager.getConnection();
-//
-//			String sql = "UPDATE users SET phone=? WHERE id=?";
-//			pstmt = conn.prepareStatement(sql);
-//
-//			pstmt.setString(1, userDto.getPhone());
-//			pstmt.setString(2, userDto.getId());
-//
-//			pstmt.execute();
-//
-//			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			DBManager.close(conn, pstmt);
-//		}
-//		return user;
-//	}
+
 
 	public boolean deleteUser(UserRequestDto userDto) {
 	
