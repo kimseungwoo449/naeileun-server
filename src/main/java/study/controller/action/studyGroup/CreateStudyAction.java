@@ -4,7 +4,9 @@ import org.json.JSONObject;
 import study.controller.Action;
 import study.model.groupMember.GroupMember;
 import study.model.groupMember.GroupMemberDao;
+import study.model.groupMember.GroupMemberRequestDto;
 import study.model.studyGroup.StudyGroupDao;
+import study.model.studyGroup.StudyGroupRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -37,29 +39,25 @@ public class CreateStudyAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj);
 
             String groupName = reqObj.getString("group_name");
-            System.out.println("groupName: " + groupName);
-
-            //String userCode = reqObj.getString("user_code"); //userId일 시 수정
-            //user Id일 시 userDao로 userCode 찾기
-            String userCode = "2";  //수정 시 해당 열 삭제
-
+            String userCode = reqObj.getString("user_code");
             String decription = reqObj.getString("decription").equals("") ? null : reqObj.getString("decription");
-            System.out.println("decription: " + decription);
 
-            boolean isPublic = reqObj.getBoolean("is_public");
-            boolean autoMemberAccess = reqObj.getBoolean("auto_member_access");
-
-            System.out.println("isPublic: " + isPublic);
-            System.out.println("autoMemberAccess: " + autoMemberAccess);
+            Boolean isPublic = reqObj.getBoolean("is_public");
+            Boolean autoMemberAccess = reqObj.getBoolean("auto_member_access");
+            StudyGroupRequestDto sgReqDto = new StudyGroupRequestDto();
+            sgReqDto.setName(groupName);
+            sgReqDto.setAdminCode(userCode);
+            sgReqDto.setDecription(decription);
+            sgReqDto.setIsPublic(String.valueOf(isPublic));
+            sgReqDto.setAutoMemberAccess(String.valueOf(autoMemberAccess));
 
             StudyGroupDao sgDao = StudyGroupDao.getInstance();
-            groupCode = sgDao.createStudyAndGetGroupCode(groupName,userCode,decription,isPublic,autoMemberAccess);
-
+            groupCode = sgDao.createStudyAndGetGroupCode(sgReqDto);
+            GroupMemberRequestDto grReqDto = new GroupMemberRequestDto(groupCode, userCode);
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
-            boolean addMember = gmDao.addMemberByGroupCode(groupCode,userCode);
+            boolean addMember = gmDao.joinGroupMember(grReqDto);
 
             boolean isValid = groupCode == null ? false : true;
             status = isValid;
