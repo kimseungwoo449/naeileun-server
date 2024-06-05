@@ -1,6 +1,7 @@
 package job_posting.controller.action;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import job_posting.controller.Action;
 import job_posting.model.JobPostingDao;
 import job_posting.model.JobPostingRequestDto;
@@ -24,7 +25,10 @@ public class DeleteJobPostingAction implements Action {
         while(br.ready()){
             data += br.readLine() + "\n";
         }
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .create();
+
         JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
         JobPostingDao jobDao = JobPostingDao.getInstance();
         JSONObject resObj = new JSONObject();

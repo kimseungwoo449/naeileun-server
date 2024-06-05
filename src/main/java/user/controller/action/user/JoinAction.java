@@ -29,7 +29,6 @@ public class JoinAction implements Action {
 			data += br.readLine() + "\n";
 		}
 
-		System.out.println("data : " + data);
 
 		JSONObject object = new JSONObject(data);
 
@@ -55,7 +54,7 @@ public class JoinAction implements Action {
 			status = 400;
 			message = "User registration is failed.";
 		}
-		System.out.println(message);
+
 		resObj.put("status", status);
 		resObj.put("message", message);
 		

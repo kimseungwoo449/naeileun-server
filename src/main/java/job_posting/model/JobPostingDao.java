@@ -70,14 +70,12 @@ public class JobPostingDao {
                 Date applicationEnd = rs.getDate(5);
                 String job_description = rs.getString(6);
                 String status = rs.getString(7);
-
                 JobPostingResponseDto jobPost = new JobPostingResponseDto(postingId, userCode, companyName, job_title, applicationStart, applicationEnd, job_description,status);
                 list.add(jobPost);
-                System.out.println("내자료 찾기성공");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("내자료 찾기실패");
+
         }finally {
             DBManager.close(conn, pstmt,rs);
         }
@@ -114,7 +112,7 @@ public class JobPostingDao {
     public JobPostingResponseDto updateJobPosting(JobPostingRequestDto jobPostingRequestDto){
         JobPostingResponseDto post = null;
         try{
-            String sql = "UPDATE job_posting SET company_name = ? job_title = ? application_start = ? application_end = ? job_description = ? status =? WHERE posting_id = ?";
+            String sql = "UPDATE job_posting SET company_name = ?, job_title = ?, application_start = ?, application_end = ?, job_description = ?, status = ? WHERE posting_id = ?";
             conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,jobPostingRequestDto.getCompanyName());
