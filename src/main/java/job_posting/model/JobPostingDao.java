@@ -100,7 +100,7 @@ public class JobPostingDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
-            DBManager.close(conn, pstmt);
+            DBManager.close(conn, pstmt,rs);
         }
 
         return dto;
