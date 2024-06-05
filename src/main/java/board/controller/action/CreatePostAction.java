@@ -21,8 +21,6 @@ import java.util.List;
 public class CreatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("게시글 생성하기");
-
         JSONObject resObj = new JSONObject();
         BoardDao boardDao = BoardDao.getInstance();
 
@@ -30,7 +28,6 @@ public class CreatePostAction implements Action {
 
         // AdminKey 검증
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-            System.out.println("AdminKey 오류!!");
             status = false;
         } else {
             List<Part> parts = (List<Part>) request.getParts();

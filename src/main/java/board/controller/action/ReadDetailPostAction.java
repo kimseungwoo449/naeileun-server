@@ -26,7 +26,6 @@ public class ReadDetailPostAction implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject resObj = new JSONObject();
-		// test(in feature message)
 
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			boolean status = false;
@@ -35,17 +34,11 @@ public class ReadDetailPostAction implements Action {
 			resObj.put("status", status);
 			resObj.put("message", message);
 		} else {
-			System.out.println("상세 게시글 가져오기");
-
 			BoardDao boardDao = BoardDao.getInstance();
 
 			BoardResponseDto post = boardDao.readPostByBoardCodeAndPostCode(boardCode, postCode);
-			System.out.println("title : "+post.getTitle());
-			System.out.println("imagePath : "+post.getImagePath());
 
 			resObj.put("result", new JSONObject(post));
-			System.out.println(resObj);
-
 		}
 
 		response.setCharacterEncoding("UTF-8");

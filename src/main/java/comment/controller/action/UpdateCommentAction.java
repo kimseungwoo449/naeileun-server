@@ -18,8 +18,6 @@ import java.io.InputStreamReader;
 public class UpdateCommentAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("댓글 수정하기");
-
         JSONObject resObj = new JSONObject();
         boolean status = true;
         String message = "Comment is updated..";
@@ -37,18 +35,12 @@ public class UpdateCommentAction implements Action {
                 data += br.readLine() + "\n";
             }
             data = data.substring(0, data.length() - 1);
-            System.out.println("CommentData : "+data);
 
             JSONObject object = new JSONObject(data);
             String userId = object.getString("user_id");
             int postCode = object.getInt("post_code");
             int commentCode = object.getInt("comment_code");
             String content = object.getString("content");
-
-            System.out.println("userId : "+userId);
-            System.out.println("postCode : "+postCode);
-            System.out.println("commentCode : "+commentCode);
-            System.out.println("content : "+content);
 
             UserDao userDao = UserDao.getInstance();
             int userCode = userDao.findUserCodeById(userId);

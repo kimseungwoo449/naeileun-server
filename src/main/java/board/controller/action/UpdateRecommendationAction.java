@@ -15,8 +15,6 @@ public class UpdateRecommendationAction implements Action {
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resObj = new JSONObject();
 
-        System.out.println("추천수 올리기");
-
         boolean status = true;
         String message = "Recommendation is Success.";
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
@@ -34,8 +32,6 @@ public class UpdateRecommendationAction implements Action {
                 status = false;
                 message = "Recommendation is blocked.";
             }
-
-            System.out.println("isUpdate : " + isUpdate);
 
         }
 

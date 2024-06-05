@@ -14,8 +14,6 @@ public class ServiceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String pathInfo = request.getPathInfo();
 		String method = request.getMethod();
-		System.out.println("pathInfo : " + pathInfo);
-		System.out.println("method : " + method);
 
 		ActionFactory af = ActionFactory.getInstance();
 

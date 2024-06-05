@@ -30,7 +30,6 @@ public class BoardDao {
 
 		UserDao userDao = UserDao.getInstance();
 		int userCode = userDao.findUserCodeById(reqUserId);
-		System.out.println("userCode : " + userCode);
 
 		boolean isSuccess = false;
 		try {
@@ -295,7 +294,6 @@ public class BoardDao {
 				int commentCount = rs.getInt(10);
 
 				post = new BoardResponseDto(title, content, userId, writeDate, updateDate, recommendation, postCode, boardCode, imagePath, commentCount);
-				System.out.println("readPostByBoardCodeAndPostCode post : " + post);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -332,14 +330,10 @@ public class BoardDao {
 	}
 
 	public boolean deleteImage(String imageUrl) {
-		System.out.println("이미지 삭제하기");
 		boolean isDelete = false;
 
 		if(!imageUrl.equals("")) {
 			isDelete = ImageHandler.deleteImage(imageUrl);
-			System.out.println("isDelete : " + isDelete);
-		}else {
-			System.out.println("이미지 없음");
 		}
 
 		return isDelete;
@@ -350,7 +344,6 @@ public class BoardDao {
 
 		UserDao userDao = UserDao.getInstance();
 		int userCode = userDao.findUserCodeById(reqUserId);
-		System.out.println("UpdatePost userCode : " + userCode);
 
 		boolean isSuccess = false;
 		try {
@@ -379,14 +372,12 @@ public class BoardDao {
 
 			pstmt.execute();
 			isSuccess = true;
-			System.out.println("UpdatePost isSuccess : " + isSuccess);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 
 			if(isSuccess) {
-				System.out.println("reqPostCode : " + reqPostCode);
 				responseDto = findPostByPostCode(reqPostCode);
 			}
 		}

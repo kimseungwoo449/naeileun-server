@@ -34,8 +34,6 @@ public class ReadAllPostAction implements Action {
 			resObj.put("status", status);
 			resObj.put("message", message);
 		} else {
-			System.out.println("전체 게시글 가져오기");
-
 			int page = Integer.parseInt(request.getParameter("page"));
 			String search = request.getParameter("search");
 

@@ -16,8 +16,6 @@ import java.io.InputStreamReader;
 public class DeletePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("게시글 지우기");
-
         JSONObject resObj = new JSONObject();
         boolean status = false;
         boolean isDelete = false;
@@ -38,14 +36,8 @@ public class DeletePostAction implements Action {
         int boardCode = reqObj.getInt("board_code");
         String imagePath = reqObj.getString("image_path");
 
-        System.out.println("userId: " + userId);
-        System.out.println("postCode: " + postCode);
-        System.out.println("boardCode: " + boardCode);
-        System.out.println("imagePath: " + imagePath);
-
         // AdminKey 검증
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-            System.out.println("AdminKey 오류!!");
             status = false;
         } else {
 
@@ -54,7 +46,6 @@ public class DeletePostAction implements Action {
 
             // 응답 JSON 작성
             status = boardDao.deletePostByPostCode(boardCode, userId, postCode);
-            System.out.println("deletePostByPostCode status: " + status);
             if(status) {
                 // 이미지 삭제
                 isDelete = boardDao.deleteImage(imagePath);
@@ -69,7 +60,6 @@ public class DeletePostAction implements Action {
         }
 
         resObj.put("status", status);
-        System.out.println("DeletePost resObj : " + resObj);
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

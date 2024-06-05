@@ -27,7 +27,6 @@ import java.util.List;
 public class CreateCommentAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("댓글 생성하기");
 
         JSONObject resObj = new JSONObject();
         boolean status = true;
@@ -46,16 +45,11 @@ public class CreateCommentAction implements Action {
                 data += br.readLine() + "\n";
             }
             data = data.substring(0, data.length() - 1);
-            System.out.println("CommentData : "+data);
 
             JSONObject object = new JSONObject(data);
             String userId = object.getString("user_id");
             int postCode = object.getInt("post_code");
             String content = object.getString("content");
-
-            System.out.println("userId : "+userId);
-            System.out.println("postCode : "+postCode);
-            System.out.println("content : "+content);
 
             UserDao userDao = UserDao.getInstance();
             int userCode = userDao.findUserCodeById(userId);

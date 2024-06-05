@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 public class DeleteCommentAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("댓글 삭제하기");
 
         JSONObject resObj = new JSONObject();
         boolean status = true;
@@ -35,7 +34,6 @@ public class DeleteCommentAction implements Action {
                 data += br.readLine() + "\n";
             }
             data = data.substring(0, data.length() - 1);
-            System.out.println("CommentData : "+data);
 
             JSONObject object = new JSONObject(data);
             int commentCode = object.getInt("comment_code");

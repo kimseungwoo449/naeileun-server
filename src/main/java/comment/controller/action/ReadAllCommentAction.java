@@ -28,8 +28,6 @@ public class ReadAllCommentAction implements Action {
             resObj.put("status", status);
             resObj.put("message", message);
         } else {
-            System.out.println("전체 댓글 가져오기");
-
             int postCode = Integer.parseInt(request.getParameter("post_code"));
 
             CommentDao commentDao = CommentDao.getInstance();
@@ -43,8 +41,6 @@ public class ReadAllCommentAction implements Action {
 
             resObj.put("meta", meta);
             resObj.put("result", result);
-            System.out.println(resObj);
-
         }
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

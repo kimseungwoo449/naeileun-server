@@ -27,22 +27,17 @@ public class ActionFactory {
 			else if(method.equals("GET") && commands.length > 2) {
 				if(commands.length == 3) {
 					int code = Integer.parseInt(commands[2]);
-					System.out.println("code : " + code);
 					action = new ReadAllPostAction(code);
 				}else if(commands.length == 4) {
 					int boardCode = Integer.parseInt(commands[2]);
 					int postCode = Integer.parseInt(commands[3]);
-					System.out.println("boardCode : " + boardCode);
-					System.out.println("postCode : " + postCode);
 					action = new ReadDetailPostAction(boardCode, postCode);
 				}
 			}
 			else if(method.equals("DELETE")) {
-				System.out.println("DELETE command : " + command);
 				action = new DeletePostAction();
 			}
 			else if(method.equals("PUT")) {
-				System.out.println("PUT command : " + command);
 				if(command.equals("/recommendation")) {
 					action = new UpdateRecommendationAction();
 				}else if(command.equals("/update")) {

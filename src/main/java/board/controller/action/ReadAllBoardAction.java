@@ -28,8 +28,6 @@ public class ReadAllBoardAction implements Action {
 			resObj.put("status", status);
 			resObj.put("message", message);
 		} else {
-			System.out.println("게시판 전체 가져오기");
-			
 			BoardDao boardDao = BoardDao.getInstance();
 			List<BoardResponseDto> boardList = boardDao.readAllBoard();
 			List<BoardResponseDto> bestPostList = boardDao.readBestPost();
@@ -41,11 +39,9 @@ public class ReadAllBoardAction implements Action {
 			JSONArray result = new JSONArray();
 			result.put(boardList);
 			result.put(bestPostList);
-			System.out.println(result);
-			
+
 			resObj.put("meta", meta);
 			resObj.put("result", result);
-			System.out.println(resObj);
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");

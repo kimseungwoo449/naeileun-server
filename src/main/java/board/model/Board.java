@@ -41,33 +41,25 @@ public class Board {
 		return boardCode;
 	}
 
-	public void setBoardCode(int boardCode) {
-		this.boardCode = boardCode;
-	}
+	public void setBoardCode(int boardCode) { this.boardCode = boardCode; }
 
 	public String getBoardName() {
 		return boardName;
 	}
 
-	public void setBoardName(String boardName) {
-		this.boardName = boardName;
-	}
+	public void setBoardName(String boardName) { this.boardName = boardName; }
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	public void setDescription(String description) { this.description = description; }
 
 	public Timestamp getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Timestamp createDate) {
-		this.createDate = createDate;
-	}
+	public void setCreateDate(Timestamp createDate) { this.createDate = createDate; }
 
 	public String getTitle() {
 		return title;

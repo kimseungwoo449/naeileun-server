@@ -20,8 +20,6 @@ import java.util.List;
 public class UpdatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("게시글 수정하기");
-
         JSONObject resObj = new JSONObject();
         BoardDao boardDao = BoardDao.getInstance();
 
@@ -29,7 +27,6 @@ public class UpdatePostAction implements Action {
 
         // AdminKey 검증
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-            System.out.println("AdminKey 오류!!");
             status = false;
         } else {
             List<Part> parts = (List<Part>) request.getParts();
@@ -43,7 +40,6 @@ public class UpdatePostAction implements Action {
 
             for(Part part : parts) {
                 String name = part.getName();
-                System.out.println("name : " + name);
                 if(!name.equals("file")) {
                     InputStream in = part.getInputStream();
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -57,22 +53,18 @@ public class UpdatePostAction implements Action {
 
                     if(name.equals("title")) {
                         title = data;
-                        System.out.println("title : " + title);
                     }
                     else if(name.equals("content")) {
                         content = data;
                     }
                     else if(name.equals("user_id")) {
                         userId = data;
-                        System.out.println("userId : " + userId);
                     }
                     else if(name.equals("post_code")) {
                         postCode = data;
                     }
                     else if(name.equals("image_path")){
-                        System.out.println("data : " + data);
                         currentImagePath = data.equals("null") ? "" : data;
-                        System.out.println("currentImagePath : " + currentImagePath);
                     }
 
                     br.close();
@@ -80,28 +72,15 @@ public class UpdatePostAction implements Action {
 
                 } else {
                     boolean isDeleted = boardDao.deleteImage(currentImagePath);
-                    System.out.println("isDeleted : " + isDeleted);
-
                     imageUrl = ImageHandler.upload(part);
-                    System.out.println("imageUrl : " + imageUrl);
-                    System.out.println("ImageHandler upload 빠져나오기");
                 }
             }
 
-            System.out.println("for문 나오기");
-            System.out.println("title : " + title);
-            System.out.println("content : " + content);
-            System.out.println("userId : " + userId);
-            System.out.println("postCode : " + postCode);
-            System.out.println("imageUrl : " + imageUrl);
-
             BoardResponseDto responseDto = boardDao.UpdatePost(title, content, userId, Integer.parseInt(postCode), imageUrl);
-            System.out.println("CreatePost responseDto : " + responseDto);
             resObj = new JSONObject(responseDto);
         }
 
         resObj.put("status", status);
-        System.out.println("UpdatePost resObj : " + resObj);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().append(resObj.toString());
