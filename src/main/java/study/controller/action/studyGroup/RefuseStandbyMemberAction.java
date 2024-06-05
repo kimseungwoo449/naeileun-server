@@ -2,10 +2,8 @@ package study.controller.action.studyGroup;
 
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupAwaiter.GroupAwaiterDao;
-import study.model.groupAwaiter.GroupAwaiterRequestDto;
-import study.model.groupMember.GroupMemberDao;
-import study.model.groupMember.GroupMemberRequestDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -16,8 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class CheckAwaiterAction implements Action {
-
+public class RefuseStandbyMemberAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -38,22 +35,20 @@ public class CheckAwaiterAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-
             String groupcode = reqObj.getString("group_code");
             String userCode = reqObj.getString("user_code");
-            GroupAwaiterRequestDto gaReqDto = new GroupAwaiterRequestDto();
+
+            StandbyMemberRequestDto gaReqDto = new StandbyMemberRequestDto();
             gaReqDto.setGroupCode(groupcode);
             gaReqDto.setUserCode(userCode);
 
-            GroupAwaiterDao gaDao = GroupAwaiterDao.getInstance();
+            StandbyMemberDao gaDao = StandbyMemberDao.getInstance();
+            status = gaDao.deleteStandbyMember(gaReqDto);
 
-            status = gaDao.checkAwaiter(gaReqDto);
-
-            System.out.println(status);
             if(!status) {
-                message = "Awaiter not exist";
+                message = "Refuse Awaiter failed";
             }else{
-                message = "Awaiter exist";
+                message = "Refuse Awaiter success";
             }
         }
 

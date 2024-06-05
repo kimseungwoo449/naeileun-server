@@ -2,8 +2,9 @@ package study.controller.action.studyGroup;
 
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupAwaiter.GroupAwaiterDao;
-import study.model.groupAwaiter.GroupAwaiterRequestDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
+import study.model.groupMember.GroupMemberDao;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class AddAwaiterAction implements Action {
+public class AddMemberFromStandbyMemberAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -37,19 +38,25 @@ public class AddAwaiterAction implements Action {
             JSONObject reqObj = new JSONObject(data);
             String groupcode = reqObj.getString("group_code");
             String userCode = reqObj.getString("user_code");
-            String comment = reqObj.getString("comment");
-            GroupAwaiterRequestDto gaReqDto = new GroupAwaiterRequestDto();
-            gaReqDto.setGroupCode(groupcode);
-            gaReqDto.setUserCode(userCode);
-            gaReqDto.setComment(comment);
 
-            GroupAwaiterDao gaDao = GroupAwaiterDao.getInstance();
-            status = gaDao.addAwaiter(gaReqDto);
+            StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto();
+            smReqDto.setGroupCode(groupcode);
+            smReqDto.setUserCode(userCode);
+
+            GroupMemberDao gmDao = GroupMemberDao.getInstance();
+            status = gmDao.joinGroupMember(smReqDto);
+
+            if(status){
+                StandbyMemberDao gaDao = StandbyMemberDao.getInstance();
+                status = gaDao.deleteStandbyMember(smReqDto);
+            }else{
+                message ="Join Member from Awaiter failed";
+            }
 
             if(!status) {
-                message = "Add Awaiter failed";
+                message = "Delete Awaiter failed";
             }else{
-                message = "Add Awaiter success";
+                message = "Join Member success";
             }
         }
 

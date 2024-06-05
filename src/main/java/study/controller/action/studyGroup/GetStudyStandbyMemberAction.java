@@ -3,12 +3,9 @@ package study.controller.action.studyGroup;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupAwaiter.GroupAwaiterDao;
-import study.model.groupAwaiter.GroupAwaiterRequestDto;
-import study.model.groupAwaiter.GroupAwaiterResponseDto;
-import study.model.groupMember.GroupMemberDao;
-import study.model.groupMember.GroupMemberRequestDto;
-import study.model.groupMember.GroupMemberResponseDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
+import study.model.standbyMember.StandbyMemberResponseDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -21,7 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetStudyAwaiterAction implements Action {
+public class GetStudyStandbyMemberAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -54,10 +51,10 @@ public class GetStudyAwaiterAction implements Action {
             //int userCode = userDao.findUserCodeById(userId);
             String userCode = "2";
 
-            GroupAwaiterRequestDto gaReqDto = new GroupAwaiterRequestDto(groupCode, userCode);
+            StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto(groupCode, userCode);
 
-            GroupAwaiterDao gaDao = GroupAwaiterDao.getInstance();
-            List<GroupAwaiterResponseDto> list = gaDao.getStudyAwaiters(gaReqDto);
+            StandbyMemberDao smDao = StandbyMemberDao.getInstance();
+            List<StandbyMemberResponseDto> list = smDao.getStudyStandbyMembers(smReqDto);
 
             boolean isValid = list.isEmpty() ? false : true;
             if(!isValid) {

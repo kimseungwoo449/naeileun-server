@@ -1,34 +1,34 @@
-package study.model.groupAwaiter;
+package study.model.standbyMember;
 
-public class GroupAwaiterRequestDto {
+public class StandbyMemberRequestDto {
     String userCode ;
     String groupCode;
     String comment;
     String sendDate;
     String userId;
 
-    public GroupAwaiterRequestDto() {
+    public StandbyMemberRequestDto() {
     }
 
-    public GroupAwaiterRequestDto(String groupCode, String userCode) {
+    public StandbyMemberRequestDto(String groupCode, String userCode) {
         this.groupCode = groupCode;
         this.userCode = userCode;
     }
 
-    public GroupAwaiterRequestDto(String userCode, String groupCode, String comment) {
+    public StandbyMemberRequestDto(String userCode, String groupCode, String comment) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;
     }
 
-    public GroupAwaiterRequestDto(String userCode, String groupCode, String comment, String userId) {
+    public StandbyMemberRequestDto(String userCode, String groupCode, String comment, String userId) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;
         this.userId = userId;
     }
 
-    public GroupAwaiterRequestDto(String userCode, String groupCode, String comment, String sendDate, String userId) {
+    public StandbyMemberRequestDto(String userCode, String groupCode, String comment, String sendDate, String userId) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;
