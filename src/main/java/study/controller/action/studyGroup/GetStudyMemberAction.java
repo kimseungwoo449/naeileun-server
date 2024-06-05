@@ -47,10 +47,7 @@ public class GetStudyMemberAction implements Action {
 
             groupCode = reqObj.getString("group_code");
             System.out.println("groupCode: " + groupCode);
-            //String userId = reqObj.getString("user_id");
-            //UserDoa userDao = UserDao.getInstance();
-            //int userCode = userDao.findUserCodeById(userId);
-            String userCode = "2";
+            String userCode= reqObj.getString("user_code");
 
             GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto(groupCode, userCode);
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
