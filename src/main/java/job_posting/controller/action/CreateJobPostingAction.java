@@ -35,12 +35,8 @@ public class CreateJobPostingAction implements Action {
                 .create();
 
         JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
-
-        // Create user
         JobPostingDao jobDao = JobPostingDao.getInstance();
         JobPostingResponseDto jobDto = jobDao.createJobPosting(jobPost);
-
-        // Prepare response JSON object
         JSONObject resObj = new JSONObject();
         int status = (jobDto != null) ? 200 : 400;
         String message = (jobDto != null) ? "JobPosting registration is success." : "JobPosting registration is failed.";

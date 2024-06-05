@@ -32,7 +32,7 @@ public class ReadJobPostingAction implements Action {
         Gson gson = new GsonBuilder().setDateFormat(dateFormat.toPattern()).create();
 
         String jobPostingsJson = gson.toJson(jobPostings);
-        System.out.println("jobPostingsJson" + jobPostingsJson);
+
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().append(jobPostingsJson);

@@ -26,6 +26,7 @@ public class UpdateJobPostingAction implements Action {
         while(br.ready()){
             data += br.readLine() + "\n";
         }
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();
