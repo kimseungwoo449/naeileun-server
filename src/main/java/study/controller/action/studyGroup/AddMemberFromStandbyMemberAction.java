@@ -53,6 +53,9 @@ public class AddMemberFromStandbyMemberAction implements Action {
                 message ="Join Member from Awaiter failed";
             }
 
+            StandbyMemberDao smDao = StandbyMemberDao.getInstance();
+            status = smDao.deleteStandbyMember(smReqDto);
+
             if(!status) {
                 message = "Delete Awaiter failed";
             }else{
