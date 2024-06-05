@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import job_posting.controller.Action;
 import job_posting.model.JobPostingDao;
 import job_posting.model.JobPostingResponseDto;
+import org.json.JSONObject;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,21 +21,34 @@ import java.util.List;
 public class ReadJobPostingAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        JSONObject resObj = new JSONObject();
 
-        InputStream is = request.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        int userCode = Integer.parseInt(br.readLine());
+        int status = 0;
+        String message = "";
 
-        JobPostingDao dao = JobPostingDao.getInstance();
-        List<JobPostingResponseDto> jobPostings = dao.findMyJobPostingAll(userCode);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Gson gson = new GsonBuilder().setDateFormat(dateFormat.toPattern()).create();
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+            status = 400;
+            message = "User registration is failed.";
+            resObj.put("status", status);
+            resObj.put("message", message);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().append(resObj.toString());
+        } else {
+            InputStream is = request.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            int userCode = Integer.parseInt(br.readLine());
 
-        String jobPostingsJson = gson.toJson(jobPostings);
+            JobPostingDao dao = JobPostingDao.getInstance();
+            List<JobPostingResponseDto> jobPostings = dao.findMyJobPostingAll(userCode);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Gson gson = new GsonBuilder().setDateFormat(dateFormat.toPattern()).create();
 
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().append(jobPostingsJson);
+            String jobPostingsJson = gson.toJson(jobPostings);
 
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().append(jobPostingsJson);
+        }
     }
 }

@@ -17,47 +17,56 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import user.controller.Action;
 import user.model.UserDao;
 import user.model.UserResponseDto;
+import utill.KeyManager;
 
 public class LoginAction implements Action{
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("1234");
-		InputStream in = request.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-		String data = "";
-		while (br.ready()) {
-			data += br.readLine() + "\n";
-		}
-
-		UserDao userDao = UserDao.getInstance();
-		JSONObject object = new JSONObject(data);
-
-		String id = object.getString("id");
-		String password = object.getString("password");
-
-
-		request.setCharacterEncoding("UTF-8");
-
-		UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
-		
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(userDto);
-		
 		JSONObject resObj = new JSONObject();
-		
-		int status = 200;
-		String message = "User login is success.";
-		
-		if(userDto == null) {
+
+		int status = 0;
+		String message = "";
+
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			status = 400;
 			message = "User login is failed.";
-		} 
-		if(userDto != null) {
+		} else {
+			InputStream in = request.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-		    resObj.put("user", new JSONObject(json));
+			String data = "";
+			while (br.ready()) {
+				data += br.readLine() + "\n";
+			}
+
+			UserDao userDao = UserDao.getInstance();
+			JSONObject object = new JSONObject(data);
+
+			String id = object.getString("id");
+			String password = object.getString("password");
+
+
+			request.setCharacterEncoding("UTF-8");
+
+			UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
+
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			String json = objectMapper.writeValueAsString(userDto);
+
+
+			status = 200;
+			message = "User login is success.";
+
+			if (userDto == null) {
+				status = 400;
+				message = "User login is failed.";
+			}
+			if (userDto != null) {
+
+				resObj.put("user", new JSONObject(json));
+			}
 		}
 		resObj.put("status", status);
 		resObj.put("message", message);

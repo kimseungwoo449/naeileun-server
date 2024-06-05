@@ -7,6 +7,7 @@ import job_posting.model.JobPostingDao;
 import job_posting.model.JobPostingRequestDto;
 import job_posting.model.JobPostingResponseDto;
 import org.json.JSONObject;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,23 +21,31 @@ public class UpdateJobPostingAction implements Action {
 
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        InputStream in = request.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String data = "";
-        while(br.ready()){
-            data += br.readLine() + "\n";
-        }
-
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-        JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
-        JobPostingDao jobDao = JobPostingDao.getInstance();
-        JobPostingResponseDto jobDto = jobDao.updateJobPosting(jobPost);
         JSONObject resObj = new JSONObject();
-        int status = (jobDto != null) ? 200 : 400;
-        String message = (jobDto != null) ? "JobPosting update is success." : "JobPosting update is failed.";
 
+        int status = 0;
+        String message = "";
+
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+            status = 400;
+            message = "JobPosting delete is failed.";
+        } else {
+            InputStream in = request.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String data = "";
+            while (br.ready()) {
+                data += br.readLine() + "\n";
+            }
+
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd")
+                    .create();
+            JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
+            JobPostingDao jobDao = JobPostingDao.getInstance();
+            JobPostingResponseDto jobDto = jobDao.updateJobPosting(jobPost);
+            status = (jobDto != null) ? 200 : 400;
+            message = (jobDto != null) ? "JobPosting update is success." : "JobPosting update is failed.";
+        }
         resObj.put("status", status);
         resObj.put("message", message);
 

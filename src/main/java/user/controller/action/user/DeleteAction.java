@@ -17,45 +17,53 @@ import user.controller.Action;
 import user.model.UserDao;
 import user.model.UserRequestDto;
 import user.model.UserResponseDto;
+import utill.KeyManager;
 
 public class DeleteAction implements Action{
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		InputStream in = request.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-		String data = "";
-		while (br.ready()) {
-			data += br.readLine() + "\n";
-		}
-		JSONObject object = new JSONObject(data);
-
-	
-		request.setCharacterEncoding("UTF-8");
-
-		UserDao userDao = UserDao.getInstance();
-
-		
-
-		String id = object.getString("id");
-		int userCode = Integer.parseInt(object.getString("userCode"));
-		BoardDao boardDao = BoardDao.getInstance();
-		UserRequestDto userDto = new UserRequestDto();
-
-		userDto.setId(id);
-
-		boolean result = userDao.deleteUser(userDto);
-
 		JSONObject resObj = new JSONObject();
-		int status = result ? 200 : 400;
-		String message = result ? "User delete is success." : "User delete is failed.";
 
-		if(status == 200) {
-			boardDao.deletePostByUserCode(userCode);
+		int status = 0;
+		String message = "";
+
+		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+			status = 400;
+			message = "User delete is failed.";
+		} else {
+			InputStream in = request.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+			String data = "";
+			while (br.ready()) {
+				data += br.readLine() + "\n";
+			}
+			JSONObject object = new JSONObject(data);
+
+
+			request.setCharacterEncoding("UTF-8");
+
+			UserDao userDao = UserDao.getInstance();
+
+
+			String id = object.getString("id");
+			int userCode = Integer.parseInt(object.getString("userCode"));
+			BoardDao boardDao = BoardDao.getInstance();
+			UserRequestDto userDto = new UserRequestDto();
+
+			userDto.setId(id);
+
+			boolean result = userDao.deleteUser(userDto);
+
+			 status = result ? 200 : 400;
+			 message = result ? "User delete is success." : "User delete is failed.";
+
+			if (status == 200) {
+				boardDao.deletePostByUserCode(userCode);
+			}
 		}
-
 		resObj.put("status", status);
 		resObj.put("message", message);
 
