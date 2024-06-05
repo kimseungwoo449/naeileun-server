@@ -23,17 +23,14 @@ public class UserDao {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	// UserDao 객체를 단일 인스턴스로 만들기 위해
-	// Singleton Pattern 적용
 
-	// 1. 생성자를 private으로
 	private UserDao() {
 	}
 
-	// 2. 단일 인스턴스를 생성 (클래스 내부에서)
+
 	private static UserDao instance = new UserDao();
 
-	// 3. 단일 인스턴스에 대한 getter
+
 	public static UserDao getInstance() {
 		return instance;
 	}
@@ -45,16 +42,12 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			// 쿼리할 준비
 			String sql = "SELECT user_code, id , name, resident_number, phone, admin , email FROM users";
 			pstmt = conn.prepareStatement(sql);
 
-			// 쿼리 실행
 			rs = pstmt.executeQuery();
 
-			// 튜플 읽기
 			while (rs.next()) {
-				// database의 column index는 1부터 시작!
 				String userCode = rs.getString(1);
 				String id = rs.getString(2);
 				String name = rs.getString(3);
@@ -75,10 +68,6 @@ public class UserDao {
 	}
 	public boolean checkIdAvailability(String id){
 		conn = DBManager.getConnection();
-
-		// 쿼리할 준비
-
-		// 쿼리 실행
         try {
 		String sql = "SELECT COUNT(*) FROM users WHERE id = ?";
 		pstmt = conn.prepareStatement(sql);
@@ -129,11 +118,7 @@ public class UserDao {
 		}
 		return user;
 	}
-
-
-
 	public UserResponseDto createUser(UserRequestDto userDto) {
-
 		try {
 			conn = DBManager.getConnection();
 
@@ -231,16 +216,63 @@ public class UserDao {
 			pstmt.setString(1, value);
 			pstmt.setString(2, userId);
 			pstmt.execute();
-			user = getUserById(userId);
-			System.out.println("업데이트 성공");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return user;
 	}
 
+	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
+		UserResponseDto user = null;
 
+		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
+			return user;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE users SET email=?  WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userDto.getEmail());
+			pstmt.setString(2, userDto.getId());
+
+			pstmt.execute();
+
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		return user;
+	}
+
+	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
+		UserResponseDto user = null;
+
+		if (findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) == null)
+			return user;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE users SET phone=? WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, userDto.getPhone());
+			pstmt.setString(2, userDto.getId());
+
+			pstmt.execute();
+
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		return user;
+	}
 
 	public boolean deleteUser(UserRequestDto userDto) {
 	
@@ -282,7 +314,6 @@ public class UserDao {
 				boolean admin = rs.getBoolean(5);
 				String email = rs.getString(6);
 				Timestamp regDate = rs.getTimestamp(7);
-
 				user = new User(id, name, resident_number, phone, admin, email, regDate);
 			}
 		} catch (SQLException e) {
@@ -295,7 +326,6 @@ public class UserDao {
 
 	public UserResponseDto getUserById(String id) {
 		UserResponseDto user = null;
-
 		try {
 			conn = DBManager.getConnection();
 
@@ -315,7 +345,6 @@ public class UserDao {
 				boolean admin = rs.getBoolean(7);
 				String email = rs.getString(8);
 				String encyptedPassword = rs.getString(9);
-
 				if (PasswordCrypto.decrypt(password, encyptedPassword))
 					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
 			}
@@ -329,7 +358,6 @@ public class UserDao {
 
 	public int findUserCodeById(String id) {
 		int userCode = -1;
-
 		try {
 			conn = DBManager.getConnection();
 

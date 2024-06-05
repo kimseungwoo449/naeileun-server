@@ -45,11 +45,9 @@ public class ImportResumeDataAction implements Action {
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(resumeList);
 
-		// 응답 콘텐츠 타입을 JSON으로 설정
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		// JSON 응답을 출력에 작성
 		response.getWriter().write(jsonResponse);
 	}
 
