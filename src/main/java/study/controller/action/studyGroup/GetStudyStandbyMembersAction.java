@@ -54,11 +54,11 @@ public class GetStudyStandbyMembersAction implements Action {
 
             boolean isValid = list.isEmpty() ? false : true;
             if(!isValid) {
-                message = "Find Group Awaiters failed.";
+                message = "Find Standby Member failed.";
                 list = new ArrayList<>();
                 result = new JSONArray(list);
             }else{
-                message = "Find Group Awaiters success.";
+                message = "Find Standby Member success.";
                 result = new JSONArray(list);
                 meta = new JSONObject(list.size());
             }
