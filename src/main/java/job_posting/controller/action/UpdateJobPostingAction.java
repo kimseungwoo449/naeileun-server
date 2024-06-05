@@ -28,19 +28,20 @@ public class UpdateJobPostingAction implements Action {
 
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             status = 400;
-            message = "JobPosting delete is failed.";
+            message = "JobPosting update is failed.";
         } else {
             InputStream in = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String data = "";
-            while (br.ready()) {
-                data += br.readLine() + "\n";
+            StringBuilder data = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                data.append(line);
             }
-
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd")
                     .create();
-            JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
+            JobPostingRequestDto jobPost = gson.fromJson(data.toString(), JobPostingRequestDto.class);
+
             JobPostingDao jobDao = JobPostingDao.getInstance();
             JobPostingResponseDto jobDto = jobDao.updateJobPosting(jobPost);
             status = (jobDto != null) ? 200 : 400;

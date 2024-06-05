@@ -57,7 +57,6 @@ public class JobPostingDao {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userCode);
             rs = pstmt.executeQuery();
-            System.out.println("1");
             while (rs.next()) {
                 int postingId = rs.getInt(1);
                 String companyName = rs.getString(2);
@@ -78,7 +77,7 @@ public class JobPostingDao {
         return list;
     }
     public JobPostingResponseDto findJobPostingById(int postingId) {
-        JobPostingResponseDto dto = null;
+        JobPostingResponseDto post = null;
         try {
             conn = DBManager.getConnection();
             String sql = "SELECT * FROM job_posting WHERE posting_id=?";
@@ -86,14 +85,15 @@ public class JobPostingDao {
             pstmt.setInt(1, postingId);
             rs = pstmt.executeQuery();
             if(rs.next()){
-                dto = new JobPostingResponseDto();
-                dto.setPostingId(postingId);
-                dto.setCompanyName(rs.getString(2));
-                dto.setJobTitle(rs.getString(3));
-                dto.setApplicationStart(rs.getDate(4));
-                dto.setApplicationEnd(rs.getDate(5));
-                dto.setDescription(rs.getString(6));
-                dto.setStatus(rs.getString(7));
+                post = new JobPostingResponseDto();
+                post.setPostingId(rs.getInt("posting_id"));
+                post.setUserCode(rs.getInt("user_code"));
+                post.setCompanyName(rs.getString("company_name"));
+                post.setJobTitle(rs.getString("job_title"));
+                post.setApplicationStart(rs.getDate("application_start"));
+                post.setApplicationEnd(rs.getDate("application_end"));
+                post.setDescription(rs.getString("job_description"));
+                post.setStatus(rs.getString("status"));
 
             }
 
@@ -103,7 +103,7 @@ public class JobPostingDao {
             DBManager.close(conn, pstmt,rs);
         }
 
-        return dto;
+        return post;
     }
     public JobPostingResponseDto updateJobPosting(JobPostingRequestDto jobPostingRequestDto){
         JobPostingResponseDto post = null;

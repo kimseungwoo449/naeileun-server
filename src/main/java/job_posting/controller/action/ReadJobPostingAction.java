@@ -28,7 +28,7 @@ public class ReadJobPostingAction implements Action {
 
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             status = 400;
-            message = "User registration is failed.";
+            message = "Post registration is failed.";
             resObj.put("status", status);
             resObj.put("message", message);
             response.setContentType("application/json");
