@@ -38,6 +38,8 @@ public class ActionFactory{
 			action = new AddAwaiterAction();
 		}else if(command.equals("/deleteMemberByMemberCode")){
 			action = new DeleteMemberByMemberCodeAction();
+		}else if(command.equals("/popular")){
+			action = new GetPopularGroup();
 		}
 		
 		return action;
