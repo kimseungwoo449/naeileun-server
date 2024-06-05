@@ -23,17 +23,15 @@ public class GroupPostDao {
     }
 
     public List<GroupPostResponseDto> getGroupPostsByGroupCode(String groupCode){
-        List<GroupPostResponseDto> list = null;
+        List<GroupPostResponseDto> list = new ArrayList<GroupPostResponseDto>();;
 
         try{
             conn = DBManager.getConnection();
-            String sql = "SELECT post_code,user_code,title,content,update_date FROM group_posts WHERE group_code =?";
+            String sql = "SELECT post_code,user_code,title,content,update_date,group_code,(SELECT id FROM users u WHERE u.user_code = gp.user_code) FROM group_posts gp WHERE group_code =? ORDER BY update_date DESC";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,groupCode);
 
             rs = pstmt.executeQuery();
-
-            list = new ArrayList<GroupPostResponseDto>();
 
             while(rs.next()){
                 String postCode = rs.getString(1);
@@ -41,8 +39,9 @@ public class GroupPostDao {
                 String title = rs.getString(3);
                 String content = rs.getString(4);
                 String updateDate = rs.getString(5);
+                String userId = rs.getString(7);
+                GroupPostResponseDto gp = new GroupPostResponseDto(postCode,groupCode,userCode,title,content,updateDate,userId);
 
-                GroupPostResponseDto gp = new GroupPostResponseDto(postCode,groupCode,userCode,title,content,updateDate);
                 list.add(gp);
             }
 
@@ -53,5 +52,64 @@ public class GroupPostDao {
         }
 
         return list;
+    }
+
+    public boolean createGroupPost(GroupPostRequestDto groupPostRequestDto){
+        boolean isValid = false;
+        String groupCode = groupPostRequestDto.getGroupCode();
+        String userCode = groupPostRequestDto.getUserCode();
+        String title = groupPostRequestDto.getTitle();
+        String content = groupPostRequestDto.getContent();
+
+        try{
+            conn = DBManager.getConnection();
+            String sql = "INSERT INTO group_posts (group_code,user_code,title,content) VALUES (?,?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,groupCode);
+            pstmt.setString(2,userCode);
+            pstmt.setString(3,title);
+            pstmt.setString(4,content);
+
+            isValid = pstmt.executeUpdate()>0;
+            System.out.println("isValid : "+isValid);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt);
+        }
+
+        return isValid;
+    }
+
+    public GroupPostResponseDto getGroupPostDetail(GroupPostRequestDto groupPostRequestDto){
+        GroupPostResponseDto groupPostResponseDto = null;
+
+        try{
+            String postCode = groupPostRequestDto.getPostCode();
+            conn = DBManager.getConnection();
+            String sql="SELECT gp.post_code, gp.group_code, gp.user_code,gp.title, gp.content, gp.update_date, gp.recommendation, u.id FROM group_posts gp JOIN users u ON gp.user_code = u.user_code WHERE gp.post_code = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,postCode);
+
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                String groupCode = rs.getString(2);
+                String userCode = rs.getString(3);
+                String title = rs.getString(4);
+                String content = rs.getString(5);
+                String updateDate = rs.getString(6);
+                int recommendation = rs.getInt(7);
+                String userId = rs.getString(8);
+
+                groupPostResponseDto = new GroupPostResponseDto(recommendation,userId, updateDate, content, title,groupCode,userCode,postCode);
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt,rs);
+        }
+
+        return groupPostResponseDto;
     }
 }
