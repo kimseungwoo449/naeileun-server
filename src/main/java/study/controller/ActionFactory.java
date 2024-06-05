@@ -1,6 +1,8 @@
 package study.controller;
 
 import study.controller.action.studyGroup.*;
+import study.controller.action.studyGroup.post.CreateGroupPostAction;
+import study.controller.action.studyGroup.post.GetGroupPostDetailAction;
 
 public class ActionFactory{
 	
