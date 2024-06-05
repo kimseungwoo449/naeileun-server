@@ -14,10 +14,10 @@
   * Amazon RDS (mySql)
 
 ### 문서
-1. 프로젝트 기획서(https://www.canva.com/design/DAGG9AZGpgw/Pp8jHgaWU0RBg1ZV9u26cA/edit)
-2. <a href="https://docs.google.com/spreadsheets/d/1q8V6A5LC5ZKv9DVxExR1PSdV8czj_3ASyJHBqQv2q3Q/edit#gid=0" target="_blank"><h4>요구사항 정의서</h4></a>
-3. <a href="https://ovenapp.io/project/LO8KqXZVArHsjTgByNQlagoMATYp1Ifu#QhHy3" target="_blank"><h4>화면 설계서</h4></a>
-4. <a href="https://docs.google.com/spreadsheets/d/1BMhdGyFc1mNLpGda8t7mWjYUd53ISWNtstGZQnMfeA8/edit#gid=0" target="_blank"><h4>테이블 정의서</h4></a>
-5. <a href="https://docs.google.com/spreadsheets/d/1rF1VCMKqByDHVBjlTNMszPitTprvRptSjdT_eUva0Eg/edit#gid=0" target="_blank"><h4>인터페이스 정의서</h4></a>
-6. <a href="https://drive.google.com/drive/folders/1vbiigl3PfuLDbsnJxV_PXUUUUySZrToo" target="_blank"><h4>기타 문서</h4></a>
+1. [프로젝트 기획서](https://www.canva.com/design/DAGG9AZGpgw/Pp8jHgaWU0RBg1ZV9u26cA/edit)
+2. [요구사항 정의서](https://docs.google.com/spreadsheets/d/1q8V6A5LC5ZKv9DVxExR1PSdV8czj_3ASyJHBqQv2q3Q/edit#gid=0)
+3. [화면 설계서](https://ovenapp.io/project/LO8KqXZVArHsjTgByNQlagoMATYp1Ifu#QhHy3)
+4. [테이블 정의서](https://docs.google.com/spreadsheets/d/1BMhdGyFc1mNLpGda8t7mWjYUd53ISWNtstGZQnMfeA8/edit#gid=0)
+5. [인터페이스 정의서](https://docs.google.com/spreadsheets/d/1rF1VCMKqByDHVBjlTNMszPitTprvRptSjdT_eUva0Eg/edit#gid=0)
+6. 기타 문서(https://drive.google.com/drive/folders/1vbiigl3PfuLDbsnJxV_PXUUUUySZrToo)
 7. Demo
