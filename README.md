@@ -19,5 +19,5 @@
 3. [화면 설계서](https://ovenapp.io/project/LO8KqXZVArHsjTgByNQlagoMATYp1Ifu#QhHy3)
 4. [테이블 정의서](https://docs.google.com/spreadsheets/d/1BMhdGyFc1mNLpGda8t7mWjYUd53ISWNtstGZQnMfeA8/edit#gid=0)
 5. [인터페이스 정의서](https://docs.google.com/spreadsheets/d/1rF1VCMKqByDHVBjlTNMszPitTprvRptSjdT_eUva0Eg/edit#gid=0)
-6. 기타 문서(https://drive.google.com/drive/folders/1vbiigl3PfuLDbsnJxV_PXUUUUySZrToo)
+6. [기타 문서](https://drive.google.com/drive/folders/1vbiigl3PfuLDbsnJxV_PXUUUUySZrToo)
 7. Demo
