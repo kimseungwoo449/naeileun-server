@@ -83,7 +83,7 @@ public class StudyGroupDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT name,decription, admin_code, is_public FROM study_group WHERE group_code =?";
+			String sql = "SELECT name,decription, admin_code, is_public,auto_member_access FROM study_group WHERE group_code =?";
 			pstmt = conn.prepareStatement(sql);
 				
 			pstmt.setString(1,groupCode);
@@ -116,6 +116,7 @@ public class StudyGroupDao {
 		List<StudyGroupResponseDto> list = new ArrayList<>();
 		try{
 			String userCode = gmReqDto.getUserCode();
+
 			conn = DBManager.getConnection();
 			String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code WHERE gm.user_code = ?";
 			pstmt = conn.prepareStatement(sql);
