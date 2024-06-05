@@ -105,13 +105,12 @@ public class GroupMemberDao {
 		 List<GroupMemberResponseDto> list = null;
 
 		 try{
+			 String groupCode = groupMemberRequestDto.getGroupCode();
+
 			 conn = DBManager.getConnection();
 			 String sql = "SELECT gm.user_code, gm.member_code,"
 			 +"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
 					 "FROM group_member gm WHERE group_code = ? ";
-
-			 String groupCode = groupMemberRequestDto.getGroupCode();
-			 String adminCode = groupMemberRequestDto.getUserCode();
 
 			 pstmt = conn.prepareStatement(sql);
 			 pstmt.setString(1, groupCode);
