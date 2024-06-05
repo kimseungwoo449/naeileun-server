@@ -19,14 +19,14 @@ public class ServiceServlet extends HttpServlet{
 		// ㄴ 생성 패턴인 Factory Method Pattern
 		// ㄴ 행위 패턴인 Command Pattern
 		
-		
 		request.setCharacterEncoding("UTF-8");
 		String command = request.getPathInfo();
-		
+		String method = request.getMethod();
+
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			System.out.println("server command : " + command);
-			Action action = af.getAction(command);
+			Action action = af.getAction(command,method);
 			if(action != null) {
 				action.excute(request, response);
 			}else {
@@ -40,44 +40,11 @@ public class ServiceServlet extends HttpServlet{
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-
-		String command = request.getPathInfo();
-		
-		if(command!=null) {
-			ActionFactory af = ActionFactory.getInstance();
-			Action action = af.getAction(command);
-
-			System.out.println("server command : " + command);
-			if(action != null) {
-				action.excute(request, response);
-			}else {
-				response.sendError(404);			
-			}
-		}else {
-			response.sendError(404);			
-		}
+		doGet(request, response);
 	}
 	
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-
-		String command = request.getPathInfo();
-
-		if(command!=null) {
-			ActionFactory af = ActionFactory.getInstance();
-			Action action = af.getAction(command);
-
-			System.out.println("server command : " + command);
-			if(action != null) {
-				action.excute(request, response);
-			}else {
-				response.sendError(404);
-			}
-		}else {
-			response.sendError(404);
-		}
+		doGet(request, response);
 	}
 }

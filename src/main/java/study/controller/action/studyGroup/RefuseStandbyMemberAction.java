@@ -2,8 +2,8 @@ package study.controller.action.studyGroup;
 
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupMember.GroupMemberDao;
-import study.model.groupMember.GroupMemberRequestDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class JoinStudyMemberAction implements Action {
+public class RefuseStandbyMemberAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -35,22 +35,20 @@ public class JoinStudyMemberAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            String groupCode = reqObj.getString("group_code");
+            String groupcode = reqObj.getString("group_code");
             String userCode = reqObj.getString("user_code");
-            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
-            gmReqDto.setGroupCode(groupCode);
-            gmReqDto.setUserCode(userCode);
 
-            GroupMemberDao gmDao = GroupMemberDao.getInstance();
+            StandbyMemberRequestDto gaReqDto = new StandbyMemberRequestDto();
+            gaReqDto.setGroupCode(groupcode);
+            gaReqDto.setUserCode(userCode);
 
-            boolean isValid = gmDao.joinGroupMember(gmReqDto);
+            StandbyMemberDao gaDao = StandbyMemberDao.getInstance();
+            status = gaDao.deleteStandbyMember(gaReqDto);
 
-            status = isValid;
-            System.out.println("Join : "+isValid);
-            if(!isValid) {
-                message = "Join group failed.";
+            if(!status) {
+                message = "Refuse Awaiter failed";
             }else{
-                message = "Join group success.";
+                message = "Refuse Awaiter success";
             }
         }
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.DBManager;
 
 public class GroupMemberDao {
@@ -52,38 +53,6 @@ public class GroupMemberDao {
 			e.printStackTrace();
 		}finally {
 			DBManager.close(conn, pstmt,rs);
-		}
-		
-		return list;
-	}
-	
-	
-	public List<String> getPopularStudyGroupCode(){
-		List<String> list = null;
-		
-		try {
-			int n = 0;
-			list = new ArrayList<>();
-
-			conn = DBManager.getConnection();
-			String sql = "SELECT group_code, COUNT(*) FROM group_member GROUP BY group_code ORDER BY COUNT(*) DESC LIMIT 4";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			while(rs.next()) {
-				String groupCode = rs.getString(1);
-				
-				list.add(groupCode);
-				
-				n++;
-				
-				if(n == 4)
-					break;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			DBManager.close(conn, pstmt, rs);
 		}
 		
 		return list;
@@ -136,13 +105,12 @@ public class GroupMemberDao {
 		 List<GroupMemberResponseDto> list = null;
 
 		 try{
+			 String groupCode = groupMemberRequestDto.getGroupCode();
+
 			 conn = DBManager.getConnection();
 			 String sql = "SELECT gm.user_code, gm.member_code,"
 			 +"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
 					 "FROM group_member gm WHERE group_code = ? ";
-
-			 String groupCode = groupMemberRequestDto.getGroupCode();
-			 String adminCode = groupMemberRequestDto.getUserCode();
 
 			 pstmt = conn.prepareStatement(sql);
 			 pstmt.setString(1, groupCode);
@@ -168,43 +136,6 @@ public class GroupMemberDao {
 
 		 return list;
 	 }
-
-	public List<GroupMemberResponseDto> getStudyAwaiters(GroupMemberRequestDto groupMemberRequestDto){
-		List<GroupMemberResponseDto> list = null;
-
-		try{
-			conn = DBManager.getConnection();
-			String sql = "SELECT gm.user_code, gm.member_code,"
-					+"(SELECT id From users u WHERE u.user_code = gm.user_code)" +
-					"FROM group_member gm WHERE group_code = ? AND accessed = false";
-
-			String groupCode = groupMemberRequestDto.getGroupCode();
-			String adminCode = groupMemberRequestDto.getUserCode();
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, groupCode);
-			rs = pstmt.executeQuery();
-
-			list = new ArrayList<>();
-			while(rs.next()) {
-				GroupMemberResponseDto dto = new GroupMemberResponseDto();
-				String userCode = rs.getString(1);
-				String memberCode = rs.getString(2);
-				String id = rs.getString(3);
-
-				dto.setUserCode(userCode);
-				dto.setMemberCode(memberCode);
-				dto.setUserId(id);
-				list.add(dto);
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally{
-			DBManager.close(conn, pstmt, rs);
-		}
-
-		return list;
-	}
 
 	public boolean deleteGroupMember(GroupMemberRequestDto groupMemberRequestDto){
 		boolean isValid = false;
@@ -239,6 +170,27 @@ public class GroupMemberDao {
 			pstmt = conn.prepareStatement(sql);
 			String groupCode = groupMemberRequestDto.getGroupCode();
 			String userCode = groupMemberRequestDto.getUserCode();
+
+			pstmt.setString(1,groupCode);
+			pstmt.setString(2,userCode);
+			pstmt.execute();
+			isValid = true;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt);
+		}
+		return isValid;
+	}
+	public boolean joinGroupMember(StandbyMemberRequestDto groupAwaiterRequestDto){
+		boolean isValid = false;
+		try{
+			String groupCode = groupAwaiterRequestDto.getGroupCode();
+			String userCode = groupAwaiterRequestDto.getUserCode();
+
+			conn = DBManager.getConnection();
+			String sql = "INSERT INTO group_member (group_code,user_code) VALUES (?,?)";
+			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1,groupCode);
 			pstmt.setString(2,userCode);

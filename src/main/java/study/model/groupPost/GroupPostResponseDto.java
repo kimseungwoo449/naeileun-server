@@ -7,6 +7,8 @@ public class GroupPostResponseDto {
     String title;
     String content;
     String updateDate;
+    String userId;
+    int recommendation;
 
     public GroupPostResponseDto() {
     }
@@ -18,6 +20,27 @@ public class GroupPostResponseDto {
         this.title = title;
         this.content = content;
         this.updateDate = updateDate;
+    }
+
+    public GroupPostResponseDto(String postCode, String userCode, String groupCode, String title, String content, String updateDate, String userId) {
+        this.postCode = postCode;
+        this.userCode = userCode;
+        this.groupCode = groupCode;
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+        this.updateDate = updateDate;
+    }
+
+    public GroupPostResponseDto(int recommendation, String userId, String updateDate, String content, String title, String groupCode, String userCode, String postCode) {
+        this.recommendation = recommendation;
+        this.userId = userId;
+        this.updateDate = updateDate;
+        this.content = content;
+        this.title = title;
+        this.groupCode = groupCode;
+        this.userCode = userCode;
+        this.postCode = postCode;
     }
 
     public GroupPostResponseDto(GroupPost groupPost) {
@@ -75,5 +98,13 @@ public class GroupPostResponseDto {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

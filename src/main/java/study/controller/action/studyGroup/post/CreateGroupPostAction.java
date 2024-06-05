@@ -1,9 +1,11 @@
-package study.controller.action.studyGroup;
+package study.controller.action.studyGroup.post;
 
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupMember.GroupMemberDao;
-import study.model.groupMember.GroupMemberRequestDto;
+import study.model.groupPost.GroupPostDao;
+import study.model.groupPost.GroupPostRequestDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -14,14 +16,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class JoinStudyMemberAction implements Action {
+public class CreateGroupPostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
         boolean status = false;
-        String message = null;
+        String message ="";
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
@@ -37,20 +39,16 @@ public class JoinStudyMemberAction implements Action {
             JSONObject reqObj = new JSONObject(data);
             String groupCode = reqObj.getString("group_code");
             String userCode = reqObj.getString("user_code");
-            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
-            gmReqDto.setGroupCode(groupCode);
-            gmReqDto.setUserCode(userCode);
+            String title = reqObj.getString("title");
+            String content = reqObj.getString("title");
 
-            GroupMemberDao gmDao = GroupMemberDao.getInstance();
-
-            boolean isValid = gmDao.joinGroupMember(gmReqDto);
-
-            status = isValid;
-            System.out.println("Join : "+isValid);
-            if(!isValid) {
-                message = "Join group failed.";
+            GroupPostRequestDto gpReqDto = new GroupPostRequestDto(groupCode, userCode, title, content);
+            GroupPostDao groupPostDao = GroupPostDao.getInstance();
+            status = groupPostDao.createGroupPost(gpReqDto);
+            if(!status) {
+                message = "Create Post failed";
             }else{
-                message = "Join group success.";
+                message = "Create Post success";
             }
         }
 
@@ -62,3 +60,4 @@ public class JoinStudyMemberAction implements Action {
         response.getWriter().append(obj.toString());
     }
 }
+

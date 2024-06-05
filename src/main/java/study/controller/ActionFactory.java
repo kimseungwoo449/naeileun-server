@@ -26,18 +26,26 @@ public class ActionFactory{
 			action = new CreateStudyAction();
 		}else if(command.equals("/getMember")){
 			action = new GetStudyMemberAction();
-		}else if(command.equals("/getAwaiter")){
-			action = new GetStudyAwaiterAction();
+		}else if(command.equals("/getStandbyMembers")){
+			action = new GetStudyStandbyMembersAction();
 		}else if(command.equals("/deleteMember")){
 			action = new DeleteStudyMemberAction();
 		}else if(command.equals("/joinMember")){
 			action = new JoinStudyMemberAction();
-		}else if(command.equals("/checkAwaiter")){
-			action = new CheckAwaiterAction();
-		}else if(command.equals("/addAwaiter")){
-			action = new AddAwaiterAction();
+		}else if(command.equals("/checkStandbyMember")){
+			action = new CheckStandbyMemberAction();
+		}else if(command.equals("/addStandbyMember")){
+			action = new AddStandbyMemberAction();
 		}else if(command.equals("/deleteMemberByMemberCode")){
 			action = new DeleteMemberByMemberCodeAction();
+		}else if(command.equals("/deleteStandbyMember")){
+			action = new RefuseStandbyMemberAction();
+		}else if(command.equals("/getMemberFromStandbyMember")){
+			action = new AddMemberFromStandbyMemberAction();
+		}else if(command.equals("/createPost")){
+			action = new CreateGroupPostAction();
+		}else if(command.equals("/post")) {
+			action = new GetGroupPostDetailAction();
 		}else if(command.equals("/popular")){
 			action = new GetPopularGroup();
 		}

@@ -19,6 +19,7 @@ import study.model.groupMember.GroupMemberDao;
 import study.model.groupPost.GroupPostDao;
 import study.model.groupPost.GroupPostResponseDto;
 import study.model.studyGroup.StudyGroupDao;
+import study.model.studyGroup.StudyGroupRequestDto;
 import study.model.studyGroup.StudyGroupResponseDto;
 import utill.KeyManager;
 
@@ -32,7 +33,7 @@ public class FindStudyBoardAction implements Action{
 		JSONObject obj = new JSONObject();
 		JSONArray result ;
 		JSONObject meta ;
-		
+		boolean status = false;
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			result = null;
 			meta = null;
@@ -49,20 +50,23 @@ public class FindStudyBoardAction implements Action{
 			
 			String groupCode = new JSONObject(data).getString("group_code");
 			String userCode = new JSONObject(data).getString("user_code");
-			System.out.println(groupCode);
+
+			StudyGroupRequestDto sgReqDto = new StudyGroupRequestDto();
+			sgReqDto.setGroupCode(groupCode);
 
 			StudyGroupDao sgDao = StudyGroupDao.getInstance();
-			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(groupCode);
+			StudyGroupResponseDto study = sgDao.getStudyByGroupCode(sgReqDto);
 
+			if(study !=null) {
+				status = true;
+			}
 
 			JSONObject s = new JSONObject(study);
-			System.out.println("study"+ s);
 			//groupPost 객체 만들기
 
 			GroupPostDao gpDao = GroupPostDao.getInstance();
 			List<GroupPostResponseDto> postLists = gpDao.getGroupPostsByGroupCode(groupCode);
 			JSONArray p = new JSONArray(postLists);
-			System.out.println("post"+ p);
 
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			boolean isMember = gmDao.getIsMember(groupCode,userCode);
@@ -83,6 +87,7 @@ public class FindStudyBoardAction implements Action{
 		
 		obj.put("result",result);
 		obj.put("meta", meta);
+		obj.put("status",status);
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");

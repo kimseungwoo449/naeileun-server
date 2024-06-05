@@ -1,12 +1,12 @@
-package study.model.groupAwaiter;
+package study.model.standbyMember;
 
-public class GroupAwaiter {
+public class StandbyMember {
     String userCode ;
     String groupCode;
     String comment;
     String userId;
 
-    public GroupAwaiter(String userCode, String groupCode, String comment, String userId) {
+    public StandbyMember(String userCode, String groupCode, String comment, String userId) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;

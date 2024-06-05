@@ -33,26 +33,14 @@ public class FindUserGroupAction implements Action{
 			obj.put("meta", meta);
 		} else {
 
-			//HttpSession session = request.getSession();
-			//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
-			
-//			String userId = user.getId();
-//			UserDao userDao = UserDao.getInstance();
-//			String userCode = String.valueOf(userDao.findUserCodeById(userId));
-//			System.out.println("usercode" + userCode);
-//			System.out.println("usercode" + userDao.findUserCodeById(userId));
-
-			String userCode = "2";
-			System.out.println(userCode);
+			String userCode = request.getParameter("userCode");
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			List<String> groupCodes = gmDao.getGroupCodeByUserCode(userCode);
-			System.out.println("groupCodes :"+ groupCodes.toString());
 			StudyGroupDao sg = StudyGroupDao.getInstance();
 			
 			List<StudyGroupResponseDto> list = new ArrayList<>();
 			
 			for(String code : groupCodes) {
-				System.out.println("code :"+ code);
 				StudyGroupResponseDto study = sg.getStudyByGroupCode(code);
 				if(study != null) {
 					list.add(study);

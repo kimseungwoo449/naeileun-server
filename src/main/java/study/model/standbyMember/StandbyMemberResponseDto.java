@@ -1,28 +1,28 @@
-package study.model.groupAwaiter;
+package study.model.standbyMember;
 
-public class GroupAwaiterResponseDto {
+public class StandbyMemberResponseDto {
     String userCode;
     String groupCode;
     String comment;
     String userId;
 
-    public GroupAwaiterResponseDto() {
+    public StandbyMemberResponseDto() {
     }
 
-    public GroupAwaiterResponseDto(String userCode, String groupCode, String comment) {
+    public StandbyMemberResponseDto(String userCode, String groupCode, String comment) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;
     }
 
-    public GroupAwaiterResponseDto(String userCode, String groupCode, String comment, String userId) {
+    public StandbyMemberResponseDto(String userCode, String groupCode, String comment, String userId) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.comment = comment;
         this.userId = userId;
     }
 
-    public GroupAwaiterResponseDto(GroupAwaiter ga) {
+    public StandbyMemberResponseDto(StandbyMember ga) {
         this.userCode = ga.getUserCode();
         this.groupCode = ga.getGroupCode();
         this.comment = ga.getComment();

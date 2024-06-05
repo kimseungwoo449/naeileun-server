@@ -1,9 +1,11 @@
 package study.controller.action.studyGroup;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupAwaiter.GroupAwaiterDao;
-import study.model.groupAwaiter.GroupAwaiterRequestDto;
+import study.model.standbyMember.StandbyMemberDao;
+import study.model.standbyMember.StandbyMemberRequestDto;
+import study.model.standbyMember.StandbyMemberResponseDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -13,15 +15,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AddAwaiterAction implements Action {
+public class GetStudyStandbyMembersAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean status = false;
+        JSONArray result = null;
+        JSONObject meta = null;
         String message = null;
+        String groupCode = null;
+
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
@@ -35,25 +42,30 @@ public class AddAwaiterAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            String groupcode = reqObj.getString("group_code");
+            System.out.println(reqObj);
+
+            groupCode = reqObj.getString("group_code");
+            System.out.println("groupCode: " + groupCode);
             String userCode = reqObj.getString("user_code");
-            String comment = reqObj.getString("comment");
-            GroupAwaiterRequestDto gaReqDto = new GroupAwaiterRequestDto();
-            gaReqDto.setGroupCode(groupcode);
-            gaReqDto.setUserCode(userCode);
-            gaReqDto.setComment(comment);
+            StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto(groupCode, userCode);
 
-            GroupAwaiterDao gaDao = GroupAwaiterDao.getInstance();
-            status = gaDao.addAwaiter(gaReqDto);
+            StandbyMemberDao smDao = StandbyMemberDao.getInstance();
+            List<StandbyMemberResponseDto> list = smDao.getStudyStandbyMembers(smReqDto);
 
-            if(!status) {
-                message = "Add Awaiter failed";
+            boolean isValid = list.isEmpty() ? false : true;
+            if(!isValid) {
+                message = "Find Standby Member failed.";
+                list = new ArrayList<>();
+                result = new JSONArray(list);
             }else{
-                message = "Add Awaiter success";
+                message = "Find Standby Member success.";
+                result = new JSONArray(list);
+                meta = new JSONObject(list.size());
             }
         }
 
-        obj.put("status", status);
+        obj.put("result", result);
+        obj.put("meta", meta);
         obj.put("message", message);
 
         response.setCharacterEncoding("UTF-8");
