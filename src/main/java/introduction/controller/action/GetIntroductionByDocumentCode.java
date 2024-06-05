@@ -27,31 +27,15 @@ public class GetIntroductionByDocumentCode implements Action {
 
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             success = false;
-            System.out.println("admin fail");
-        }else {
-//            InputStream in = request.getInputStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//            String data = "";
-//
-//            while (br.ready()) {
-//                data += br.readLine() + "\n";
-//            }
-//
-//            JSONObject reqObj = new JSONObject(data);
-//            int documentCode = reqObj.getInt("document_code");
-//            String userId = reqObj.getString("user_id");
+        } else {
             int documentCode = Integer.parseInt(request.getParameter("document_code"));
             String userId = request.getParameter("user");
             UserDao userDao = UserDao.getInstance();
             IntroductionDao introductionDao = IntroductionDao.getInstance();
 
             if (userDao.findUserCodeById(userId) != introductionDao.findUserCodeByDocCode(documentCode)) {
-                System.out.println("docCode : "+documentCode);
-                System.out.println("userId : "+userId);
                 success = false;
-                System.out.println("id not matched");
-            }else{
+            } else {
                 IntroductionRequestDto dto = new IntroductionRequestDto();
                 dto.setDocumentCode(documentCode);
                 resList = introductionDao.getIntroductionByDocCode(dto);
@@ -60,10 +44,6 @@ public class GetIntroductionByDocumentCode implements Action {
 
         if (!success) {
             resList = null;
-        }
-
-        for(int i =0;i<resList.size();i++){
-            System.out.println(resList.get(i).getHead());
         }
 
         Gson gson = new Gson();

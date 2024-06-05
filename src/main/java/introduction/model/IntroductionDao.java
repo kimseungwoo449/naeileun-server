@@ -199,7 +199,6 @@ public class IntroductionDao {
 
         try {
             conn = DBManager.getConnection();
-            System.out.println(dto.getDocumentCode());
             String sql = "DELETE FROM self_introduction WHERE document_code=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, dto.getDocumentCode());

@@ -191,7 +191,6 @@ public class ResumeDao {
 		}
 
 		if(getAllResume(dto)==null) {
-			System.out.println(getAllResume(dto));
 			return true;
 		}
 

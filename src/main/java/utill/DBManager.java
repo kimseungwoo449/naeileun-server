@@ -30,12 +30,12 @@ public class DBManager {
 			rs.close();
 			pstmt.close();
 			conn.close();
-			System.out.println("DB닫기 성공");
+
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.err.println("DB닫기 실패");
+
 		}
 	}
 	public static void close(Connection conn,PreparedStatement pstmt) {
@@ -43,10 +43,10 @@ public class DBManager {
 			
 			pstmt.close();
 			conn.close();
-			System.out.println("DB닫기 성공");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.err.println("DB닫기 실패");
+
 			e.printStackTrace();
 		}
 	}

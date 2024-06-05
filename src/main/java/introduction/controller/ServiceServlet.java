@@ -18,10 +18,6 @@ public class ServiceServlet extends HttpServlet {
 		String pathInfo = request.getPathInfo();
 		String command = request.getParameter("command");
 
-		System.out.println("Method: " + method);
-		System.out.println("pathInfo: " + pathInfo);
-		System.out.println("command: " + command);
-
 		ActionFactory af = ActionFactory.getInstance();
 		Action action = af.getAction(pathInfo, method,command);
 		if(action != null) {

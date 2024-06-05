@@ -412,11 +412,12 @@ public class UserDao {
 
 	public String findUserIdByCode(String code) {
 		String userId = "";
+		int userCode = Integer.parseInt(code);
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT id FROM users WHERE user_code = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, code);
+			pstmt.setInt(1, userCode);
 			
 			rs = pstmt.executeQuery();
 			

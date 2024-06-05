@@ -19,35 +19,6 @@ import utill.KeyManager;
 public class WriteAction implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		JSONObject resObj = new JSONObject();
-//
-//		boolean status = true;
-//		String message = "Resume is created..";
-//
-//		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-//			status = false;
-//			message = "Resume is blocked.";
-//		} else {
-//			InputStream in = request.getInputStream();
-//			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//			String data = "";
-//
-//			while (br.ready()) {
-//				data += br.readLine() + "\n";
-//			}
-//			System.out.println("resumeData : "+data);
-//
-//			JSONObject reqObj = new JSONObject(data);
-//			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"write");
-//
-//			ResumeDao resumeDao = ResumeDao.getInstance();
-//			if(resumeDao.createResume(dto)==null) {
-//				status = false;
-//				message = "Resume is blocked.";
-//			}
-//		}
-
 		JSONObject resObj = new JSONObject();
 
 		boolean status = true;
@@ -65,7 +36,6 @@ public class WriteAction implements Action {
 			while (br.ready()) {
 				data += br.readLine() + "\n";
 			}
-			System.out.println("resumeData : "+data);
 			JSONObject reqObj = new JSONObject(data);
 			ResumeRequestDto dto = new ResumeRequestDto(reqObj,"write");
 			ResumeDao resumeDao = ResumeDao.getInstance();

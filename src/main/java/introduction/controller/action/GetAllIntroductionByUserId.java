@@ -25,17 +25,6 @@ public class GetAllIntroductionByUserId implements Action {
         Map<Integer, List<IntroductionResponseDto>> introductions = null;
 
         if (request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-//            InputStream in = request.getInputStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//            String data = "";
-//
-//            while (br.ready()) {
-//                data += br.readLine() + "\n";
-//            }
-//
-//            JSONObject reqObj = new JSONObject(data);
-//            String userId = reqObj.getString("user_id");
             String userId = request.getParameter("user_id");
             IntroductionRequestDto dto = new IntroductionRequestDto();
             dto.setUserCode(userId);
