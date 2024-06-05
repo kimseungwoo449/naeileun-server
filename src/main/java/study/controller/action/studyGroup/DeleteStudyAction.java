@@ -46,6 +46,9 @@ public class DeleteStudyAction implements Action {
             }else{
                 message = "Group Delete failed.";
             }
+
+            in.close();
+            br.close();
         }
         System.out.println(status);
         System.out.println(message);

@@ -50,6 +50,9 @@ public class CreateGroupPostAction implements Action {
             }else{
                 message = "Create Post success";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

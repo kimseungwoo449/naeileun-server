@@ -50,6 +50,9 @@ public class DeleteMemberByMemberCodeAction implements Action {
             }else{
                 message = "Delete member success.";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

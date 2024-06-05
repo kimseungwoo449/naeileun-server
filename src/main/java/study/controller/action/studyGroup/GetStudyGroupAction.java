@@ -71,11 +71,15 @@ public class GetStudyGroupAction implements Action{
 			obj.put("meta",meta);
 			obj.put("status",status);
 			obj.put("result", result);
+
+			in.close();
+			br.close();
 		}
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().append(obj.toString());
-		
+
+
 	}
 }

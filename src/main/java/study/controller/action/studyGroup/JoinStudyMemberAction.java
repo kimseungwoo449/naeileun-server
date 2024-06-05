@@ -52,6 +52,9 @@ public class JoinStudyMemberAction implements Action {
             }else{
                 message = "Join group success.";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

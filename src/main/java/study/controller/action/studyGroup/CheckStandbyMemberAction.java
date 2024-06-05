@@ -53,6 +53,8 @@ public class CheckStandbyMemberAction implements Action {
             }else{
                 message = "Awaiter exist";
             }
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

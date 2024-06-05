@@ -50,6 +50,9 @@ public class RefuseStandbyMemberAction implements Action {
             }else{
                 message = "Refuse Awaiter success";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

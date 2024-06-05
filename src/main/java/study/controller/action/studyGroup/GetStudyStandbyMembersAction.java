@@ -62,6 +62,8 @@ public class GetStudyStandbyMembersAction implements Action {
                 result = new JSONArray(list);
                 meta = new JSONObject(list.size());
             }
+            in.close();
+            br.close();
         }
 
         obj.put("result", result);

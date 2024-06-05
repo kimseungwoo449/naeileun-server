@@ -68,6 +68,8 @@ public class CreateStudyAction implements Action {
             }else{
                 message = "Group Create success.";
             }
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

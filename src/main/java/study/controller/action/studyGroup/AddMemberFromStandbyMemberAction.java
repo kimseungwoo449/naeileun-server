@@ -61,6 +61,9 @@ public class AddMemberFromStandbyMemberAction implements Action {
             }else{
                 message = "Join Member success";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);

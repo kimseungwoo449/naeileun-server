@@ -83,6 +83,9 @@ public class FindStudyBoardAction implements Action{
 			
 			result =  new JSONArray();
 			result.put(object);
+
+			in.close();
+			br.close();
 		}
 		
 		obj.put("result",result);

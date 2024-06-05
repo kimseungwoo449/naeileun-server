@@ -51,6 +51,9 @@ public class AddStandbyMemberAction implements Action {
             }else{
                 message = "Add Awaiter success";
             }
+
+            in.close();
+            br.close();
         }
 
         obj.put("status", status);
