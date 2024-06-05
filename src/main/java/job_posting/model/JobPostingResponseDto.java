@@ -57,11 +57,11 @@ public class JobPostingResponseDto {
         this.jobTitle = jobTitle;
     }
 
-    public Date getapplicationStart() {
+    public Date getApplicationStart() {
         return applicationStart;
     }
 
-    public void setapplicationStart(Date applicationStart) {
+    public void setApplicationStart(Date applicationStart) {
         this.applicationStart = applicationStart;
     }
 
