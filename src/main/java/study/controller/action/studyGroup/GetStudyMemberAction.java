@@ -43,13 +43,12 @@ public class GetStudyMemberAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj);
 
             groupCode = reqObj.getString("group_code");
-            System.out.println("groupCode: " + groupCode);
-            String userCode= reqObj.getString("user_code");
 
-            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto(groupCode, userCode);
+            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
+            gmReqDto.setGroupCode(groupCode);
+
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
             List<GroupMemberResponseDto> list = gmDao.getStudyMembers(gmReqDto);
 
