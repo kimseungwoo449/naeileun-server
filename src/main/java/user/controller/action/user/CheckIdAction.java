@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 public class CheckIdAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("1234");
             String data = "";
         try (
                 InputStream in = request.getInputStream();

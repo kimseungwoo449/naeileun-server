@@ -22,7 +22,6 @@ public class LoginAction implements Action{
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("1234");
 		InputStream in = request.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -60,7 +59,6 @@ public class LoginAction implements Action{
 
 		    resObj.put("user", new JSONObject(json));
 		}
-		System.out.println(json);
 		resObj.put("status", status);
 		resObj.put("message", message);
 		

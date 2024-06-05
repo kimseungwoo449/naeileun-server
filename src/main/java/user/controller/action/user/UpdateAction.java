@@ -28,25 +28,19 @@ public class UpdateAction implements Action {
 			data += br.readLine() + "\n";
 		}	
 
-        System.out.println("data : " + data);
         JSONObject object = new JSONObject(data);
 
         String field = object.getString("field");
         String value = object.getString("value");
-        System.out.println(field);
-        System.out.println(value);
         UserDao userDao = UserDao.getInstance();
         UserResponseDto userDto = null;
 
         String userId = object.getString("id");
-        System.out.println(userId);
-       
+
 
         if ("password".equals(field)) {
             String currentPassword = object.getString("currentPassword");
             String newPassword = object.getString("newPassword");
-            System.out.println("currentPassword : " + currentPassword);
-            System.out.println("newPassword : " + newPassword);
             userDto = userDao.findUserByIdAndPassword(userId,currentPassword);
 
             if (userDto != null && userDto.getPassword().equals(currentPassword)) {

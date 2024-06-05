@@ -15,14 +15,9 @@ public class ServiceServlet extends HttpServlet {
    
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//GoF의 디자인 패턴중 
-		// ㄴ 생성패턴인 Singleton Pattern
-		// ㄴ 생성 패턴인 Factory Method Pattern
-		// ㄴ 행위 패턴인 Command Pattern
-		
+
 		String command = request.getPathInfo();
-		System.out.println("command : " + command);
-		
+
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
 			Action action = af.getAction(command);
