@@ -53,16 +53,12 @@ public class JobPostingDao {
         try {
             conn = DBManager.getConnection();
 
-            // 쿼리할 준비
             String sql = "SELECT posting_id , company_name,job_title, application_start, application_end, job_description , status FROM job_posting WHERE user_code=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userCode);
-            // 쿼리 실행
             rs = pstmt.executeQuery();
             System.out.println("1");
-            // 튜플 읽기
             while (rs.next()) {
-                // database의 column index는 1부터 시작!
                 int postingId = rs.getInt(1);
                 String companyName = rs.getString(2);
                 String job_title = rs.getString(3);

@@ -19,9 +19,7 @@ import java.util.List;
 public class ReadJobPostingAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("read job posting action");
-        System.out.println("out12");
-        System.out.println("12");
+
         InputStream is = request.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         int userCode = Integer.parseInt(br.readLine());
