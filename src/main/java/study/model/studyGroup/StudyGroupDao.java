@@ -181,8 +181,7 @@ public class StudyGroupDao {
             String sql = "DELETE FROM study_group WHERE group_code =?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, groupCode);
-
-
+            pstmt.execute();
             isValid = true;
         } catch (SQLException e) {
             e.printStackTrace();
