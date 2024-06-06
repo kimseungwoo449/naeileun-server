@@ -1,11 +1,11 @@
 package study.model.groupMember;
 
 public class GroupMemberRequestDto {
-	String groupCode;
-	String userCode;
-	String joinedDate;
-	String memberCode;
-	String userId;
+	private String groupCode;
+	private String userCode;
+	private String joinedDate;
+	private String memberCode;
+	private String userId;
 	
 	public GroupMemberRequestDto() {
 		super();

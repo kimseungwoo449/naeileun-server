@@ -1,12 +1,12 @@
 package study.model.groupPost;
 
 public class GroupPost {
-    String postCode;
-    String userCode;
-    String groupCode;
-    String title;
-    String content;
-    String updateDate;
+    private String postCode;
+    private String userCode;
+    private String groupCode;
+    private String title;
+    private String content;
+    private String updateDate;
 
     public GroupPost(String postCode, String userCode, String groupCode, String title, String content, String updateDate) {
         this.postCode = postCode;

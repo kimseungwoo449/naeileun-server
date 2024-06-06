@@ -1,8 +1,8 @@
 package study.model.groupPost;
 
 public class GroupPostResponseDto {
-    String postCode;
-    String userCode;
+    private String postCode;
+    private String userCode;
     String groupCode;
     String title;
     String content;
