@@ -44,7 +44,7 @@ public class StudyGroupDao {
 
         try {
             conn = DBManager.getConnection();
-            String sql = "SELECT group_code,name,decription,admin_code,is_public,auto_member_access FROM popular_studys";
+            String sql = "SELECT group_code,name,decription,admin_code,is_public,auto_member_access,id FROM popular_studys";
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
@@ -55,13 +55,10 @@ public class StudyGroupDao {
                 String adminCode = rs.getString(4);
                 String isPublic = rs.getString(5).equals("0") ? "false" : "true";
                 String autoMemberAccess = rs.getString(6).equals("0") ? "false" : "true";
-                if (decription == null) {
-                    StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, adminCode, isPublic, autoMemberAccess);
-                    list.add(study);
-                } else {
-                    StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, decription, adminCode, isPublic, autoMemberAccess);
-                    list.add(study);
-                }
+                String adminId = rs.getString(7);
+
+                StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, decription, adminCode, isPublic, autoMemberAccess,adminId);
+                list.add(study);
             }
 
 
@@ -154,7 +151,7 @@ public class StudyGroupDao {
             String userCode = gmReqDto.getUserCode();
 
             conn = DBManager.getConnection();
-            String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code WHERE gm.user_code = ?";
+            String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access , u.id FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code JOIN users u ON u.user_code = gm.user_code WHERE gm.user_code = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userCode);
             rs = pstmt.executeQuery();
@@ -165,8 +162,8 @@ public class StudyGroupDao {
                 String adminCode = rs.getString(4);
                 String isPublic = rs.getString(5);
                 String autoMemberAccess = rs.getString(6);
-
-                StudyGroupResponseDto sg = new StudyGroupResponseDto(groupCode, groupName, decription, adminCode, isPublic, autoMemberAccess);
+                String adminId = rs.getString(7);
+                StudyGroupResponseDto sg = new StudyGroupResponseDto(groupCode, groupName, decription, adminCode, isPublic, autoMemberAccess,adminId);
                 list.add(sg);
             }
         } catch (SQLException e) {

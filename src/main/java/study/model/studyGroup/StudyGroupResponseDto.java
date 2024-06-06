@@ -7,6 +7,7 @@ public class StudyGroupResponseDto {
     private String adminCode;
     private String isPublic;
     private String autoMemberAccess;
+    private String adminId;
 
     public StudyGroupResponseDto() {
         super();
@@ -29,6 +30,16 @@ public class StudyGroupResponseDto {
         this.adminCode = adminCode;
         this.isPublic = isPublic;
         this.autoMemberAccess = auto_member_access;
+    }
+
+    public StudyGroupResponseDto(String groupCode, String name, String decription, String adminCode, String isPublic, String autoMemberAccess, String adminId) {
+        this.groupCode = groupCode;
+        this.name = name;
+        this.decription = decription;
+        this.adminCode = adminCode;
+        this.isPublic = isPublic;
+        this.autoMemberAccess = autoMemberAccess;
+        this.adminId = adminId;
     }
 
     public StudyGroupResponseDto(StudyGroup sg) {
@@ -87,5 +98,13 @@ public class StudyGroupResponseDto {
 
     public void setAutoMemberAccess(String autoMemberAccess) {
         this.autoMemberAccess = autoMemberAccess;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 }
