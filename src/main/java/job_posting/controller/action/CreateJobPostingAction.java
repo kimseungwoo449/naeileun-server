@@ -8,6 +8,7 @@ import job_posting.model.JobPostingRequestDto;
 import job_posting.model.JobPostingResponseDto;
 import org.json.JSONObject;
 import utill.DBManager;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,26 +22,31 @@ import java.sql.SQLException;
 public class CreateJobPostingAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        InputStream in = request.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-        String data = "";
-        while(br.ready()){
-            data += br.readLine() + "\n";
-        }
-
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-
-        JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
-        JobPostingDao jobDao = JobPostingDao.getInstance();
-        JobPostingResponseDto jobDto = jobDao.createJobPosting(jobPost);
         JSONObject resObj = new JSONObject();
-        int status = (jobDto != null) ? 200 : 400;
-        String message = (jobDto != null) ? "JobPosting registration is success." : "JobPosting registration is failed.";
 
+        int status = 0;
+        String message = "";
+
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+            status = 400;
+            message = "JobPosting registration is failed.";
+        } else {
+            InputStream in = request.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+            String data = "";
+            while (br.ready()) {
+                data += br.readLine() + "\n";
+            }
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd")
+                    .create();
+            JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
+            JobPostingDao jobDao = JobPostingDao.getInstance();
+            JobPostingResponseDto jobDto = jobDao.createJobPosting(jobPost);
+             status = (jobDto != null) ? 200 : 400;
+             message = (jobDto != null) ? "JobPosting registration is success." : "JobPosting registration is failed.";
+        }
         resObj.put("status", status);
         resObj.put("message", message);
 

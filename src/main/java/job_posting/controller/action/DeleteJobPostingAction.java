@@ -7,6 +7,7 @@ import job_posting.model.JobPostingDao;
 import job_posting.model.JobPostingRequestDto;
 import job_posting.model.JobPostingResponseDto;
 import org.json.JSONObject;
+import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,21 +20,30 @@ import java.io.InputStreamReader;
 public class DeleteJobPostingAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        InputStream in = request.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String data = "";
-        while(br.ready()){
-            data += br.readLine() + "\n";
-        }
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-
-        JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
-        JobPostingDao jobDao = JobPostingDao.getInstance();
         JSONObject resObj = new JSONObject();
-        int status = jobDao.deleteJobPosting(jobPost) ? 200 : 400;
-        String message = status == 200 ? "JobPosting delete is success." : "JobPosting delete is failed.";
+
+        int status = 0;
+        String message = "";
+
+        if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
+            status = 400;
+            message = "JobPosting delete is failed.";
+        } else {
+            InputStream in = request.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String data = "";
+            while (br.ready()) {
+                data += br.readLine() + "\n";
+            }
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd")
+                    .create();
+
+            JobPostingRequestDto jobPost = gson.fromJson(data, JobPostingRequestDto.class);
+            JobPostingDao jobDao = JobPostingDao.getInstance();
+             status = jobDao.deleteJobPosting(jobPost) ? 200 : 400;
+             message = status == 200 ? "JobPosting delete is success." : "JobPosting delete is failed.";
+        }
         resObj.put("status", status);
         resObj.put("message", message);
 
