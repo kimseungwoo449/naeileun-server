@@ -90,7 +90,7 @@ public class GroupPostDao {
         try {
             String postCode = groupPostRequestDto.getPostCode();
             conn = DBManager.getConnection();
-            String sql = "SELECT gp.post_code, gp.group_code, gp.user_code,gp.title, gp.content, gp.update_date, gp.recommendation, u.id FROM group_posts gp JOIN users u ON gp.user_code = u.user_code WHERE gp.post_code = ?";
+            String sql = "SELECT gp.post_code, gp.group_code, gp.user_code,gp.title, gp.content, gp.update_date, u.id FROM group_posts gp JOIN users u ON gp.user_code = u.user_code WHERE gp.post_code = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, postCode);
 
@@ -101,10 +101,9 @@ public class GroupPostDao {
                 String title = rs.getString(4);
                 String content = rs.getString(5);
                 String updateDate = rs.getString(6);
-                int recommendation = rs.getInt(7);
-                String userId = rs.getString(8);
+                String userId = rs.getString(7);
 
-                groupPostResponseDto = new GroupPostResponseDto(recommendation, userId, updateDate, content, title, groupCode, userCode, postCode);
+                groupPostResponseDto = new GroupPostResponseDto(postCode,userCode,groupCode, title, content, updateDate, userId);
             }
 
         } catch (SQLException e) {

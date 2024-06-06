@@ -32,17 +32,6 @@ public class GroupPostResponseDto {
         this.updateDate = updateDate;
     }
 
-    public GroupPostResponseDto(int recommendation, String userId, String updateDate, String content, String title, String groupCode, String userCode, String postCode) {
-        this.recommendation = recommendation;
-        this.userId = userId;
-        this.updateDate = updateDate;
-        this.content = content;
-        this.title = title;
-        this.groupCode = groupCode;
-        this.userCode = userCode;
-        this.postCode = postCode;
-    }
-
     public GroupPostResponseDto(GroupPost groupPost) {
         this.postCode = groupPost.getPostCode();
         this.userCode = groupPost.getUserCode();

@@ -9,7 +9,6 @@ public class GroupPostRequestDto {
     private String writeDate;
     private String updateDate;
     private String userId;
-    private int recommendation;
 
     public GroupPostRequestDto() {
     }
@@ -37,18 +36,6 @@ public class GroupPostRequestDto {
         this.content = content;
         this.writeDate = writeDate;
         this.updateDate = updateDate;
-    }
-
-    public GroupPostRequestDto(String postCode, String userCode, String groupCode, String title, String content, String writeDate, String updateDate, String userId, int recommendation) {
-        this.postCode = postCode;
-        this.userCode = userCode;
-        this.groupCode = groupCode;
-        this.title = title;
-        this.content = content;
-        this.writeDate = writeDate;
-        this.updateDate = updateDate;
-        this.userId = userId;
-        this.recommendation = recommendation;
     }
 
     public String getPostCode() {
@@ -115,11 +102,4 @@ public class GroupPostRequestDto {
         this.userId = userId;
     }
 
-    public int getRecommendation() {
-        return recommendation;
-    }
-
-    public void setRecommendation(int recommendation) {
-        this.recommendation = recommendation;
-    }
 }
