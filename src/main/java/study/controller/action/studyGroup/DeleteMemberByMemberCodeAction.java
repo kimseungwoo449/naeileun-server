@@ -35,7 +35,6 @@ public class DeleteMemberByMemberCodeAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj.toString());
             String memberCode = reqObj.getString("member_code");
 
             GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();

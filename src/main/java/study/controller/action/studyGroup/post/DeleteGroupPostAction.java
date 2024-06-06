@@ -54,8 +54,6 @@ public class DeleteGroupPostAction implements Action {
             in.close();
             br.close();
         }
-        System.out.println(status);
-        System.out.println(message);
         obj.put("status",status);
         obj.put("message", message);
 

@@ -37,7 +37,6 @@ public class CreateGroupPostAction implements Action {
             data = data.substring(0, data.length() - 1);
 
             JSONObject object = new JSONObject(data);
-            System.out.println("here");
 
             String title= object.getString("title");
             String content = object.getString("content");
