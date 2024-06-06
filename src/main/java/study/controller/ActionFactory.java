@@ -1,9 +1,8 @@
 package study.controller;
 
-import board.controller.action.CreatePostAction;
 import study.controller.action.studyGroup.*;
-import study.controller.action.studyGroup.post.CreateGroupPostAction;
-import study.controller.action.studyGroup.post.GetGroupPostDetailAction;
+import study.controller.action.studyGroup.post.*;
+
 
 public class ActionFactory{
 	
