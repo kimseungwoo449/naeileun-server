@@ -16,17 +16,12 @@ public class ResumeDao {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	// UserDao 객체를 단일 인스턴스로 만들기 위해
-	// Singleton Pattern 적용
-
-	// 1. 생성자를 private으로
 	private ResumeDao() {
 	}
 
-	// 2. 단일 인스턴스를 생성 (클래스 내부에서)
+
 	private static ResumeDao instance = new ResumeDao();
 
-	// 3. 단일 인스턴스에 대한 getter
 	public static ResumeDao getInstance() {
 		return instance;
 	}
@@ -42,7 +37,7 @@ public class ResumeDao {
 
 			pstmt = conn.prepareStatement(sql);
 
-			// sql 구문에 맵핑할 값 설정
+
 			pstmt.setInt(1, dto.getUserCode());
 			pstmt.setString(2, dto.getName());
 			pstmt.setString(3, dto.getTitle());
@@ -84,7 +79,7 @@ public class ResumeDao {
 
 			pstmt = conn.prepareStatement(sql);
 
-			// sql 구문에 맵핑할 값 설정
+
 			pstmt.setString(1, dto.getTitle());
 			pstmt.setString(2, dto.getAcademicCareer());
 			pstmt.setString(3, dto.getCareer());

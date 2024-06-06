@@ -94,7 +94,7 @@ public class IntroductionDao {
                 pstmt.setInt(1, docCode);
 
                 List<IntroductionResponseDto> temp = new ArrayList<>();
-                rs = pstmt.executeQuery();  // Ensure ResultSet is assigned here
+                rs = pstmt.executeQuery();
                 while (rs.next()) {
                     int documentNumber = rs.getInt(1);
                     String title = rs.getString(2);
@@ -158,38 +158,6 @@ public class IntroductionDao {
     }
 
     public boolean updateIntroductions(List<IntroductionRequestDto> dtoList){
-//        int docCode = dtoList.get(0).getDocumentCode();
-//        deleteAllIntroductionByUserCode(dtoList.get(0));
-//
-//        try{
-//            conn = DBManager.getConnection();
-//            // 자동 커밋을 false로 설정하여 트랜잭션을 시작
-//            conn.setAutoCommit(false);
-//
-//            String sql = "UPDATE self_introduction SET head = ?, body = ?,update_date = NOW(), title=? WHERE user_code = ? AND document_no = ?";
-//            pstmt = conn.prepareStatement(sql);
-//
-//            for (IntroductionRequestDto dto : dtoList) {
-//                pstmt.setString(1, dto.getHead());
-//                pstmt.setString(2, dto.getBody());
-//                pstmt.setString(3, dto.getTitle());
-//                pstmt.setInt(4, dto.getUserCode());
-//                pstmt.setInt(5, dto.getDocumentNumber());
-//
-//                pstmt.addBatch();
-//            }
-//
-//            // 모든 업데이트 쿼리를 배치로 실행
-//            pstmt.executeBatch();
-//            // 트랜잭션 커밋
-//            conn.commit();
-//            return true;
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }finally {
-//            DBManager.close(conn, pstmt);
-//        }
-//        return false;
         IntroductionRequestDto dto = dtoList.get(0);
         deleteIntroductionByDocCode(dto);
         return addIntroduction(dtoList);

@@ -39,7 +39,6 @@ public class GetAllIntroductionByUserId implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // JSON 응답을 출력에 작성
         response.getWriter().write(jsonResponse);
     }
 }
