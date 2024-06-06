@@ -342,9 +342,6 @@ public class BoardDao {
 	public BoardResponseDto UpdatePost(String reqTitle, String reqContent, String reqUserId, int reqPostCode, String reqImagePath) {
 		BoardResponseDto responseDto = null;
 
-		UserDao userDao = UserDao.getInstance();
-		int userCode = userDao.findUserCodeById(reqUserId);
-
 		boolean isSuccess = false;
 		try {
 			conn = DBManager.getConnection();
