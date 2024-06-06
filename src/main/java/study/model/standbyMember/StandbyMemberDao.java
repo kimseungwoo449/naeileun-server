@@ -66,10 +66,7 @@ public class StandbyMemberDao {
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                int exist = rs.getInt(1);
-                if (exist == 1) {
-                    isValid = true;
-                }
+                isValid = rs.getBoolean(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
