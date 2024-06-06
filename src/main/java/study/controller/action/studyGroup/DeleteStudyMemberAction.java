@@ -35,7 +35,6 @@ public class DeleteStudyMemberAction implements Action {
             }
 
             JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj.toString());
             String groupCode = reqObj.getString("group_code");
             String userCode = reqObj.getString("user_code");
 
