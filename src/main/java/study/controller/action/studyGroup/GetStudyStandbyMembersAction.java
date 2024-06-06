@@ -32,22 +32,10 @@ public class GetStudyStandbyMembersAction implements Action {
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
-            InputStream in = request.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            groupCode = request.getParameter("group_code");
 
-            String data = "";
-
-            while (br.ready()) {
-                data = br.readLine();
-            }
-
-            JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj);
-
-            groupCode = reqObj.getString("group_code");
-            System.out.println("groupCode: " + groupCode);
-            String userCode = reqObj.getString("user_code");
-            StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto(groupCode, userCode);
+            StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto();
+            smReqDto.setGroupCode(groupCode);
 
             StandbyMemberDao smDao = StandbyMemberDao.getInstance();
             List<StandbyMemberResponseDto> list = smDao.getStudyStandbyMembers(smReqDto);
@@ -62,8 +50,6 @@ public class GetStudyStandbyMembersAction implements Action {
                 result = new JSONArray(list);
                 meta = new JSONObject(list.size());
             }
-            in.close();
-            br.close();
         }
 
         obj.put("result", result);
