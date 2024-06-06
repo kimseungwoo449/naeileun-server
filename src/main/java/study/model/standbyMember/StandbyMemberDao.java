@@ -57,9 +57,8 @@ public class StandbyMemberDao {
         try {
             String groupCode = gaReqDto.getGroupCode();
             String userCode = gaReqDto.getUserCode();
-
             conn = DBManager.getConnection();
-            String sql = "SELECT EXISTS (SELECT user_code FROM standby_member WHERE group_code = ? AND user_code = ?) AS SUCCESS";
+            String sql = "SELECT EXISTS (SELECT user_code FROM standby_member WHERE group_code = ? AND user_code = ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, groupCode);
@@ -67,14 +66,13 @@ public class StandbyMemberDao {
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                String isExist = rs.getString(1);
-                if (isExist.equals("1")) {
+                int exist = rs.getInt(1);
+                if (exist == 1) {
                     isValid = true;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            isValid = false;
         } finally {
             DBManager.close(conn, pstmt, rs);
         }
