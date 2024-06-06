@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
+import study.model.groupMember.GroupMemberDao;
 import study.model.groupMember.GroupMemberRequestDto;
 import utill.KeyManager;
 import study.model.studyGroup.StudyGroupDao;
@@ -44,7 +45,8 @@ public class GetStudyGroupAction implements Action{
 			List<StudyGroupResponseDto> list = sgDao.getUserStudyByUserCode(gmDto);
 			JSONArray myStudy = new JSONArray(list);
 
-			int count = sgDao.getMyStudyCount(gmDto);
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			int count = gmDao.getMyStudyCount(gmDto);
 			int totalCount = sgDao.getTotalStudyCount();
 
 			List<StudyGroupResponseDto> popularStudy = sgDao.getPopularStudy();
