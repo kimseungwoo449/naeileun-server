@@ -151,7 +151,7 @@ public class StudyGroupDao {
             String userCode = gmReqDto.getUserCode();
 
             conn = DBManager.getConnection();
-            String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access , u.id FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code JOIN users u ON u.user_code = gm.user_code WHERE gm.user_code = ?";
+            String sql = "SELECT gm.group_code, sg.name, sg.decription, sg.admin_code, sg.is_public, sg.auto_member_access , u.id FROM group_member gm JOIN study_group sg ON gm.group_code = sg.group_code JOIN users u ON u.user_code = sg.admin_code WHERE gm.user_code = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userCode);
             rs = pstmt.executeQuery();
