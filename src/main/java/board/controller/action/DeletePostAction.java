@@ -29,7 +29,6 @@ public class DeletePostAction implements Action {
         while (br.ready()) {
             data += br.readLine() + "\n";
         }
-        System.out.println("postData : "+data);
         JSONObject reqObj = new JSONObject(data);
         String userId = reqObj.getString("user_id");
         int postCode = reqObj.getInt("post_code");

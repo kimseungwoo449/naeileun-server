@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-// 파일 업로드를 처리하기 위한 어노테이션
 public class CreatePostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,14 +54,12 @@ public class CreatePostAction implements Action {
 
                     if(name.equals("title")) {
                         title = data;
-                        System.out.println("title : " + title);
                     }
                     else if(name.equals("content")) {
                         content = data;
                     }
                     else if(name.equals("user_id")) {
                         userId = data;
-                        System.out.println("userId : " + userId);
                     }else if(name.equals("board_code")) {
                         boardCate = data;
                     }
@@ -76,12 +73,10 @@ public class CreatePostAction implements Action {
             }
 
             BoardResponseDto responseDto = boardDao.createPost(title, content, userId, boardCate, imageUrl);
-            System.out.println("CreatePost responseDto : " + responseDto);
             resObj = new JSONObject(responseDto);
         }
 
         resObj.put("status", status);
-        System.out.println("CreatePost resObj : " + resObj);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().append(resObj.toString());

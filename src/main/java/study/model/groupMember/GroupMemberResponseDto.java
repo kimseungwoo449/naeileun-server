@@ -1,10 +1,10 @@
 package study.model.groupMember;
 
 public class GroupMemberResponseDto {
-	private String groupCode;
-	private String userCode;
-	private String memberCode;
-	private String userId;
+	private  String groupCode;
+	private  String userCode;
+	private  String memberCode;
+	private  String userId;
 
 	public GroupMemberResponseDto() {
 		super();

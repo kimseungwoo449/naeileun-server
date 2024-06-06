@@ -3,12 +3,12 @@ package study.model.groupPost;
 public class GroupPostResponseDto {
     private String postCode;
     private String userCode;
-    String groupCode;
-    String title;
-    String content;
-    String updateDate;
-    String userId;
-    int recommendation;
+    private String groupCode;
+    private String title;
+    private String content;
+    private String updateDate;
+    private String userId;
+    private int recommendation;
 
     public GroupPostResponseDto() {
     }

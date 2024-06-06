@@ -62,7 +62,7 @@ public class UserDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 		return list;
 	}
@@ -80,7 +80,7 @@ public class UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
         return false;
 	}
@@ -210,7 +210,7 @@ public class UserDao {
 			sql = "UPDATE users SET phone=? WHERE id=?";
 		}
 		try {
-			System.out.println(sql);
+
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, value);

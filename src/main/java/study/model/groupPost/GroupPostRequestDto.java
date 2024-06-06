@@ -14,7 +14,7 @@ public class GroupPostRequestDto {
     public GroupPostRequestDto() {
     }
 
-    public GroupPostRequestDto( String groupCode,String userCode, String title, String content) {
+    public GroupPostRequestDto(String groupCode, String userCode, String title, String content) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.title = title;
@@ -110,6 +110,7 @@ public class GroupPostRequestDto {
     public String getUserId() {
         return userId;
     }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

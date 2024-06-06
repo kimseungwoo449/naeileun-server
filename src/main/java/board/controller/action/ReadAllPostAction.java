@@ -49,8 +49,7 @@ public class ReadAllPostAction implements Action {
 			
 			resObj.put("meta", meta);
 			resObj.put("result", result);
-			System.out.println(resObj);
-			
+
 		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");

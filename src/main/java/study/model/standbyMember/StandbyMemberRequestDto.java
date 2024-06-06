@@ -1,11 +1,11 @@
 package study.model.standbyMember;
 
 public class StandbyMemberRequestDto {
-    String userCode ;
-    String groupCode;
-    String comment;
-    String sendDate;
-    String userId;
+    private String userCode;
+    private String groupCode;
+    private String comment;
+    private String sendDate;
+    private String userId;
 
     public StandbyMemberRequestDto() {
     }

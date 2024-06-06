@@ -11,9 +11,9 @@ import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.DBManager;
 
 public class GroupMemberDao {
-	Connection conn;
-	PreparedStatement pstmt;
-	ResultSet rs;
+	private  Connection conn;
+	private  PreparedStatement pstmt;
+	private  ResultSet rs;
 	
 	
 	private GroupMemberDao() {}
@@ -38,7 +38,7 @@ public class GroupMemberDao {
 			String sql="SELECT group_code FROM  group_member WHERE user_code=? AND accessed = true";
 			
 			pstmt = conn.prepareStatement(sql);
-			System.out.println("usercode : "+userCode);
+
 			pstmt.setString(1, userCode);
 
 			rs = pstmt.executeQuery();
@@ -47,7 +47,7 @@ public class GroupMemberDao {
 				list.add(groupCode);
 			}
 			
-			System.out.println("DB연동 성공");
+
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -140,7 +140,7 @@ public class GroupMemberDao {
 	public boolean deleteGroupMember(GroupMemberRequestDto groupMemberRequestDto){
 		boolean isValid = false;
 		try{
-			System.out.println("here : "+isValid);
+
 			conn = DBManager.getConnection();
 			String sql = "DELETE FROM group_member WHERE group_code=? AND user_code=?";
 			pstmt = conn.prepareStatement(sql);
@@ -153,7 +153,7 @@ public class GroupMemberDao {
 			pstmt.execute();
 			isValid = true;
 
-			System.out.println("isValid : "+isValid);
+
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally{
@@ -223,6 +223,28 @@ public class GroupMemberDao {
 			DBManager.close(conn, pstmt);
 		}
 		return isValid;
+	}
+
+
+	public int getMyStudyCount(GroupMemberRequestDto groupMemberRequestDto) {
+		int count = 0;
+		try {
+			String userCode = groupMemberRequestDto.getUserCode();
+			conn = DBManager.getConnection();
+			String sql = "SELECT COUNT(*) FROM group_member WHERE user_code =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userCode);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return count;
 	}
 	
 }
