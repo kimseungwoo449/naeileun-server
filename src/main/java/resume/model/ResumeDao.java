@@ -68,7 +68,8 @@ public class ResumeDao {
 	public ResumeResponseDto updateResume(ResumeRequestDto dto) {
 		ResumeResponseDto response = null;
 
-		if (dto.getResumeCode() == 0 || dto.getUserCode() == 0 || dto.getName() == null || dto.getTitle() == null || dto.getUserAge() == 0 || dto.getAcademicCareer() == null) {
+		if (dto.getResumeCode() == 0 || dto.getUserCode() == 0 || dto.getName() == null ||
+				dto.getTitle() == null || dto.getUserAge() == 0 || dto.getAcademicCareer() == null) {
 			return response;
 		}
 
@@ -243,7 +244,9 @@ public class ResumeDao {
 				String expectedSalary = rs.getString(15);
 				String expectedRegion = rs.getString(16);
 				boolean newbie = rs.getBoolean(17);
-				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, dto.getUserCode(), userName, title, userAge, academicCareer, career, skill, certificate, language, award, writeDate, updateDate,phone, expectedSalary, expectedRegion, newbie);
+				ResumeResponseDto resume = new ResumeResponseDto(resumeCode, dto.getUserCode(), userName,
+						title, userAge, academicCareer, career, skill, certificate, language, award, writeDate,
+						updateDate,phone, expectedSalary, expectedRegion, newbie);
 				response.add(resume);
 			}
 		} catch (Exception e) {
