@@ -1,20 +1,23 @@
-package study.controller.action.studyGroup;
+package study.controller.action.studyGroup.post;
 
 import org.json.JSONObject;
 import study.controller.Action;
-import study.model.groupMember.GroupMemberDao;
-import study.model.groupMember.GroupMemberRequestDto;
+import study.model.groupPost.GroupPostDao;
+import study.model.groupPost.GroupPostRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.List;
 
-public class DeleteMemberByMemberCodeAction implements Action {
+public class UpdateGroupPostAction implements Action {
     @Override
     public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -22,6 +25,7 @@ public class DeleteMemberByMemberCodeAction implements Action {
         JSONObject obj = new JSONObject();
         boolean status = false;
         String message = "";
+
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
@@ -31,28 +35,28 @@ public class DeleteMemberByMemberCodeAction implements Action {
             String data = "";
 
             while (br.ready()) {
-                data = br.readLine();
+                data += br.readLine() + "\n";
             }
+            data = data.substring(0, data.length() - 1);
+            JSONObject object = new JSONObject(data);
 
-            JSONObject reqObj = new JSONObject(data);
-            System.out.println(reqObj.toString());
-            String memberCode = reqObj.getString("member_code");
+            String title= object.getString("title");
+            String content = object.getString("content");
+            String postCode = object.getString("postCode");
 
-            GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
-            gmReqDto.setMemberCode(memberCode);
+            GroupPostRequestDto gpReqDto = new GroupPostRequestDto();
+            gpReqDto.setTitle(title);
+            gpReqDto.setContent(content);
+            gpReqDto.setPostCode(postCode);
 
-            GroupMemberDao gmDao = GroupMemberDao.getInstance();
-            boolean isValid = gmDao.deleteGroupMemberByMemberCode(gmReqDto);
+            GroupPostDao groupPostDao = GroupPostDao.getInstance();
+            status = groupPostDao.updateGroupPost(gpReqDto);
 
-            status = isValid;
-            if(!isValid) {
-                message = "Delete member failed.";
-            }else{
-                message = "Delete member success.";
+            if (!status) {
+                message = "Create Post failed";
+            } else {
+                message = "Create Post success";
             }
-
-            in.close();
-            br.close();
         }
 
         obj.put("status", status);

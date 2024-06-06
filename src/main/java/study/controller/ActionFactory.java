@@ -1,5 +1,6 @@
 package study.controller;
 
+import board.controller.action.CreatePostAction;
 import study.controller.action.studyGroup.*;
 import study.controller.action.studyGroup.post.CreateGroupPostAction;
 import study.controller.action.studyGroup.post.GetGroupPostDetailAction;
@@ -18,6 +19,7 @@ public class ActionFactory{
 	
 	public Action getAction(String command) {
 		Action action = null;
+
 		if(command.equals("/myGroup")) {
 			action = new GetStudyGroupAction();
 		}else if(command.equals("/board")){
@@ -48,6 +50,12 @@ public class ActionFactory{
 			action = new CreateGroupPostAction();
 		}else if(command.equals("/post")) {
 			action = new GetGroupPostDetailAction();
+		}else if(command.equals("/updatePost")){
+			action = new UpdateGroupPostAction();
+		}else if(command.equals("/deletePost")){
+			action = new DeleteGroupPostAction();
+		}else if(command.equals("/groupPosts")){
+			action = new GetGroupPostsAction();
 		}else if(command.equals("/popular")){
 			action = new GetPopularGroup();
 		}

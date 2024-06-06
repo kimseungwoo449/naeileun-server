@@ -1,5 +1,6 @@
 package study.model.groupPost;
 
+import study.model.studyGroup.StudyGroupRequestDto;
 import utill.DBManager;
 
 import java.sql.Connection;
@@ -27,7 +28,7 @@ public class GroupPostDao {
 
         try{
             conn = DBManager.getConnection();
-            String sql = "SELECT post_code,user_code,title,content,update_date,group_code,(SELECT id FROM users u WHERE u.user_code = gp.user_code) FROM group_posts gp WHERE group_code =? ORDER BY update_date DESC";
+            String sql = "SELECT post_code,user_code,title,content,update_date,group_code,(SELECT id FROM users u WHERE u.user_code = gp.user_code) FROM group_posts gp WHERE group_code =? ORDER BY write_date DESC LIMIT 5";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,groupCode);
 
@@ -111,5 +112,105 @@ public class GroupPostDao {
         }
 
         return groupPostResponseDto;
+    }
+
+    public boolean updateGroupPost(GroupPostRequestDto groupPostRequestDto){
+        boolean isValid = false;
+
+        try{
+            String postCode = groupPostRequestDto.getPostCode();
+            String title = groupPostRequestDto.getTitle();
+            String content = groupPostRequestDto.getContent();
+
+            conn = DBManager.getConnection();
+            String sql = "UPDATE group_posts SET title = ?, content = ? WHERE post_code = ? ";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,title);
+            pstmt.setString(2,content);
+            pstmt.setString(3,postCode);
+
+            isValid = pstmt.executeUpdate()>0;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt);
+        }
+
+        return isValid;
+    }
+
+    public boolean deleteGroupPost(GroupPostRequestDto groupPostRequestDto){
+        boolean isValid = false;
+
+        try{
+            String postCode = groupPostRequestDto.getPostCode();
+            System.out.println("here");
+            conn = DBManager.getConnection();
+            String sql = "DELETE FROM group_posts WHERE post_code = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,postCode);
+
+            isValid = pstmt.executeUpdate()>0;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt);
+        }
+
+        return isValid;
+    }
+
+    public int getGroupPostsCount(StudyGroupRequestDto studyGroupRequestDto){
+        int count = 0;
+
+        try{
+            String groupCode = studyGroupRequestDto.getGroupCode();
+            conn = DBManager.getConnection();
+            String sql = "SELECT COUNT(*) FROM group_posts WHERE group_code = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,groupCode);
+
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                count = rs.getInt(1);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+            DBManager.close(conn,pstmt,rs);
+        }
+        return count;
+    }
+
+    public List<GroupPostResponseDto> getGroupPosts(String groupCode , String offset){
+        List<GroupPostResponseDto> list = new ArrayList<>();
+
+        try{
+            conn = DBManager.getConnection();
+            String sql = "SELECT post_code,user_code,title,content,update_date,group_code,(SELECT id FROM users u WHERE u.user_code = gp.user_code) FROM group_posts gp WHERE group_code =? ORDER BY write_date DESC LIMIT 5 OFFSET ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,groupCode);
+            pstmt.setInt(2,Integer.parseInt(offset));
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                String postCode = rs.getString(1);
+                String userCode = rs.getString(2);
+                String title = rs.getString(3);
+                String content = rs.getString(4);
+                String updateDate = rs.getString(5);
+                String userId = rs.getString(7);
+                GroupPostResponseDto gp = new GroupPostResponseDto(postCode,groupCode,userCode,title,content,updateDate,userId);
+
+                list.add(gp);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            DBManager.close(conn,pstmt,rs);
+        }
+
+        return list;
     }
 }
