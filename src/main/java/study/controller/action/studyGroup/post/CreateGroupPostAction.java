@@ -4,8 +4,6 @@ import org.json.JSONObject;
 import study.controller.Action;
 import study.model.groupPost.GroupPostDao;
 import study.model.groupPost.GroupPostRequestDto;
-import study.model.standbyMember.StandbyMemberDao;
-import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.KeyManager;
 
 import javax.servlet.ServletException;
@@ -23,36 +21,39 @@ public class CreateGroupPostAction implements Action {
 
         JSONObject obj = new JSONObject();
         boolean status = false;
-        String message ="";
+        String message = "";
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
-        } else {
+        }else {
             InputStream in = request.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String data = "";
 
             while (br.ready()) {
-                data = br.readLine();
+                data += br.readLine() + "\n";
             }
 
-            JSONObject reqObj = new JSONObject(data);
-            String groupCode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
-            String title = reqObj.getString("title");
-            String content = reqObj.getString("title");
+            data = data.substring(0, data.length() - 1);
 
-            GroupPostRequestDto gpReqDto = new GroupPostRequestDto(groupCode, userCode, title, content);
+            JSONObject object = new JSONObject(data);
+            System.out.println("here");
+
+            String title= object.getString("title");
+            String content = object.getString("content");
+            String groupCode = object.getString("groupCode");
+            String userCode = object.getString("userCode");
+
+
+            GroupPostRequestDto gpReqDto = new GroupPostRequestDto(groupCode,userCode,title,content);
             GroupPostDao groupPostDao = GroupPostDao.getInstance();
             status = groupPostDao.createGroupPost(gpReqDto);
+
             if(!status) {
                 message = "Create Post failed";
             }else{
                 message = "Create Post success";
             }
-
-            in.close();
-            br.close();
         }
 
         obj.put("status", status);
