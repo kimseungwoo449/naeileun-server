@@ -33,18 +33,7 @@ public class GetStudyMemberAction implements Action {
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
-            InputStream in = request.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String data = "";
-
-            while (br.ready()) {
-                data = br.readLine();
-            }
-
-            JSONObject reqObj = new JSONObject(data);
-
-            groupCode = reqObj.getString("group_code");
+            groupCode =request.getParameter("group_code");
 
             GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
             gmReqDto.setGroupCode(groupCode);
@@ -60,9 +49,6 @@ public class GetStudyMemberAction implements Action {
                 result = new JSONArray(list);
                 meta = new JSONObject(list.size());
             }
-
-            in.close();
-            br.close();
         }
 
         obj.put("result", result);

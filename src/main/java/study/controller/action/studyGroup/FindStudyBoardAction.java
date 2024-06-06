@@ -39,17 +39,8 @@ public class FindStudyBoardAction implements Action{
 			meta = null;
 		} else {
 
-			InputStream in = request.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-			String data = "";
-			
-			while (br.ready()) {
-				data = br.readLine();
-			}
-			
-			String groupCode = new JSONObject(data).getString("group_code");
-			String userCode = new JSONObject(data).getString("user_code");
+			String groupCode = request.getParameter("group_code");
+			String userCode = request.getParameter("user_code");
 
 			StudyGroupRequestDto sgReqDto = new StudyGroupRequestDto();
 			sgReqDto.setGroupCode(groupCode);
@@ -65,9 +56,10 @@ public class FindStudyBoardAction implements Action{
 			//groupPost 객체 만들기
 
 			GroupPostDao gpDao = GroupPostDao.getInstance();
-			List<GroupPostResponseDto> postLists = gpDao.getGroupPostsByGroupCode(groupCode);
+			List<GroupPostResponseDto> postLists = gpDao.getGroupPostsByGroupCode(sgReqDto.getGroupCode());
 			JSONArray p = new JSONArray(postLists);
 
+			int pageCount = gpDao.getGroupPostsCount(sgReqDto);
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
 			boolean isMember = gmDao.getIsMember(groupCode,userCode);
 			JSONObject member = new JSONObject();
@@ -79,13 +71,10 @@ public class FindStudyBoardAction implements Action{
 			object.put("isMember", member);
 
 			meta = new JSONObject();
-			meta.put("total_count", postLists.size());
+			meta.put("total_count",pageCount );
 			
 			result =  new JSONArray();
 			result.put(object);
-
-			in.close();
-			br.close();
 		}
 		
 		obj.put("result",result);

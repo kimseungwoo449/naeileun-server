@@ -36,19 +36,7 @@ public class GetStudyGroupAction implements Action{
 			obj.put("meta", meta);
 			obj.put("status", false);
 		} else {
-			InputStream in = request.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-			String data = "";
-
-			while (br.ready()) {
-				data = br.readLine();
-			}
-
-			JSONObject reqObj = new JSONObject(data);
-			System.out.println(reqObj);
-
-			String userCode = reqObj.getString("user_code");
+			String userCode = request.getParameter("user_code");
 			System.out.println(userCode);
 			GroupMemberRequestDto gmDto = new GroupMemberRequestDto();
 			gmDto.setUserCode(userCode);
@@ -71,9 +59,6 @@ public class GetStudyGroupAction implements Action{
 			obj.put("meta",meta);
 			obj.put("status",status);
 			obj.put("result", result);
-
-			in.close();
-			br.close();
 		}
 		
 		response.setCharacterEncoding("UTF-8");
