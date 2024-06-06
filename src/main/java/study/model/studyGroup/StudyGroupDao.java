@@ -55,7 +55,6 @@ public class StudyGroupDao {
                 String adminCode = rs.getString(4);
                 String isPublic = rs.getString(5).equals("0") ? "false" : "true";
                 String autoMemberAccess = rs.getString(6).equals("0") ? "false" : "true";
-                System.out.println("name ; " + name);
                 if (decription == null) {
                     StudyGroupResponseDto study = new StudyGroupResponseDto(groupCode, name, adminCode, isPublic, autoMemberAccess);
                     list.add(study);
@@ -65,7 +64,7 @@ public class StudyGroupDao {
                 }
             }
 
-            System.out.println("DB 연동 성공");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -103,7 +102,7 @@ public class StudyGroupDao {
                     study = new StudyGroupResponseDto(groupCode, name, decription, adminCode, isPublic, autoMemberAccess);
             }
 
-            System.out.println("DB 연동 성공");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -139,7 +138,7 @@ public class StudyGroupDao {
                     study = new StudyGroupResponseDto(groupCode, name, decription, adminCode, isPublic, autoMemberAccess);
             }
 
-            System.out.println("DB 연동 성공");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -186,7 +185,7 @@ public class StudyGroupDao {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, groupCode);
 
-            System.out.println("excute result : " + pstmt.execute());
+
             isValid = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -220,10 +219,10 @@ public class StudyGroupDao {
 
             pstmt.execute();
             isValid = true;
-            System.out.println("DB연동 성공");
+
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("DB연동 실패");
+
         } finally {
             DBManager.close(conn, pstmt);
         }
@@ -255,7 +254,7 @@ public class StudyGroupDao {
                 pstmt.setString(2, adminCode);
                 pstmt.setBoolean(3, isPublic);
                 pstmt.setBoolean(4, autoMemberAccess);
-                System.out.println(pstmt.getResultSet());
+
                 rs = pstmt.executeQuery();
             } else {
                 String sql = "SELECT group_code FROM study_group WHERE name = ? AND admin_code =? AND decription =? AND is_public =? AND auto_member_access =?";
@@ -266,17 +265,17 @@ public class StudyGroupDao {
                 pstmt.setString(3, decription);
                 pstmt.setBoolean(4, isPublic);
                 pstmt.setBoolean(5, autoMemberAccess);
-                System.out.println(pstmt.getResultSet());
+
                 rs = pstmt.executeQuery();
             }
 
             if (rs.next()) {
                 code = rs.getString(1);
             }
-            System.out.println("DB연동 성공");
+
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("DB연동 실패");
+
         } finally {
             DBManager.close(conn, pstmt, rs);
         }

@@ -21,11 +21,9 @@ public class ServiceServlet extends HttpServlet{
 		
 		request.setCharacterEncoding("UTF-8");
 		String command = request.getPathInfo();
-		String method = request.getMethod();
 
 		if(command!=null) {
 			ActionFactory af = ActionFactory.getInstance();
-			System.out.println("server command : " + command);
 			Action action = af.getAction(command);
 			if(action != null) {
 				action.excute(request, response);

@@ -74,7 +74,7 @@ public class GroupPostDao {
             pstmt.setString(4, content);
 
             isValid = pstmt.executeUpdate() > 0;
-            System.out.println("isValid : " + isValid);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -146,7 +146,7 @@ public class GroupPostDao {
 
         try {
             String postCode = groupPostRequestDto.getPostCode();
-            System.out.println("here");
+
             conn = DBManager.getConnection();
             String sql = "DELETE FROM group_posts WHERE post_code = ?";
 

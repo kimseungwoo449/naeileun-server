@@ -210,7 +210,7 @@ public class UserDao {
 			sql = "UPDATE users SET phone=? WHERE id=?";
 		}
 		try {
-			System.out.println(sql);
+
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, value);
