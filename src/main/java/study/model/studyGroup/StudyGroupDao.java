@@ -277,7 +277,7 @@ public class StudyGroupDao {
 			e.printStackTrace();
 			System.out.println("DB연동 실패");
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 
 		return code;
