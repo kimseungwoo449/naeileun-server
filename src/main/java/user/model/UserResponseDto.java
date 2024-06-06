@@ -6,12 +6,12 @@ import java.sql.Timestamp;
 
 
 public class UserResponseDto {
-	private String userCode;
+	private int userCode;
 	private String id;
 	private String password;
 	private String name;
 	private String resident_number;
-	private String age;
+	private int age;
 	private String phone;
 	private boolean admin;
 	private String email;
@@ -21,7 +21,7 @@ public class UserResponseDto {
 		
 	}
 	
-	public UserResponseDto(String userCode, String id, String passWord, String name, String resident_number,
+	public UserResponseDto(int userCode, String id, String passWord, String name, String resident_number,
 			String phone, boolean admin, String email) {
 		super();
 		this.userCode = userCode;
@@ -45,7 +45,7 @@ public class UserResponseDto {
 		this.phone = user.getPhone();
 		this.admin = user.isAdmin();
 	}
-	public UserResponseDto(String userCode, String id, String name, String resident_number, String phone, boolean admin, String email) {
+	public UserResponseDto(int userCode, String id, String name, String resident_number, String phone, boolean admin, String email) {
 		super();
 		this.userCode = userCode;
 		this.id = id;
@@ -63,7 +63,6 @@ public class UserResponseDto {
 		this.resident_number = resident_number;
 		this.age = User.caculateAge(resident_number);
 		this.phone = phone;
-	
 		this.email = email;
 	}
 	
@@ -81,11 +80,11 @@ public class UserResponseDto {
 		this.update_Date = update_Date;
 	}
 	
-	public String getUserCode() {
+	public int getUserCode() {
 		return userCode;
 	}
 
-	public void setUserCode(String userCode) {
+	public void setUserCode(int userCode) {
 		this.userCode = userCode;
 	}
 
@@ -148,11 +147,11 @@ public class UserResponseDto {
 		this.update_Date = update_Date;
 	}
 
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 	

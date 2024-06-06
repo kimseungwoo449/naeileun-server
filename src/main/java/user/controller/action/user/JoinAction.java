@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import user.controller.Action;
@@ -28,7 +29,7 @@ public class JoinAction implements Action {
 
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
 			status = 400;
-			message = "User registration is failed.";
+			message = "admin key is not correct.";
 		} else {
 			InputStream in = request.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -38,40 +39,18 @@ public class JoinAction implements Action {
 				data += br.readLine() + "\n";
 			}
 
-
-			JSONObject object = new JSONObject(data);
-
-			String id = object.getString("id");
-			String password = object.getString("password");
-			String email = object.getString("email");
-			String name = object.getString("name");
-			String residentNumber = object.getString("resident_number");
-			String phone = object.getString("phone");
-			Boolean admin = object.getBoolean("admin");
-
-			UserRequestDto user = new UserRequestDto(id, password, name, residentNumber, phone, admin, email);
+			Gson gson = new Gson();
+			UserRequestDto user = gson.fromJson(data, UserRequestDto.class);
 			UserDao userDao = UserDao.getInstance();
-
 			UserResponseDto userDto = userDao.createUser(user);
-
-
-			status = 200;
-			message = "User registration is success.";
-
-			if (userDto == null) {
-				status = 400;
-				message = "User registration is failed.";
-			}
+			status = userDto != null ? 200 :400 ;
+			message = userDto != null ? "User registration is success." : "User registration is failed.";
 		}
 		resObj.put("status", status);
 		resObj.put("message", message);
-		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
-		
 		response.getWriter().append(resObj.toString());
-
-
 	}
 
 }

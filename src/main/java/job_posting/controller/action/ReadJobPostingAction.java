@@ -28,7 +28,7 @@ public class ReadJobPostingAction implements Action {
 
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             status = 400;
-            message = "Post registration is failed.";
+            message = "admin key is not correct.";
             resObj.put("status", status);
             resObj.put("message", message);
             response.setContentType("application/json");
@@ -43,7 +43,6 @@ public class ReadJobPostingAction implements Action {
             List<JobPostingResponseDto> jobPostings = dao.findMyJobPostingAll(userCode);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Gson gson = new GsonBuilder().setDateFormat(dateFormat.toPattern()).create();
-
             String jobPostingsJson = gson.toJson(jobPostings);
 
             response.setCharacterEncoding("UTF-8");

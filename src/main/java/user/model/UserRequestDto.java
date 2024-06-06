@@ -4,12 +4,12 @@ import java.lang.Boolean;
 import java.sql.Timestamp;
 
 public class UserRequestDto {
-	private String userCode;
+	private int userCode;
 	private String id;
 	private String password;
 	private String name;
 	private String resident_number;
-	private String age;
+	private int age;
 	private String phone;
 	private boolean admin;
 	private String email;
@@ -19,7 +19,7 @@ public class UserRequestDto {
 		
 	}
 	
-	public UserRequestDto(String userCode,String id, String password, String name, String resident_number, String phone, boolean admin,
+	public UserRequestDto(int userCode,String id, String password, String name, String resident_number, String phone, boolean admin,
 			String email) {
 		super();
 		this.userCode = userCode;
@@ -72,11 +72,11 @@ public class UserRequestDto {
 		this.update_Date = update_Date;
 	}
 	
-	public String getUserCode() {
+	public int getUserCode() {
 		return userCode;
 	}
 
-	public void setUserCode(String userCode) {
+	public void setUserCode(int userCode) {
 		this.userCode = userCode;
 	}
 
@@ -165,11 +165,11 @@ public class UserRequestDto {
 		this.update_Date = update_Date;
 	}
 
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 	

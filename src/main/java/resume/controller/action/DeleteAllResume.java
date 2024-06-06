@@ -19,7 +19,7 @@ import utill.KeyManager;
 public class DeleteAllResume implements Action{
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-JSONObject resObj = new JSONObject();
+		JSONObject resObj = new JSONObject();
 		
 		boolean status = true;
 		String message = "User's resumes is all deleted.";

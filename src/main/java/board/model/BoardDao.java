@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.model.UserDao;
+import user.model.UserRequestDto;
 import utill.DBManager;
 import utill.ImageHandler;
 
@@ -419,7 +420,7 @@ public class BoardDao {
 		return responseDto;
 	}
 
-	public boolean deletePostByUserCode(int userCode) {
+	public boolean deletePostByUserCode(UserRequestDto userRequestDto) {
 		boolean isDelete = false;
 
 		try {
@@ -427,7 +428,7 @@ public class BoardDao {
 
 			String sql = "DELETE FROM posts WHERE user_code=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, userCode);
+			pstmt.setInt(1, userRequestDto.getUserCode());
 
 			pstmt.execute();
 			isDelete = true;

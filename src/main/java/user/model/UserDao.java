@@ -1,18 +1,15 @@
 package user.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 
 import utill.DBManager;
 import utill.PasswordCrypto;
@@ -37,7 +34,7 @@ public class UserDao {
 
 	public List<UserResponseDto> findUserAll() {
 
-		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+		List<UserResponseDto> list = new ArrayList<>();
 
 		try {
 			conn = DBManager.getConnection();
@@ -48,7 +45,7 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				String userCode = rs.getString(1);
+				int userCode = rs.getInt(1);
 				String id = rs.getString(2);
 				String name = rs.getString(3);
 				String resident_number = rs.getString(4);
@@ -89,27 +86,21 @@ public class UserDao {
 
 		try {
 			conn = DBManager.getConnection();
-
 			String sql = "SELECT user_code, id , name, resident_number ,phone, admin , email, password FROM users WHERE id=?";
-
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-
 			rs = pstmt.executeQuery();
-
 			if (rs.next()) {
-				String userCode = rs.getString(1);
+				int userCode = rs.getInt(1);
 				String name = rs.getString(3);
 				String resident_number = rs.getString(4);
 				String phone = rs.getString(5);
 				boolean admin = rs.getBoolean(6);
 				String email = rs.getString(7);
 				String encyptedPassword = rs.getString(8);
-
 				if (PasswordCrypto.decrypt(password, encyptedPassword)) {
 					user = new UserResponseDto(userCode, id, password ,name, resident_number, phone, admin, email);
 				}
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -122,22 +113,21 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "INSERT INTO users(id, password, email, name, resident_number,phone, admin) VALUES(?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO users(id, password, email, name, resident_number,user_age,phone, admin) VALUES(?, ?, ?, ?, ?, ?,? ,?)";
 
 			pstmt = conn.prepareStatement(sql);
 
-			// sql 구문에 맵핑할 값 설정
+
 			pstmt.setString(1, userDto.getId());
 			pstmt.setString(2, PasswordCrypto.encrypt(userDto.getPassword()));
 			String email = userDto.getEmail().equals("") ? null : userDto.getEmail();
 			pstmt.setString(3, email);
 			pstmt.setString(4, userDto.getName());
 			pstmt.setString(5, userDto.getResident_number());
-			pstmt.setString(6, userDto.getPhone());
-			pstmt.setBoolean(7, userDto.isAdmin());
-
+			pstmt.setInt(6, userDto.getAge());
+			pstmt.setString(7, userDto.getPhone());
+			pstmt.setBoolean(8, userDto.isAdmin());
 			pstmt.execute();
-
 			return findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,8 +157,8 @@ public class UserDao {
 			pstmt.setString(2, userDto.getId());
 			pstmt.execute();
 
-			User userVo = findUserById(userDto.getId());
-			user = new UserResponseDto(userVo);
+
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
 			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -184,13 +174,12 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			String sql = "UPDATE users SET password=?   WHERE id=?";
-
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, PasswordCrypto.encrypt(newPassword));
 			pstmt.setString(2, userId);
 			pstmt.execute();
-			User userVo = findUserById(userId);
-			user = new UserResponseDto(userVo);
+
+			user = findUserByIdAndPassword(userId, newPassword);
 			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -200,22 +189,22 @@ public class UserDao {
 		return user;
 	}
 
-	public UserResponseDto updateUserField(String userId, String field, String value) {
+	public UserResponseDto updateUserField(String userId, String password, String field, String value) {
 
 		UserResponseDto user = null;
 		String sql = "";
 		if (field.equals("email")) {
-			sql = "UPDATE users SET email=?  WHERE id=?";
+			sql = "UPDATE users SET email=? WHERE id=?";
 		} else if (field.equals("phone")) {
 			sql = "UPDATE users SET phone=? WHERE id=?";
 		}
 		try {
-			System.out.println(sql);
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, value);
 			pstmt.setString(2, userId);
 			pstmt.execute();
+			user = findUserByIdAndPassword(userId,password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -275,7 +264,6 @@ public class UserDao {
 	}
 
 	public boolean deleteUser(UserRequestDto userDto) {
-	
 		try {
 			conn = DBManager.getConnection();
 			String sql = "DELETE FROM users WHERE id=?";
@@ -290,7 +278,6 @@ public class UserDao {
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-
 		return false;
 	}
 
@@ -329,7 +316,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT user_code, id ,password, name, resident_number, phone, admin , email, password FROM users WHERE id=?";
+			String sql = "SELECT user_code, id ,password, name, resident_number, phone, admin , email FROM users WHERE id=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -337,14 +324,14 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				String userCode = rs.getString(1);
+				int userCode = rs.getInt(1);
 				String password = rs.getString(3);
-				String name = rs.getString(4);
-				String resident_number = rs.getString(5);
-				String phone = rs.getString(6);
-				boolean admin = rs.getBoolean(7);
-				String email = rs.getString(8);
-				String encyptedPassword = rs.getString(9);
+                String encyptedPassword = rs.getString(2);
+                String name = rs.getString(4);
+                String resident_number = rs.getString(5);
+                String phone = rs.getString(6);
+                boolean admin = rs.getBoolean(7);
+                String email = rs.getString(8);
 				if (PasswordCrypto.decrypt(password, encyptedPassword))
 					user = new UserResponseDto(userCode, id, name, resident_number, phone, admin, email);
 			}
@@ -379,9 +366,9 @@ public class UserDao {
 		return userCode;
 	}
 
-	public String findUserIdByCode(String code) {
+	public String findUserIdByCode(int userCode) {
 		String userId = "";
-		int userCode = Integer.parseInt(code);
+
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT id FROM users WHERE user_code = ?";
