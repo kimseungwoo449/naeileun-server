@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import resume.controller.Action;
@@ -21,67 +22,32 @@ import utill.KeyManager;
 public class ViewAllResume implements Action {
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		JSONObject resObj = new JSONObject();
+		Gson gson = new Gson();
+		String jsonResponse ="";
 		List<ResumeResponseDto> resumes =null;
 		if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
-			resObj = null;
+			jsonResponse = null;
 		} else {
-			
-			InputStream in = request.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-			String data = "";
-			
-			while (br.ready()) {
-				data += br.readLine() + "\n";
-			}
-			
-			JSONObject reqObj = new JSONObject(data);
 			ResumeRequestDto dto = new ResumeRequestDto();
 			
-			String userId = reqObj.getString("user_id");
+
+			String userId = request.getParameter("user_id");
 			dto.setUserCode(userId);
 			ResumeDao resumeDao = ResumeDao.getInstance();
 			
 			resumes = resumeDao.getAllResume(dto);
 		}
 		
-		if(resumes!=null) {			
-			Object[] tempArr = new Object[resumes.size()];
-			
-			for(int i =0;i<resumes.size();i++) {
-				ResumeResponseDto targetResume = resumes.get(i);
-				
-				JSONObject temp = new JSONObject();
-				temp.put("user_code", targetResume.getUserCode());
-				temp.put("name", targetResume.getName());
-				temp.put("title", targetResume.getTitle());
-				temp.put("user_age", targetResume.getUserAge());
-				temp.put("academic_career", targetResume.getAcademicCareer());
-				temp.put("resume_code", targetResume.getResumeCode());
-				temp.put("career", targetResume.getCareer());
-				temp.put("skill", targetResume.getSkill());
-				temp.put("certificate", targetResume.getCertificate());
-				temp.put("language", targetResume.getLanguage());
-				temp.put("award", targetResume.getAward());
-				temp.put("write_date", targetResume.getWriteDate());
-				temp.put("update_date", targetResume.getUpdateDate());
-				temp.put("phone", targetResume.getPhone());
-				temp.put("expected_salary", targetResume.getExpectedSalary());
-				temp.put("expected_region", targetResume.getExpectedRegion());
-				temp.put("is_newbie", targetResume.isNewbie());
-				tempArr[i] = temp;
-			}
-			resObj.put("result", tempArr);
+		if(resumes!=null) {
+			jsonResponse = gson.toJson(resumes);
 		}else {
-			resObj=null;
+			jsonResponse=null;
 		}
-		
-		
-		
+
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 
-		response.getWriter().append(resObj.toString());
+		response.getWriter().append(jsonResponse);
+
 	}
 }

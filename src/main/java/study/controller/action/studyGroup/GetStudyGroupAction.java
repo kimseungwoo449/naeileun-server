@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import study.controller.Action;
+import study.model.groupMember.GroupMemberDao;
 import study.model.groupMember.GroupMemberRequestDto;
 import utill.KeyManager;
 import study.model.studyGroup.StudyGroupDao;
@@ -37,7 +38,6 @@ public class GetStudyGroupAction implements Action{
 			obj.put("status", false);
 		} else {
 			String userCode = request.getParameter("user_code");
-			System.out.println(userCode);
 			GroupMemberRequestDto gmDto = new GroupMemberRequestDto();
 			gmDto.setUserCode(userCode);
 
@@ -45,13 +45,17 @@ public class GetStudyGroupAction implements Action{
 			List<StudyGroupResponseDto> list = sgDao.getUserStudyByUserCode(gmDto);
 			JSONArray myStudy = new JSONArray(list);
 
+			GroupMemberDao gmDao = GroupMemberDao.getInstance();
+			int count = gmDao.getMyStudyCount(gmDto);
+			int totalCount = sgDao.getTotalStudyCount();
+
 			List<StudyGroupResponseDto> popularStudy = sgDao.getPopularStudy();
 			JSONArray popular = new JSONArray(popularStudy);
 
 			result.put(myStudy);
 			result.put(popular);
 
-			if(list.isEmpty() || popularStudy.isEmpty()){
+			if(list.size() != count || totalCount > 0 && popularStudy.isEmpty()){
 				status = false;
 			}
 

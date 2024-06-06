@@ -46,7 +46,6 @@ public class JoinStudyMemberAction implements Action {
             boolean isValid = gmDao.joinGroupMember(gmReqDto);
 
             status = isValid;
-            System.out.println("Join : "+isValid);
             if(!isValid) {
                 message = "Join group failed.";
             }else{

@@ -36,7 +36,6 @@ public class CheckStandbyMemberAction implements Action {
 
             status = smDao.checkStandbyMember(smReqDto);
 
-            System.out.println(status);
             if(!status) {
                 message = "StandbyMember not exist";
             }else{

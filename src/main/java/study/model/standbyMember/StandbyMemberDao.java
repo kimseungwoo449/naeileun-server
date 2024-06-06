@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StandbyMemberDao {
-    Connection conn;
-    PreparedStatement pstmt;
-    ResultSet rs;
-    private StandbyMemberDao(){
+    private Connection conn;
+    private PreparedStatement pstmt;
+    private ResultSet rs;
+
+    private StandbyMemberDao() {
 
     }
+
     private static StandbyMemberDao instance = new StandbyMemberDao();
 
     public static StandbyMemberDao getInstance() {
@@ -24,14 +26,14 @@ public class StandbyMemberDao {
 
     public List<StandbyMemberResponseDto> getStudyStandbyMembers(StandbyMemberRequestDto gaReqDto) {
         List<StandbyMemberResponseDto> list = null;
-        try{
+        try {
             conn = DBManager.getConnection();
-            String sql="SELECT user_code, group_code ,comment,(SELECT id FROM users u WHERE u.user_code = sm.user_code) FROM standby_member sm WHERE group_code = ? ORDER BY send_date";
+            String sql = "SELECT user_code, group_code ,comment,(SELECT id FROM users u WHERE u.user_code = sm.user_code) FROM standby_member sm WHERE group_code = ? ORDER BY send_date";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, gaReqDto.getGroupCode());
             rs = pstmt.executeQuery();
             list = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 String userCode = rs.getString(1);
                 String groupCode = rs.getString(2);
                 String comment = rs.getString(3);
@@ -41,47 +43,47 @@ public class StandbyMemberDao {
 
                 list.add(gaDto);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
-            DBManager.close(conn,pstmt,rs);
+        } finally {
+            DBManager.close(conn, pstmt, rs);
         }
         return list;
     }
 
     public boolean checkStandbyMember(StandbyMemberRequestDto gaReqDto) {
-       boolean isValid = false;
+        boolean isValid = false;
 
-       try{
-           conn = DBManager.getConnection();
-           String sql = "SELECT EXISTS (SELECT user_code FROM standby_member WHERE group_code = ? AND user_code = ?) AS SUCCESS";
-           pstmt = conn.prepareStatement(sql);
-           String groupCode = gaReqDto.getGroupCode();
-           String userCode = gaReqDto.getUserCode();
+        try {
+            conn = DBManager.getConnection();
+            String sql = "SELECT EXISTS (SELECT user_code FROM standby_member WHERE group_code = ? AND user_code = ?) AS SUCCESS";
+            pstmt = conn.prepareStatement(sql);
+            String groupCode = gaReqDto.getGroupCode();
+            String userCode = gaReqDto.getUserCode();
 
-           pstmt.setString(1, groupCode);
-           pstmt.setString(2, userCode);
+            pstmt.setString(1, groupCode);
+            pstmt.setString(2, userCode);
 
-           rs = pstmt.executeQuery();
-           if(rs.next()) {
-               String isExist = rs.getString(1);
-               if(isExist.equals("1")){
-                   isValid = true;
-               }
-           }
-       }catch(SQLException e) {
-           e.printStackTrace();
-           isValid = false;
-       }finally{
-           DBManager.close(conn,pstmt,rs);
-       }
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String isExist = rs.getString(1);
+                if (isExist.equals("1")) {
+                    isValid = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            isValid = false;
+        } finally {
+            DBManager.close(conn, pstmt, rs);
+        }
 
-       return isValid;
+        return isValid;
     }
 
     public boolean addStandbyMember(StandbyMemberRequestDto gaReqDto) {
         boolean isValid = false;
-        try{
+        try {
             String groupCode = gaReqDto.getGroupCode();
             String userCode = gaReqDto.getUserCode();
             String comment = gaReqDto.getComment();
@@ -90,16 +92,16 @@ public class StandbyMemberDao {
             String sql = "INSERT INTO standby_member (group_code,user_code,comment) VALUES (?,?,?)";
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setString(1,groupCode);
-            pstmt.setString(2,userCode);
-            pstmt.setString(3,comment);
+            pstmt.setString(1, groupCode);
+            pstmt.setString(2, userCode);
+            pstmt.setString(3, comment);
 
             pstmt.execute();
             isValid = true;
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
-            DBManager.close(conn,pstmt);
+        } finally {
+            DBManager.close(conn, pstmt);
         }
 
         return isValid;
@@ -107,23 +109,23 @@ public class StandbyMemberDao {
 
     public boolean deleteStandbyMember(StandbyMemberRequestDto gaReqDto) {
         boolean isValid = false;
-        try{
+        try {
             String groupCode = gaReqDto.getGroupCode();
             String userCode = gaReqDto.getUserCode();
 
             conn = DBManager.getConnection();
             String sql = "DELETE FROM standby_member WHERE group_code = ? AND user_code = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,groupCode);
-            pstmt.setString(2,userCode);
+            pstmt.setString(1, groupCode);
+            pstmt.setString(2, userCode);
 
             pstmt.execute();
 
             isValid = true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
-            DBManager.close(conn,pstmt);
+        } finally {
+            DBManager.close(conn, pstmt);
         }
 
         return isValid;

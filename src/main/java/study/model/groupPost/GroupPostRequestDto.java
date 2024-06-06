@@ -1,20 +1,20 @@
 package study.model.groupPost;
 
 public class GroupPostRequestDto {
-    String postCode;
-    String userCode;
-    String groupCode;
-    String title;
-    String content;
-    String writeDate;
-    String updateDate;
-    String userId;
-    int recommendation;
+    private String postCode;
+    private String userCode;
+    private String groupCode;
+    private String title;
+    private String content;
+    private String writeDate;
+    private String updateDate;
+    private String userId;
+    private int recommendation;
 
     public GroupPostRequestDto() {
     }
 
-    public GroupPostRequestDto( String groupCode,String userCode, String title, String content) {
+    public GroupPostRequestDto(String groupCode, String userCode, String title, String content) {
         this.userCode = userCode;
         this.groupCode = groupCode;
         this.title = title;
@@ -110,6 +110,7 @@ public class GroupPostRequestDto {
     public String getUserId() {
         return userId;
     }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
