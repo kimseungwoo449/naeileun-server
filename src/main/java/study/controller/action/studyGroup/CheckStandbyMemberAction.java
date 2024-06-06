@@ -26,19 +26,8 @@ public class CheckStandbyMemberAction implements Action {
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
         } else {
-            InputStream in = request.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String data = "";
-
-            while (br.ready()) {
-                data = br.readLine();
-            }
-
-            JSONObject reqObj = new JSONObject(data);
-
-            String groupcode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String groupcode = request.getParameter("group_code");
+            String userCode = request.getParameter("user_code");
             StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto();
             smReqDto.setGroupCode(groupcode);
             smReqDto.setUserCode(userCode);
@@ -49,12 +38,10 @@ public class CheckStandbyMemberAction implements Action {
 
             System.out.println(status);
             if(!status) {
-                message = "Awaiter not exist";
+                message = "StandbyMember not exist";
             }else{
-                message = "Awaiter exist";
+                message = "StandbyMember not exist";
             }
-            in.close();
-            br.close();
         }
 
         obj.put("status", status);
