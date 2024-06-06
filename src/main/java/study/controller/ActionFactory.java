@@ -1,9 +1,8 @@
 package study.controller;
 
-import board.controller.action.CreatePostAction;
+import board.controller.action.DeletePostAction;
 import study.controller.action.studyGroup.*;
-import study.controller.action.studyGroup.post.CreateGroupPostAction;
-import study.controller.action.studyGroup.post.GetGroupPostDetailAction;
+import study.controller.action.studyGroup.post.*;
 
 public class ActionFactory{
 	
@@ -17,7 +16,7 @@ public class ActionFactory{
 		return instance;
 	}
 	
-	public Action getAction(String command,String method) {
+	public Action getAction(String command) {
 		Action action = null;
 
 		if(command.equals("/myGroup")) {
@@ -50,6 +49,12 @@ public class ActionFactory{
 			action = new CreateGroupPostAction();
 		}else if(command.equals("/post")) {
 			action = new GetGroupPostDetailAction();
+		}else if(command.equals("/updatePost")){
+			action = new UpdateGroupPostAction();
+		}else if(command.equals("/deletePost")){
+			action = new DeleteGroupPostAction();
+		}else if(command.equals("/groupPosts")){
+			action = new GetGroupPostsAction();
 		}
 		
 		return action;
