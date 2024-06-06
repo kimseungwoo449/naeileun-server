@@ -39,7 +39,7 @@ public class CheckStandbyMemberAction implements Action {
             if(!status) {
                 message = "StandbyMember not exist";
             }else{
-                message = "StandbyMember not exist";
+                message = "StandbyMember exist";
             }
         }
 
