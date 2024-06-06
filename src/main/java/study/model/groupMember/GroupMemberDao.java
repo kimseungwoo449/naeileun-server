@@ -11,9 +11,9 @@ import study.model.standbyMember.StandbyMemberRequestDto;
 import utill.DBManager;
 
 public class GroupMemberDao {
-	Connection conn;
-	PreparedStatement pstmt;
-	ResultSet rs;
+	private  Connection conn;
+	private  PreparedStatement pstmt;
+	private  ResultSet rs;
 	
 	
 	private GroupMemberDao() {}

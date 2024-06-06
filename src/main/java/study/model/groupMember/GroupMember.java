@@ -1,10 +1,10 @@
 package study.model.groupMember;
 
 public class GroupMember {
-	String groupCode;
-	String userCode;
-	String memberCode;
-	String userId;
+	private String groupCode;
+	private String userCode;
+	private String memberCode;
+	private String userId;
 	
 	public GroupMember(String groupCode, String userCode, String memberCode) {
 		super();
