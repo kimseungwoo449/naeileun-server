@@ -283,5 +283,43 @@ public class StudyGroupDao {
 		return code;
 	}
 
+	public int getMyStudyCount(GroupMemberRequestDto groupMemberRequestDto) {
+		int count = 0;
+		try {
+			String userCode = groupMemberRequestDto.getUserCode();
+			conn = DBManager.getConnection();
+			String sql = "SELECT COUNT(*) FROM study_group WHERE user_code =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userCode);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return count;
+	}
+
+	public int getTotalStudyCount() {
+		int count = 0;
+		try{
+			conn = DBManager.getConnection();
+			String sql = "SELECT COUNT(*) FROM study_group";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			DBManager.close(conn, pstmt,rs);
+		}
+		return count;
+	}
 
 }
