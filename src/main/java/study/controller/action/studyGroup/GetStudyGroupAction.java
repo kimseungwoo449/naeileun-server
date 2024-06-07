@@ -46,14 +46,15 @@ public class GetStudyGroupAction implements Action{
 			JSONArray myStudy = new JSONArray(list);
 
 			GroupMemberDao gmDao = GroupMemberDao.getInstance();
-			int count = gmDao.getMyStudyCount(gmDto);
-			int totalCount = sgDao.getTotalStudyCount();
 
 			List<StudyGroupResponseDto> popularStudy = sgDao.getPopularStudy();
 			JSONArray popular = new JSONArray(popularStudy);
 
 			result.put(myStudy);
 			result.put(popular);
+
+			int count = gmDao.getMyStudyCount(gmDto);
+			int totalCount = sgDao.getTotalStudyCount();
 
 			if(list.size() != count || totalCount > 0 && popularStudy.isEmpty()){
 				status = false;

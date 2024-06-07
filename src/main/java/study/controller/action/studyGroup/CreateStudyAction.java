@@ -35,9 +35,10 @@ public class CreateStudyAction implements Action {
             String data = "";
 
             while (br.ready()) {
-                data += br.readLine();
+                data += br.readLine() + "\n";
             }
 
+            data = data.substring(0, data.length() - 1);
             JSONObject reqObj = new JSONObject(data);
 
             String groupName = reqObj.getString("group_name");
