@@ -36,7 +36,7 @@ public class RefuseStandbyMemberAction implements Action {
 
             JSONObject reqObj = new JSONObject(data);
             String groupcode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
 
             StandbyMemberRequestDto gaReqDto = new StandbyMemberRequestDto();
             gaReqDto.setGroupCode(groupcode);
@@ -45,9 +45,9 @@ public class RefuseStandbyMemberAction implements Action {
             StandbyMemberDao gaDao = StandbyMemberDao.getInstance();
             status = gaDao.deleteStandbyMember(gaReqDto);
 
-            if(!status) {
+            if (!status) {
                 message = "Refuse Awaiter failed";
-            }else{
+            } else {
                 message = "Refuse Awaiter success";
             }
 

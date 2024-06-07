@@ -26,7 +26,7 @@ public class IntroductionDao {
     }
 
     public boolean addIntroduction(List<IntroductionRequestDto> dtoArr) {
-        int documentCode = dtoArr.get(0).getDocumentCode()==0?getMaxDocumentCode() + 1:dtoArr.get(0).getDocumentCode();
+        int documentCode = dtoArr.get(0).getDocumentCode() == 0 ? getMaxDocumentCode() + 1 : dtoArr.get(0).getDocumentCode();
         try {
             conn = DBManager.getConnection();
             String sql = "INSERT INTO self_introduction(title,head,body,document_code,user_code) VALUES ";
@@ -149,21 +149,21 @@ public class IntroductionDao {
             pstmt.setInt(1, dto.getUserCode());
             pstmt.execute();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DBManager.close(conn, pstmt);
         }
         return false;
     }
 
-    public boolean updateIntroductions(List<IntroductionRequestDto> dtoList){
+    public boolean updateIntroductions(List<IntroductionRequestDto> dtoList) {
         IntroductionRequestDto dto = dtoList.get(0);
         deleteIntroductionByDocCode(dto);
         return addIntroduction(dtoList);
     }
 
-    public boolean deleteIntroductionByDocCode(IntroductionRequestDto dto){
+    public boolean deleteIntroductionByDocCode(IntroductionRequestDto dto) {
 
         try {
             conn = DBManager.getConnection();
@@ -181,7 +181,7 @@ public class IntroductionDao {
         return false;
     }
 
-    public int findUserCodeByDocCode(int docCode){
+    public int findUserCodeByDocCode(int docCode) {
         int userCode = -1;
         try {
             conn = DBManager.getConnection();
@@ -202,7 +202,7 @@ public class IntroductionDao {
         return userCode;
     }
 
-    public List<IntroductionResponseDto> getIntroductionByDocCode(IntroductionRequestDto dto){
+    public List<IntroductionResponseDto> getIntroductionByDocCode(IntroductionRequestDto dto) {
         List<IntroductionResponseDto> resList = null;
         try {
             conn = DBManager.getConnection();
@@ -223,16 +223,16 @@ public class IntroductionDao {
 
                 resList.add(new IntroductionResponseDto(docNumber, title, head, body, documentCode, userCode, writeDate, updateDate));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DBManager.close(conn, pstmt, rs);
         }
 
-        return  resList;
+        return resList;
     }
 
-    public boolean deleteDocumentByDocNum(IntroductionRequestDto dto){
+    public boolean deleteDocumentByDocNum(IntroductionRequestDto dto) {
         try {
             conn = DBManager.getConnection();
 
@@ -250,7 +250,7 @@ public class IntroductionDao {
         return false;
     }
 
-    public int findUserCodeByDocNum(int docNum){
+    public int findUserCodeByDocNum(int docNum) {
         int userCode = -1;
         try {
             conn = DBManager.getConnection();

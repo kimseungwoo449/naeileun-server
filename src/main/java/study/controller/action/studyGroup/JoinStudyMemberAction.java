@@ -36,7 +36,7 @@ public class JoinStudyMemberAction implements Action {
 
             JSONObject reqObj = new JSONObject(data);
             String groupCode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
             GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
             gmReqDto.setGroupCode(groupCode);
             gmReqDto.setUserCode(userCode);
@@ -46,9 +46,9 @@ public class JoinStudyMemberAction implements Action {
             boolean isValid = gmDao.joinGroupMember(gmReqDto);
 
             status = isValid;
-            if(!isValid) {
+            if (!isValid) {
                 message = "Join group failed.";
-            }else{
+            } else {
                 message = "Join group success.";
             }
 
