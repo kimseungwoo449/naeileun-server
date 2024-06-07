@@ -42,7 +42,7 @@ public class CreateStudyAction implements Action {
             JSONObject reqObj = new JSONObject(data);
 
             String groupName = reqObj.getString("group_name");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
             String decription = reqObj.getString("decription").equals("") ? null : reqObj.getString("decription");
 
             Boolean isPublic = reqObj.getBoolean("is_public");
@@ -62,11 +62,11 @@ public class CreateStudyAction implements Action {
 
             boolean isValid = groupCode == null ? false : true;
             status = isValid;
-            if(!isValid) {
+            if (!isValid) {
                 message = "Group Create failed.";
-            }else if (!addMember) {
+            } else if (!addMember) {
                 message = "Add Member is failed.";
-            }else{
+            } else {
                 message = "Group Create success.";
             }
             in.close();
@@ -75,7 +75,7 @@ public class CreateStudyAction implements Action {
 
         obj.put("status", status);
         obj.put("message", message);
-        obj.put("groupCode",groupCode);
+        obj.put("groupCode", groupCode);
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

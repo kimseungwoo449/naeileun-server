@@ -37,7 +37,7 @@ public class AddMemberFromStandbyMemberAction implements Action {
 
             JSONObject reqObj = new JSONObject(data);
             String groupcode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
 
             StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto();
             smReqDto.setGroupCode(groupcode);
@@ -46,19 +46,19 @@ public class AddMemberFromStandbyMemberAction implements Action {
             GroupMemberDao gmDao = GroupMemberDao.getInstance();
             status = gmDao.joinGroupMember(smReqDto);
 
-            if(status){
+            if (status) {
                 StandbyMemberDao gaDao = StandbyMemberDao.getInstance();
                 status = gaDao.deleteStandbyMember(smReqDto);
-            }else{
-                message ="Join Member from Awaiter failed";
+            } else {
+                message = "Join Member from Awaiter failed";
             }
 
             StandbyMemberDao smDao = StandbyMemberDao.getInstance();
             status = smDao.deleteStandbyMember(smReqDto);
 
-            if(!status) {
+            if (!status) {
                 message = "Delete Awaiter failed";
-            }else{
+            } else {
                 message = "Join Member success";
             }
 

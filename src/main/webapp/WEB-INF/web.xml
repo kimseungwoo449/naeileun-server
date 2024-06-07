@@ -42,7 +42,7 @@
 		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
 		<init-param>
 			<param-name>cors.allowed.origins</param-name>
-			<param-value>http://localhost:3000,https://kimseungwoo449.github.io</param-value>
+			<param-value>http://localhost:3000,https://kimseungwoo449.github.io,https://seungwoo.info</param-value>
 		</init-param>
 		<init-param>
 			<param-name>cors.allowed.methods</param-name>

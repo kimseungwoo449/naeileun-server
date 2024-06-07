@@ -41,7 +41,7 @@ public class CreateGroupPostAction implements Action {
             String title= object.getString("title");
             String content = object.getString("content");
             String groupCode = object.getString("groupCode");
-            String userCode = object.getString("userCode");
+            String userCode = ""+object.getInt("userCode");
 
 
             GroupPostRequestDto gpReqDto = new GroupPostRequestDto(groupCode,userCode,title,content);

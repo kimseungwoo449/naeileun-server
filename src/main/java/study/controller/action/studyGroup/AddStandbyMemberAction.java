@@ -36,7 +36,7 @@ public class AddStandbyMemberAction implements Action {
 
             JSONObject reqObj = new JSONObject(data);
             String groupcode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
             String comment = reqObj.getString("comment");
             StandbyMemberRequestDto smReqDto = new StandbyMemberRequestDto();
             smReqDto.setGroupCode(groupcode);
@@ -46,9 +46,9 @@ public class AddStandbyMemberAction implements Action {
             StandbyMemberDao smDao = StandbyMemberDao.getInstance();
             status = smDao.addStandbyMember(smReqDto);
 
-            if(!status) {
+            if (!status) {
                 message = "Add Awaiter failed";
-            }else{
+            } else {
                 message = "Add Awaiter success";
             }
 

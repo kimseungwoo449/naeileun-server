@@ -39,32 +39,18 @@ public class LoginAction implements Action{
 			while (br.ready()) {
 				data += br.readLine() + "\n";
 			}
-
 			UserDao userDao = UserDao.getInstance();
 			JSONObject object = new JSONObject(data);
-
 			String id = object.getString("id");
 			String password = object.getString("password");
-
-
 			request.setCharacterEncoding("UTF-8");
-
 			UserResponseDto userDto = userDao.findUserByIdAndPassword(id, password);
-
-
 			ObjectMapper objectMapper = new ObjectMapper();
 			String json = objectMapper.writeValueAsString(userDto);
+			status = userDto != null ? 200 : 400;
+			message = userDto != null ? "User login is success." : "User login is failed.";
 
-
-			status = 200;
-			message = "User login is success.";
-
-			if (userDto == null) {
-				status = 400;
-				message = "User login is failed.";
-			}
 			if (userDto != null) {
-
 				resObj.put("user", new JSONObject(json));
 			}
 		}

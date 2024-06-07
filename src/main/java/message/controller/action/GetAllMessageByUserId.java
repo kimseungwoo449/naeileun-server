@@ -64,7 +64,7 @@ public class GetAllMessageByUserId implements Action {
             }
 
             // 유저 코드를 이용해 유저 아이디를 가져옴
-            String keyUserId = userDao.findUserIdByCode("" + keyUserCode);
+            String keyUserId = userDao.findUserIdByCode(keyUserCode);
 
             List<MessageResponseDto> userMessages = map.getOrDefault(keyUserId, new ArrayList<>());
             userMessages.add(dto);

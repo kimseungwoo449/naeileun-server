@@ -33,7 +33,7 @@ public class ViewResume implements Action {
 			ResumeResponseDto result = resumeDao.getResume(dto);
 
 			UserDao userDao = UserDao.getInstance();
-			resObj.put("user_id", userDao.findUserIdByCode("" + result.getUserCode()));
+			resObj.put("user_id", userDao.findUserIdByCode(result.getUserCode()));
 			resObj.put("name", result.getName());
 			resObj.put("title", result.getTitle());
 			resObj.put("user_age", result.getUserAge());

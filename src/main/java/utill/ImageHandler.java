@@ -82,7 +82,7 @@ public class ImageHandler {
 
 
         if(uuid != null) {
-            // 2) Rest API 파일 삭제 요청
+            // Rest API 파일 삭제 요청
 
             String path = "https://api.uploadcare.com/files/"+uuid+"/storage/?uuid="+uuid;
             String apiKey = KeyManager.getDeletecareKey();
@@ -94,29 +94,14 @@ public class ImageHandler {
                 conn.setRequestMethod("DELETE");
                 conn.setRequestProperty("Authorization", apiKey);
 
-                // 3) 응답 받고
+                // 응답 받기
                 int status = conn.getResponseCode();
 
-
                 if(status == 200) {
-                    InputStream in = conn.getInputStream();
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-                    String data ="";
-                    while(br.ready()) {
-                        data += br.readLine() + "\n";
-                    }
-
-                    JSONObject resObj = new JSONObject(data);
-
-                    String result = resObj.getString("datetime_removed");
-
-
                     isDelete = true;
                 } else {
                     isDelete = false;
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();

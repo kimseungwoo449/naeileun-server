@@ -36,7 +36,7 @@ public class DeleteStudyMemberAction implements Action {
 
             JSONObject reqObj = new JSONObject(data);
             String groupCode = reqObj.getString("group_code");
-            String userCode = reqObj.getString("user_code");
+            String userCode = "" + reqObj.getInt("user_code");
 
             GroupMemberRequestDto gmReqDto = new GroupMemberRequestDto();
             gmReqDto.setGroupCode(groupCode);
@@ -45,9 +45,9 @@ public class DeleteStudyMemberAction implements Action {
             boolean isValid = gmDao.deleteGroupMember(gmReqDto);
 
             status = isValid;
-            if(!isValid) {
+            if (!isValid) {
                 message = "Delete member failed.";
-            }else{
+            } else {
                 message = "Delete member success.";
             }
 

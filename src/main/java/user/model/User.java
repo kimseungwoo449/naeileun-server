@@ -5,11 +5,11 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class User {
-	private String userCode;
+	private int userCode;
 	private String id;
 	private String password;
 	private String name;
-	private String age;
+	private int age;
 	private String resident_number;
 	private String phone;
 	private boolean admin;
@@ -22,7 +22,7 @@ public class User {
 	}
 	
 	
-	public User(String userCode, String id, String password, String name, String age, String resident_number,
+	public User(int userCode, String id, String password, String name, int age, String resident_number,
 			String phone, boolean admin, String email) {
 		super();
 		this.userCode = userCode;
@@ -79,7 +79,7 @@ public class User {
 		
 	}
 	
-	public String getUserCode() {
+	public int getUserCode() {
 		return userCode;
 	}
 
@@ -120,16 +120,15 @@ public class User {
 	}
 	
 	
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 
 
-	public static String caculateAge(String residentNumber) {
+	public static int caculateAge(String residentNumber) {
 			
 	        int birthYear = Integer.parseInt(residentNumber.substring(0, 2));
 
-	        // 주민등록번호 7번째 자리를 확인하여 2000년 이전과 이후 출생자를 구분
 	        if (residentNumber.charAt(8) == '1' || residentNumber.charAt(8) == '2') {
 	            birthYear += 1900;
 	        } else {
@@ -139,8 +138,8 @@ public class User {
 	
 	        int currentYear = LocalDate.now().getYear();
 
-	
-	        String age = ""+(currentYear - birthYear + 1);
+
+		int age = (currentYear - birthYear + 1);
 	        return age;
 	}
 	

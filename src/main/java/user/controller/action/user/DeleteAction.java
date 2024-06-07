@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import board.model.BoardDao;
+import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import user.controller.Action;
@@ -23,7 +24,6 @@ public class DeleteAction implements Action{
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		JSONObject resObj = new JSONObject();
 
 		int status = 0;
@@ -40,28 +40,22 @@ public class DeleteAction implements Action{
 			while (br.ready()) {
 				data += br.readLine() + "\n";
 			}
-			JSONObject object = new JSONObject(data);
-
+			Gson gson = new Gson();
+			UserRequestDto userRequestDto = gson.fromJson(data, UserRequestDto.class);
 
 			request.setCharacterEncoding("UTF-8");
 
 			UserDao userDao = UserDao.getInstance();
 
-
-			String id = object.getString("id");
-			int userCode = Integer.parseInt(object.getString("userCode"));
 			BoardDao boardDao = BoardDao.getInstance();
-			UserRequestDto userDto = new UserRequestDto();
 
-			userDto.setId(id);
-
-			boolean result = userDao.deleteUser(userDto);
+			boolean result = userDao.deleteUser(userRequestDto);
 
 			 status = result ? 200 : 400;
 			 message = result ? "User delete is success." : "User delete is failed.";
 
 			if (status == 200) {
-				boardDao.deletePostByUserCode(userCode);
+				boardDao.deletePostByUserCode(userRequestDto);
 			}
 		}
 		resObj.put("status", status);
