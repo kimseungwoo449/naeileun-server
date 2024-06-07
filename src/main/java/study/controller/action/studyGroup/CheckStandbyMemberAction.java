@@ -21,7 +21,7 @@ public class CheckStandbyMemberAction implements Action {
         request.setCharacterEncoding("UTF-8");
 
         JSONObject obj = new JSONObject();
-        boolean status = false;
+        boolean status = true;
         String message = null;
         if (!request.getHeader("Authorization").equals(KeyManager.getAdminKey())) {
             message = "admin key is not correct";
