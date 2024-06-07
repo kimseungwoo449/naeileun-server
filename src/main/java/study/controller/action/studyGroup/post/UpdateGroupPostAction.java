@@ -53,9 +53,9 @@ public class UpdateGroupPostAction implements Action {
             status = groupPostDao.updateGroupPost(gpReqDto);
 
             if (!status) {
-                message = "Create Post failed";
+                message = "Updata Post failed";
             } else {
-                message = "Create Post success";
+                message = "Updata Post success";
             }
         }
 
