@@ -9,6 +9,6 @@
 </head>
 <body>
 	<c:out value="hello~"></c:out>
-	
+
 </body>
 </html>

@@ -46,4 +46,8 @@ public class ServiceServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		super.doPut(request, response);
+	}
 }
