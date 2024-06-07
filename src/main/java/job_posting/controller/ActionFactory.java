@@ -1,10 +1,7 @@
 package job_posting.controller;
 
 
-import job_posting.controller.action.CreateJobPostingAction;
-import job_posting.controller.action.DeleteJobPostingAction;
-import job_posting.controller.action.ReadJobPostingAction;
-import job_posting.controller.action.UpdateJobPostingAction;
+import job_posting.controller.action.*;
 
 public class ActionFactory {
     private ActionFactory() {
@@ -27,6 +24,8 @@ public class ActionFactory {
             action = new UpdateJobPostingAction();
         }else if (command.equals("/delete")) {
             action = new DeleteJobPostingAction();
+        }else if (command.equals("/getJobData")) {
+            action = new FetchingJobData();
         }
         return action;
     }
