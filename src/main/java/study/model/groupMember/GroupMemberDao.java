@@ -63,14 +63,14 @@ public class GroupMemberDao {
 
 		try{
 			conn = DBManager.getConnection();
-			String sql = "SELECT member_code FROM group_member WHERE group_code=? AND user_code=?";
+			String sql = "SELECT EXISTS(SELECT member_code FROM group_member WHERE group_code=? AND user_code=?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, groupCode);
 			pstmt.setString(2, userCode);
 			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
-				isMember = true;
+				isMember = rs.getBoolean(1);
 			}
 
 		}catch(SQLException e){
